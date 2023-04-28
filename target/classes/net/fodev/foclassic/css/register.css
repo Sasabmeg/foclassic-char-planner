@@ -1,0 +1,53 @@
+.vbox {
+    -fx-background-color: #000000;
+}
+
+#backgroundPane {
+    -fx-background-color: #333333;
+    -fx-background-image: url("../images/register.png");
+}
+
+.buttonPlus {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/splsoff.png");
+    -fx-max-height: 12;
+    -fx-pref-height: 12;
+    -fx-max-width: 16;
+    -fx-pref-width: 16;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.buttonPlus:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/splson.png");
+    -fx-max-height: 12;
+    -fx-pref-height: 12;
+    -fx-max-width: 16;
+    -fx-pref-width: 16;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+
+.buttonMinus {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/snegoff.png");
+    -fx-max-height: 12;
+    -fx-pref-height: 12;
+    -fx-max-width: 16;
+    -fx-pref-width: 16;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.buttonMinus:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/snegon.png");
+    -fx-max-height: 12;
+    -fx-pref-height: 12;
+    -fx-max-width: 16;
+    -fx-pref-width: 16;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}

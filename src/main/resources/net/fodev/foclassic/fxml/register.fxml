@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="TOP_LEFT" prefHeight="590.0" prefWidth="1024.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.fodev.foclassic.RegisterController">
+   <children>
+      <Pane fx:id="backgroundPane" prefHeight="490.0" prefWidth="1024.0">
+         <children>
+            <Button fx:id="buttonPlusStrength" styleClass="buttonPlus" layoutX="164.0" layoutY="41.0" mnemonicParsing="false" text="" />
+            <Button fx:id="buttonMinusStrength" styleClass="buttonMinus" layoutX="164.0" layoutY="51.0" mnemonicParsing="false" text="" />
+            <Button fx:id="buttonPlusPerception" styleClass="buttonPlus" layoutX="164.0" layoutY="74.0" mnemonicParsing="false" text="" />
+            <Button fx:id="buttonMinusPerception" styleClass="buttonMinus" layoutX="164.0" layoutY="84.0" mnemonicParsing="false" text="" />
+         </children></Pane>
+   </children>
+</VBox>
