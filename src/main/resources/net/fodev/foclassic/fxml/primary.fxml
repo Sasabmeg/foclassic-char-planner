@@ -4,8 +4,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox alignment="CENTER" prefHeight="391.0" prefWidth="447.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.fodev.foclassic.PrimaryController">
+<VBox alignment="CENTER" prefHeight="391.0" prefWidth="447.0" spacing="20.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.fodev.foclassic.controller.PrimaryController">
    <children>
+      <Label text="Register new character" />
+      <Button fx:id="registerButton" onAction="#switchToRegister" text="Switch to Character Creation" />
       <Label text="Primary View" />
       <Button fx:id="primaryButton" onAction="#switchToSecondary" text="Switch to Secondary View" />
    </children>

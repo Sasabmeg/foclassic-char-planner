@@ -1,30 +1,162 @@
+@font-face {
+    /*font-family: 'Gothic 821 Condensed BT';*/
+    src: url('../fonts/Fallout-Classic-Dialog-Regular.ttf');
+}
+
+@font-face {
+    /*font-family: 'Gothic 821 Condensed BT';*/
+    src: url('../fonts/GOTH821C.TTF');
+}
+
+@font-face {
+    src: url('../fonts/gillsansstd-boldextracond.otf');
+}
+
+
+.fofntTest {
+    /*-fx-font-family: "Gothic 821 Condensed BT";*/
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 18;
+    -fx-background-radius: 0;
+}
+
+.labelInfoCaption {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-alignment: center-left;
+    /*-fx-font-family: "Gothic 821 Condensed BT";*/
+    -fx-font-family: "GillSansStd-BoldExtraCond";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 26;
+    -fx-background-radius: 0;
+}
+
+.labelInfoSeparator {
+    -fx-background-color: #000000;
+    -fx-fill: #000000;
+    -fx-border-color: #000000;
+}
+
+.labelInfoText {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-alignment: top-left;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 10;
+    -fx-wrap-text: true;
+    -fx-background-radius: 0;
+}
+
+.labelInfoImage {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-image: url("../images/speech.png");
+}
+
+.textTall {
+    -fx-background-color: transparent;
+    /*-fx-text-fill: #32cd32;*/
+    -fx-text-fill: #846924;
+    -fx-alignment: center;
+    -fx-font-family: "Gothic 821 Condensed BT";
+    /*-fx-font-family: "GillSansStd-BoldExtraCond";*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 18;
+    -fx-background-radius: 0;
+}
+
+.textTraitSelected {
+    -fx-text-fill: #ABABAB;
+}
+
+.textTraitLeft {
+    -fx-background-color: transparent;
+    -fx-text-fill: #38FB00;
+    -fx-alignment: center-left;
+    -fx-font-family: "Fallout Classic Dialog";
+    /*-fx-font-weight: 700;*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
+.textTraitRight {
+    -fx-background-color: transparent;
+    -fx-text-fill: #38FB00;
+    -fx-alignment: center-right;
+    -fx-font-family: "Fallout Classic Dialog";
+    /*-fx-font-weight: 700;*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
+.textStatInfo {
+    -fx-background-color: transparent;
+    -fx-text-fill: #38FB00;
+    -fx-alignment: center;
+    -fx-font-family: "Fallout Classic Dialog";
+    /*-fx-font-weight: 700;*/
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
+
+.textCharPoints {
+    -fx-background-color: transparent;
+    -fx-text-fill: #846924;
+    -fx-alignment: center;
+    -fx-font-family: "Gothic 821 Condensed BT";
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 20;
+    -fx-background-radius: 0;
+}
+
+.textStats {
+    -fx-background-color: transparent;
+    -fx-text-fill: #846924;
+    -fx-alignment: center;
+    -fx-font-family: "Gothic 821 Condensed BT";
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 30;
+    -fx-font-size: 24;
+    -fx-background-radius: 0;
+}
+
 .vbox {
     -fx-background-color: #000000;
 }
 
 #backgroundPane {
-    -fx-background-color: #333333;
+    -fx-background-color: #000000;
     -fx-background-image: url("../images/register.png");
 }
 
 .buttonPlus {
     -fx-background-color: transparent;
-    -fx-background-image: url("../images/splsoff.png");
-    -fx-max-height: 12;
-    -fx-pref-height: 12;
-    -fx-max-width: 16;
-    -fx-pref-width: 16;
+    -fx-background-image: url("../images/stat_button_plus_up.png");
+    -fx-max-height: 10;
+    -fx-pref-height: 10;
+    -fx-max-width: 14;
+    -fx-pref-width: 14;
     -fx-font-size: 1;
     -fx-background-radius: 0;
 }
 
 .buttonPlus:pressed {
     -fx-background-color: transparent;
-    -fx-background-image: url("../images/splson.png");
-    -fx-max-height: 12;
-    -fx-pref-height: 12;
-    -fx-max-width: 16;
-    -fx-pref-width: 16;
+    -fx-background-image: url("../images/stat_button_plus_down.png");
+    -fx-max-height: 10;
+    -fx-pref-height: 10;
+    -fx-max-width: 14;
+    -fx-pref-width: 14;
     -fx-font-size: 1;
     -fx-background-radius: 0;
 }
@@ -32,22 +164,45 @@
 
 .buttonMinus {
     -fx-background-color: transparent;
-    -fx-background-image: url("../images/snegoff.png");
-    -fx-max-height: 12;
-    -fx-pref-height: 12;
-    -fx-max-width: 16;
-    -fx-pref-width: 16;
+    -fx-background-image: url("../images/stat_button_minus_up.png");
+    -fx-max-height: 10;
+    -fx-pref-height: 10;
+    -fx-max-width: 14;
+    -fx-pref-width: 14;
     -fx-font-size: 1;
     -fx-background-radius: 0;
 }
 
 .buttonMinus:pressed {
     -fx-background-color: transparent;
-    -fx-background-image: url("../images/snegon.png");
-    -fx-max-height: 12;
-    -fx-pref-height: 12;
-    -fx-max-width: 16;
-    -fx-pref-width: 16;
+    -fx-background-image: url("../images/stat_button_minus_down.png");
+    -fx-max-height: 10;
+    -fx-pref-height: 10;
+    -fx-max-width: 14;
+    -fx-pref-width: 14;
     -fx-font-size: 1;
     -fx-background-radius: 0;
 }
+
+.buttonTagSkill {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/tgskl_up.png");
+    -fx-max-height: 11;
+    -fx-pref-height: 11;
+    -fx-max-width: 17;
+    -fx-pref-width: 17;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.buttonTagSkill:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/tgskl_down.png");
+    -fx-max-height: 11;
+    -fx-pref-height: 11;
+    -fx-max-width: 17;
+    -fx-pref-width: 17;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
