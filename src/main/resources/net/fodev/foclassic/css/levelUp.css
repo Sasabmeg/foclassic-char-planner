@@ -1,0 +1,66 @@
+@import "register.css";
+
+.textTall {
+    -fx-background-color: transparent;
+    /*-fx-text-fill: #32cd32;*/
+    -fx-text-fill: #846924;
+    -fx-alignment: center;
+    -fx-font-family: "Gothic 821 Condensed BT";
+    /*-fx-font-family: "GillSansStd-BoldExtraCond";*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 18;
+    -fx-background-radius: 0;
+}
+
+
+.listViewPerks {
+    -fx-control-inner-background: black;
+    -fx-background-color: #000000;
+    -fx-selection-bar: transparent;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-alignment: center-left;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+    -fx-font-smoothing-type: grey;
+}
+
+.listViewPerks .list-cell {
+    -fx-text-fill: black;
+}
+
+.listViewPerks .list-cell:filled {
+    -fx-text-fill: #38FB00;
+}
+/*
+.listViewPerks .list-cell:filled:selected {
+    -fx-text-fill: orange;
+    -fx-highlight-fill: orange;
+    -fx-highlight-text-fill: red;
+}
+
+.listViewPerks:selected .list-cell:filled {
+    -fx-text-fill: red;
+    -fx-highlight-fill: red;
+    -fx-highlight-text-fill: red;
+}*/
+
+.listViewPerks:focused .list-cell:filled:selected:focused {
+    -fx-text-fill: white;
+    -fx-highlight-fill: yellow;
+    -fx-highlight-text-fill: yellow;
+}
+
+.list-cell:filled:selected:focused,
+.list-cell:filled:selected {
+    -fx-background-color: transparent;
+}
+
+#backgroundPane {
+    -fx-background-color: #000000;
+    -fx-background-image: url("../images/level_up.png");
+}
+
+
+
+

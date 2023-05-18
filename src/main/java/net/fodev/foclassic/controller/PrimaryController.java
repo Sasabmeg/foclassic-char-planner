@@ -2,6 +2,7 @@ package net.fodev.foclassic.controller;
 
 import java.io.IOException;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,6 +16,11 @@ public class PrimaryController {
     @FXML
     private void switchToSecondary() throws IOException {
         App.setRoot("fxml/secondary");
+    }
+
+    @FXML
+    private void switchToExit() throws IOException {
+        Platform.exit();
     }
 
     @FXML

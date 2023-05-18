@@ -35,7 +35,8 @@ public class FoCharacter {
     @Getter @Setter private int unusedTagPoints;
     @Getter @Setter private List<Trait> traits;
     @Getter @Setter private int unusedTraitPoints;
-    @Getter @Setter private List<Perk> perks;
+    @Getter @Setter private List<CombatPerk> combatPerks;
+    @Getter @Setter private List<SupportPerk> supportPerks;
     @Getter @Setter private int unusedPerkPoints;
 
     public FoCharacter(String name, int age, String sex) {
@@ -43,16 +44,52 @@ public class FoCharacter {
         this.age = age;
         this.sex = sex;
         specials = new ArrayList<>();
-        specials.add(new Special("ST", 5, "Strength", ""));
-        specials.add(new Special("PE", 5, "Perception", ""));
-        specials.add(new Special("EN", 5, "Endurance", ""));
-        specials.add(new Special("CH", 5, "Charisma", ""));
-        specials.add(new Special("IN", 5, "Intellect", ""));
-        specials.add(new Special("AG", 5, "Agility", ""));
-        specials.add(new Special("LK", 5, "Luck", ""));
         skills = new ArrayList<>();
         traits = new ArrayList<>();
-        perks = new ArrayList<>();
+        combatPerks = new ArrayList<>();
+        unusedTraitPoints = 2;
+    }
+
+    public boolean canTagTrait() {
+        return unusedTraitPoints > 0;
+    }
+
+    public String getTraitName(int index) {
+        if (index >= 0 && index < traits.size()) {
+            return traits.get(index).getName();
+        } else {
+            return "";
+        }
+    }
+
+    public void tagTrait(int index) {
+        if (index >= 0 && index < traits.size()) {
+            if (!traits.get(index).isTagged() && canTagTrait()) {
+                traits.get(index).setTagged(true);
+                unusedTraitPoints--;
+            } else {
+                System.out.println("Warning: Trying to tag trait that is already tagged.");
+            }
+        } else {
+            System.out.println("Warning: Index out of bounds when trying to tag trait.");
+        }
+    }
+
+    public void untagTrait(int index) {
+        if (index >= 0 && index < 16) {
+            if (traits.get(index).isTagged()) {
+                traits.get(index).setTagged(false);
+                unusedTraitPoints++;
+            } else {
+                System.out.println("Warning: Trying to untag trait that is not tagged.");
+            }
+        } else {
+            System.out.println("Warning: Index out of bounds when trying to untag trait.");
+        }
+    }
+
+    public void removeTrait(String traitName) {
+        traits.removeIf(trait -> trait.getName().equals(traitName));
     }
 
     public boolean isTaggedSkill(int index) {
@@ -63,10 +100,25 @@ public class FoCharacter {
         }
     }
 
+    public boolean isTaggedTrait(int index) {
+        if (index >= 0 && index < traits.size()) {
+            return traits.get(index).isTagged();
+        } else {
+            return false;
+        }
+    }
+
+
     public void setSkillValue(int index, int value) {
         if (index >= 0 && index < skills.size()) {
             skills.get(index).setValue(value);
         }
+    }
+
+    public void setSkillValueByName(String name, int value) {
+        skills.stream()
+                .filter(s -> name.equals(s.getName()))
+                .findFirst().get().setValue(value);
     }
 
     public int getSkillValue(int index) {
@@ -77,11 +129,41 @@ public class FoCharacter {
         }
     }
 
+    public int getSkillValueByName(String name) {
+        return skills.stream()
+                .filter(s -> name.equals(s.getName()))
+                .findFirst().get().getValue();
+    }
+
     public String getSkillName(int index) {
         if (index >= 0 && index < skills.size()) {
             return skills.get(index).getName();
         } else {
             return "";
+        }
+    }
+
+    public Skill getSkill(int index) {
+        if (index >= 0 && index < skills.size()) {
+            return skills.get(index);
+        } else {
+            return null;
+        }
+    }
+
+    public Trait getTrait(int index) {
+        if (index >= 0 && index < traits.size()) {
+            return traits.get(index);
+        } else {
+            return null;
+        }
+    }
+
+    public Special getSpecial(int index) {
+        if (index >= 0 && index < specials.size()) {
+            return specials.get(index);
+        } else {
+            return null;
         }
     }
 
@@ -199,5 +281,9 @@ public class FoCharacter {
         } else {
             System.out.println("Warning: Trying to set Luck out of bounds.");
         }
+    }
+
+    public boolean hasTrait(String traitName) {
+        return traits.stream().filter(t -> traitName.equals(t.getName())).findFirst().orElseGet(() -> TraitFactory.get(TraitFactory.NA)).isTagged();
     }
 }

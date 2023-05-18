@@ -14,11 +14,28 @@
 
 
 .fofntTest {
-    /*-fx-font-family: "Gothic 821 Condensed BT";*/
+    -fx-control-inner-background: black;
+    -fx-background-color: #000000;
+    -fx-text-fill: #00FF00;
     -fx-font-family: "Fallout Classic Dialog";
     -fx-font-smoothing-type: grey;
-    -fx-font-size: 18;
+    -fx-font-size: 12;
     -fx-background-radius: 0;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button,
+.scroll-bar:vertical .track {
+    -fx-background-color: #000000;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .corner,
+.scroll-bar:vertical .thumb,
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #38FB00;
+    -fx-border-color: transparent;
 }
 
 .labelInfoCaption {
@@ -90,6 +107,29 @@
     -fx-alignment: center-right;
     -fx-font-family: "Fallout Classic Dialog";
     /*-fx-font-weight: 700;*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
+.textActiveLeft {
+    -fx-background-color: transparent;
+    -fx-text-fill: #38FB00;
+    -fx-alignment: center-left;
+    -fx-font-family: "Fallout Classic Dialog";
+    /*-fx-font-weight: 700;*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
+.textInactiveLeft {
+    -fx-background-color: transparent;
+    -fx-text-fill: #303030;
+    -fx-alignment: center-left;
+    -fx-font-family: "Fallout Classic Dialog";
     -fx-font-smoothing-type: grey;
     -fx-max-height: 20;
     -fx-font-size: 10;
@@ -205,4 +245,27 @@
     -fx-font-size: 1;
     -fx-background-radius: 0;
 }
+
+.buttonRedCircle {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/lilredup.png");
+    -fx-max-height: 16;
+    -fx-pref-height: 16;
+    -fx-max-width: 15;
+    -fx-pref-width: 15;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.buttonRedCircle:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/lilreddn.png");
+    -fx-max-height: 16;
+    -fx-pref-height: 16;
+    -fx-max-width: 15;
+    -fx-pref-width: 15;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
 

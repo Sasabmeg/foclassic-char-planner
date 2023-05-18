@@ -5,42 +5,42 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<VBox alignment="TOP_LEFT" prefHeight="590.0" prefWidth="1024.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" >
+<VBox alignment="TOP_LEFT" prefHeight="768.0" prefWidth="1024.0" stylesheets="@../css/register.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Pane fx:id="backgroundPane" prefHeight="490.0" prefWidth="1024.0">
+      <Pane fx:id="backgroundPane" maxWidth="1024.0" prefHeight="490.0" prefWidth="1024.0">
          <children>
-            <Button fx:id="buttonPlusStrength" layoutX="166.0" layoutY="40.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusStrength" layoutX="166.0" layoutY="51.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
-            <Button fx:id="buttonPlusPerception" layoutX="166.0" layoutY="73.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusPerception" layoutX="166.0" layoutY="84.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
-            <Button fx:id="buttonPlusEndurance" layoutX="166.0" layoutY="106.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusEndurance" layoutX="166.0" layoutY="117.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
-            <Button fx:id="buttonPlusCharisma" layoutX="166.0" layoutY="139.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusCharisma" layoutX="166.0" layoutY="150.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
-            <Button fx:id="buttonPlusIntellect" layoutX="166.0" layoutY="172.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusIntellect" layoutX="166.0" layoutY="183.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
-            <Button fx:id="buttonPlusAgility" layoutX="166.0" layoutY="205.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusAgility" layoutX="166.0" layoutY="216.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
-            <Button fx:id="buttonPlusLuck" layoutX="166.0" layoutY="238.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
-            <Button fx:id="buttonMinusLuck" layoutX="166.0" layoutY="249.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus1" layoutX="166.0" layoutY="40.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus1" layoutX="166.0" layoutY="51.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus2" layoutX="166.0" layoutY="73.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus2" layoutX="166.0" layoutY="84.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus3" layoutX="166.0" layoutY="106.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus3" layoutX="166.0" layoutY="117.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus4" layoutX="166.0" layoutY="139.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus4" layoutX="166.0" layoutY="150.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus5" layoutX="166.0" layoutY="172.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus5" layoutX="166.0" layoutY="183.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus6" layoutX="166.0" layoutY="205.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus6" layoutX="166.0" layoutY="216.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+            <Button fx:id="buttonSpecialPlus7" layoutX="166.0" layoutY="238.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+            <Button fx:id="buttonSpecialMinus7" layoutX="166.0" layoutY="249.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
             <TextField fx:id="textName" layoutX="26.0" layoutY="-2.0" prefWidth="124.0" styleClass="textTall" text="RAGEQUITTER" />
-            <TextField layoutX="160.0" layoutY="-2.0" prefHeight="25.0" prefWidth="68.0" styleClass="textTall" text="AGE 25" />
-            <TextField layoutX="240.0" layoutY="-2.0" prefHeight="25.0" prefWidth="71.0" styleClass="textTall" text="MALE" />
-            <TextArea layoutX="355.0" layoutY="276.0" prefHeight="203.0" prefWidth="349.0" style="-fx-wrap-text: true" styleClass="fofntTest" text="A package courier found shot in the head near Goodsprings has reportedly regained consciousness, and has made a full recovery. Now that is a delivery service you can count on.             NCR officials at Camp McCarran were relieved when technical difficulties with its monorail line to the New Vegas Strip proved easy to fix. One anonymous official told us a serious mechanical failure would have been a disaster because of the age of the train and the scarcity of the replacement parts.             Citizens of Outer Vegas are flocking to the Strip in droves amid a wave of terror caused by a band of raiders known as the Fiends. Those who can afford passports say that the added security is well worth the price of admission.             Troubling news from Primm, as merchants report a large presence of armed and unsavoury figures patrolling the town. Residents are nowhere to be found.             The HELIOS One solar power plant remains dormant, despite NCR's effort to reactivate the facility. The chief scientist of the plant vowed to fix the problem, blaming it on an atmosphere of quote severe under-appreciation." />
-            <Label layoutX="16.0" layoutY="34.0" styleClass="textStats" text="ST" />
-            <Label layoutX="16.0" layoutY="67.0" styleClass="textStats" text="PE" />
-            <Label layoutX="16.0" layoutY="101.0" styleClass="textStats" text="EN" />
-            <Label layoutX="16.0" layoutY="133.0" styleClass="textStats" text="CH" />
-            <Label layoutX="16.0" layoutY="167.0" styleClass="textStats" text="IN" />
-            <Label layoutX="16.0" layoutY="199.0" styleClass="textStats" text="AG" />
-            <Label layoutX="16.0" layoutY="233.0" styleClass="textStats" text="LK" />
-            <Label layoutX="95.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
-            <Label layoutX="95.0" layoutY="71.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
-            <Label layoutX="95.0" layoutY="104.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
-            <Label layoutX="95.0" layoutY="136.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
-            <Label layoutX="95.0" layoutY="169.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
-            <Label layoutX="95.0" layoutY="202.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
-            <Label layoutX="95.0" layoutY="236.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <TextField fx:id="textAge" layoutX="160.0" layoutY="-2.0" prefHeight="25.0" prefWidth="68.0" styleClass="textTall" text="AGE 25" />
+            <TextField fx:id="textSex" layoutX="240.0" layoutY="-2.0" prefHeight="25.0" prefWidth="71.0" styleClass="textTall" text="MALE" />
+            <TextArea fx:id="fofntTest2" editable="false" layoutX="355.0" layoutY="276.0" prefHeight="203.0" prefWidth="349.0" style="-fx-wrap-text: true" styleClass="fofntTest" text="${'\tA package courier found shot in the head near Goodsprings has reportedly regained consciousness, and has made a full recovery. Now that is a delivery service you can count on.\n\tNCR officials at Camp McCarran were relieved when technical difficulties with its monorail line to the New Vegas Strip proved easy to fix. One anonymous official told us a serious mechanical failure would have been a disaster because of the age of the train and the scarcity of the replacement parts.\n\tCitizens of Outer Vegas are flocking to the Strip in droves amid a wave of terror caused by a band of raiders known as the Fiends. Those who can afford passports say that the added security is well worth the price of admission.\n\tTroubling news from Primm, as merchants report a large presence of armed and unsavoury figures patrolling the town. Residents are nowhere to be found.\n\tThe HELIOS One solar power plant remains dormant, despite NCR\'s effort to reactivate the facility. The chief scientist of the plant vowed to fix the problem, blaming it on an atmosphere of quote severe under-appreciation.'}" />
+            <Label fx:id="textStats1" layoutX="16.0" layoutY="34.0" styleClass="textStats" text="ST" />
+            <Label fx:id="textStats2" layoutX="16.0" layoutY="67.0" styleClass="textStats" text="PE" />
+            <Label fx:id="textStats3" layoutX="16.0" layoutY="101.0" styleClass="textStats" text="EN" />
+            <Label fx:id="textStats4" layoutX="16.0" layoutY="133.0" styleClass="textStats" text="CH" />
+            <Label fx:id="textStats5" layoutX="16.0" layoutY="167.0" styleClass="textStats" text="IN" />
+            <Label fx:id="textStats6" layoutX="16.0" layoutY="199.0" styleClass="textStats" text="AG" />
+            <Label fx:id="textStats7" layoutX="16.0" layoutY="233.0" styleClass="textStats" text="LK" />
+            <Label fx:id="textStatsInfo1" layoutX="95.0" layoutY="38.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <Label fx:id="textStatsInfo2" layoutX="95.0" layoutY="71.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <Label fx:id="textStatsInfo3" layoutX="95.0" layoutY="104.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <Label fx:id="textStatsInfo4" layoutX="95.0" layoutY="136.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <Label fx:id="textStatsInfo5" layoutX="95.0" layoutY="169.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <Label fx:id="textStatsInfo6" layoutX="95.0" layoutY="202.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
+            <Label fx:id="textStatsInfo7" layoutX="95.0" layoutY="236.0" prefHeight="25.0" prefWidth="60.0" styleClass="textStatInfo" text="Avrg" />
             <Label layoutX="15.0" layoutY="284.0" prefHeight="17.0" prefWidth="96.0" styleClass="textCharPoints" text="CHAR POINTS" />
             <Label layoutX="758.0" layoutY="-1.0" styleClass="textTall" text="SKILLS" />
             <Label layoutX="764.0" layoutY="237.0" styleClass="textTall" text="TAG SKILLS" />
@@ -65,7 +65,7 @@
             <Label fx:id="textTrait1" layoutX="49.0" layoutY="350.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Fast Metabolism" />
             <Label fx:id="textTrait2" layoutX="49.0" layoutY="363.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Bruiser" />
             <Label fx:id="textTrait3" layoutX="49.0" layoutY="377.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="One Hander" />
-            <Label fx:id="textTrait4" layoutX="49.0" layoutY="390.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Finesser" />
+            <Label fx:id="textTrait4" layoutX="49.0" layoutY="390.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Finesse" />
             <Label fx:id="textTrait5" layoutX="49.0" layoutY="403.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Kamikaze" />
             <Label fx:id="textTrait6" layoutX="49.0" layoutY="416.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Heavy Handed" />
             <Label fx:id="textTrait7" layoutX="49.0" layoutY="430.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Fast Shot" />
@@ -74,7 +74,7 @@
             <Label fx:id="textTrait10" layoutX="194.0" layoutY="363.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Jinxed" />
             <Label fx:id="textTrait11" layoutX="194.0" layoutY="376.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Good Natured" />
             <Label fx:id="textTrait12" layoutX="194.0" layoutY="389.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Chem Reliant" />
-            <Label fx:id="textTrait13" layoutX="194.0" layoutY="402.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Bonehaed" />
+            <Label fx:id="textTrait13" layoutX="194.0" layoutY="402.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Bonehead" />
             <Label fx:id="textTrait14" layoutX="194.0" layoutY="415.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Skilled" />
             <Label fx:id="textTrait15" layoutX="194.0" layoutY="429.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="Loner" />
             <Label fx:id="textTrait16" layoutX="194.0" layoutY="442.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitRight" text="" />
@@ -96,46 +96,98 @@
             <Button fx:id="buttonTagSkill16" layoutX="722.0" layoutY="191.0" mnemonicParsing="false" styleClass="buttonTagSkill" text="" />
             <Button fx:id="buttonTagSkill17" layoutX="722.0" layoutY="202.0" mnemonicParsing="false" styleClass="buttonTagSkill" text="" />
             <Button fx:id="buttonTagSkill18" layoutX="722.0" layoutY="213.0" mnemonicParsing="false" styleClass="buttonTagSkill" text="" />
-            <Label layoutX="733.0" layoutY="263.0" prefHeight="37.0" prefWidth="271.0" styleClass="labelInfoCaption" text="Speech" />
-            <Label layoutX="730.0" layoutY="312.0" prefHeight="129.0" prefWidth="162.0" styleClass="labelInfoText" text="The ability to communicate in a practical and efficient manner. The skill at convincing others that your position is correct. The ability to lie and not get caught." />
-            <ImageView fitHeight="129.0" fitWidth="117.0" layoutX="894.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true" styleClass="labelInfoImage" />
+            <Label fx:id="labelInfoCaption" layoutX="733.0" layoutY="263.0" prefHeight="37.0" prefWidth="271.0" styleClass="labelInfoCaption" text="Speech" />
+            <Label fx:id="labelInfoDescription" layoutX="730.0" layoutY="312.0" prefHeight="129.0" prefWidth="162.0" styleClass="labelInfoText" text="The ability to communicate in a practical and efficient manner. The skill at convincing others that your position is correct. The ability to lie and not get caught." />
+            <ImageView fx:id="imageViewInfoImage" fitHeight="129.0" fitWidth="117.0" layoutX="894.0" layoutY="307.0" pickOnBounds="true" preserveRatio="true" styleClass="labelInfoImage" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="transparent" height="1.0" layoutX="733.0" layoutY="300.0" stroke="BLACK" strokeType="CENTERED" width="271.0" />
-            <Label fx:id="labelSkillLeft1" layoutX="752.0" layoutY="23.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Small Guns" />
-            <Label fx:id="labelSkillLeft2" layoutX="752.0" layoutY="34.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Big Guns" />
-            <Label fx:id="labelSkillLeft3" layoutX="752.0" layoutY="45.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Energy Weapons" />
-            <Label fx:id="labelSkillLeft4" layoutX="752.0" layoutY="56.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Close Combat" />
-            <Label fx:id="labelSkillLeft5" layoutX="752.0" layoutY="67.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Scavenging" />
-            <Label fx:id="labelSkillLeft6" layoutX="752.0" layoutY="78.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Throwing" />
-            <Label fx:id="labelSkillLeft7" layoutX="752.0" layoutY="89.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="First Aid" />
-            <Label fx:id="labelSkillLeft8" layoutX="752.0" layoutY="100.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Doctor" />
-            <Label fx:id="labelSkillLeft9" layoutX="752.0" layoutY="111.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Sneak" />
-            <Label fx:id="labelSkillLeft10" layoutX="752.0" layoutY="122.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Lockpick" />
-            <Label fx:id="labelSkillLeft11" layoutX="752.0" layoutY="133.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Steal" />
-            <Label fx:id="labelSkillLeft12" layoutX="752.0" layoutY="144.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Traps" />
-            <Label fx:id="labelSkillLeft13" layoutX="752.0" layoutY="155.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Science" />
-            <Label fx:id="labelSkillLeft14" layoutX="752.0" layoutY="166.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Repair" />
-            <Label fx:id="labelSkillLeft15" layoutX="752.0" layoutY="177.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Speech" />
-            <Label fx:id="labelSkillLeft16" layoutX="752.0" layoutY="188.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Barter" />
-            <Label fx:id="labelSkillLeft17" layoutX="752.0" layoutY="199.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Gambling" />
-            <Label fx:id="labelSkillLeft18" layoutX="752.0" layoutY="210.0" prefHeight="16.0" prefWidth="96.0"  styleClass="textTraitLeft" text="Outdoorsman" />
-            <Label fx:id="labelSkillRight1" layoutX="935.0" layoutY="23.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="51%" />
-            <Label fx:id="labelSkillRight2" layoutX="935.0" layoutY="34.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="22%" />
-            <Label fx:id="labelSkillRight3" layoutX="935.0" layoutY="45.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="36%" />
-            <Label fx:id="labelSkillRight4" layoutX="935.0" layoutY="56.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="27%" />
-            <Label fx:id="labelSkillRight5" layoutX="935.0" layoutY="67.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="21%" />
-            <Label fx:id="labelSkillRight6" layoutX="935.0" layoutY="78.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="25%" />
-            <Label fx:id="labelSkillRight7" layoutX="935.0" layoutY="89.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="155%" />
-            <Label fx:id="labelSkillRight8" layoutX="935.0" layoutY="100.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="250%" />
-            <Label fx:id="labelSkillRight9" layoutX="935.0" layoutY="111.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="11%" />
-            <Label fx:id="labelSkillRight10" layoutX="935.0" layoutY="122.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="65%" />
-            <Label fx:id="labelSkillRight11" layoutX="935.0" layoutY="133.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="43%" />
-            <Label fx:id="labelSkillRight12" layoutX="935.0" layoutY="144.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="35%" />
-            <Label fx:id="labelSkillRight13" layoutX="935.0" layoutY="155.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="58%" />
-            <Label fx:id="labelSkillRight14" layoutX="935.0" layoutY="166.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="0%" />
-            <Label fx:id="labelSkillRight15" layoutX="935.0" layoutY="177.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="104%" />
-            <Label fx:id="labelSkillRight16" layoutX="935.0" layoutY="188.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="49%" />
-            <Label fx:id="labelSkillRight17" layoutX="935.0" layoutY="199.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="33%" />
-            <Label fx:id="labelSkillRight18" layoutX="935.0" layoutY="210.0" prefHeight="16.0" prefWidth="35.0"  styleClass="textTraitRight" text="69%" />
+            <Label fx:id="labelSkillLeft1" layoutX="752.0" layoutY="23.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Small Guns" />
+            <Label fx:id="labelSkillLeft2" layoutX="752.0" layoutY="34.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Big Guns" />
+            <Label fx:id="labelSkillLeft3" layoutX="752.0" layoutY="45.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Energy Weapons" />
+            <Label fx:id="labelSkillLeft4" layoutX="752.0" layoutY="56.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Close Combat" />
+            <Label fx:id="labelSkillLeft5" layoutX="752.0" layoutY="67.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Scavenging" />
+            <Label fx:id="labelSkillLeft6" layoutX="752.0" layoutY="78.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Throwing" />
+            <Label fx:id="labelSkillLeft7" layoutX="752.0" layoutY="89.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="First Aid" />
+            <Label fx:id="labelSkillLeft8" layoutX="752.0" layoutY="100.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Doctor" />
+            <Label fx:id="labelSkillLeft9" layoutX="752.0" layoutY="111.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Sneak" />
+            <Label fx:id="labelSkillLeft10" layoutX="752.0" layoutY="122.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Lockpick" />
+            <Label fx:id="labelSkillLeft11" layoutX="752.0" layoutY="133.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Steal" />
+            <Label fx:id="labelSkillLeft12" layoutX="752.0" layoutY="144.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Traps" />
+            <Label fx:id="labelSkillLeft13" layoutX="752.0" layoutY="155.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Science" />
+            <Label fx:id="labelSkillLeft14" layoutX="752.0" layoutY="166.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Repair" />
+            <Label fx:id="labelSkillLeft15" layoutX="752.0" layoutY="177.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Speech" />
+            <Label fx:id="labelSkillLeft16" layoutX="752.0" layoutY="188.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Barter" />
+            <Label fx:id="labelSkillLeft17" layoutX="752.0" layoutY="199.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Gambling" />
+            <Label fx:id="labelSkillLeft18" layoutX="752.0" layoutY="210.0" prefHeight="16.0" prefWidth="96.0" styleClass="textTraitLeft" text="Outdoorsman" />
+            <Label fx:id="labelSkillRight1" layoutX="935.0" layoutY="23.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="51%" />
+            <Label fx:id="labelSkillRight2" layoutX="935.0" layoutY="34.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="22%" />
+            <Label fx:id="labelSkillRight3" layoutX="935.0" layoutY="45.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="36%" />
+            <Label fx:id="labelSkillRight4" layoutX="935.0" layoutY="56.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="27%" />
+            <Label fx:id="labelSkillRight5" layoutX="935.0" layoutY="67.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="21%" />
+            <Label fx:id="labelSkillRight6" layoutX="935.0" layoutY="78.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="25%" />
+            <Label fx:id="labelSkillRight7" layoutX="935.0" layoutY="89.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="155%" />
+            <Label fx:id="labelSkillRight8" layoutX="935.0" layoutY="100.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="250%" />
+            <Label fx:id="labelSkillRight9" layoutX="935.0" layoutY="111.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="11%" />
+            <Label fx:id="labelSkillRight10" layoutX="935.0" layoutY="122.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="65%" />
+            <Label fx:id="labelSkillRight11" layoutX="935.0" layoutY="133.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="43%" />
+            <Label fx:id="labelSkillRight12" layoutX="935.0" layoutY="144.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="35%" />
+            <Label fx:id="labelSkillRight13" layoutX="935.0" layoutY="155.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="58%" />
+            <Label fx:id="labelSkillRight14" layoutX="935.0" layoutY="166.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="0%" />
+            <Label fx:id="labelSkillRight15" layoutX="935.0" layoutY="177.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="104%" />
+            <Label fx:id="labelSkillRight16" layoutX="935.0" layoutY="188.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="49%" />
+            <Label fx:id="labelSkillRight17" layoutX="935.0" layoutY="199.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="33%" />
+            <Label fx:id="labelSkillRight18" layoutX="935.0" layoutY="210.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="69%" />
+            <ImageView fx:id="imageViewTagPoint" fitHeight="20.0" fitWidth="14.0" layoutX="921.0" layoutY="236.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewUnusedSpecialPointLeft" fitHeight="20.0" fitWidth="14.0" layoutX="126.0" layoutY="285.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewUnusedSpecialPointRight" fitHeight="20.0" fitWidth="14.0" layoutX="140.0" layoutY="285.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft1" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="40.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft2" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="73.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft3" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="106.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft4" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="139.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft5" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="172.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft6" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="205.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialLeft7" fitHeight="20.0" fitWidth="14.0" layoutX="60.0" layoutY="238.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight1" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="40.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight2" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="73.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight3" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="106.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight4" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="139.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight5" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="172.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight6" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="205.0" pickOnBounds="true" preserveRatio="false" />
+            <ImageView fx:id="imageViewSpecialRight7" fitHeight="20.0" fitWidth="14.0" layoutX="74.0" layoutY="238.0" pickOnBounds="true" preserveRatio="false" />
+            <Label fx:id="labelHitPoints" layoutX="190.0" layoutY="43.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Hit Points   62/62" />
+            <Label fx:id="labelPoisoned" layoutX="190.0" layoutY="57.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Poisoned" />
+            <Label fx:id="labelRadiated" layoutX="190.0" layoutY="71.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Radiated" />
+            <Label fx:id="labelEyeDamage" layoutX="190.0" layoutY="85.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Eye Damage" />
+            <Label fx:id="labelCrippledRightArm" layoutX="190.0" layoutY="99.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Crippled Right Arm" />
+            <Label fx:id="labelCrippledLeftArm" layoutX="190.0" layoutY="113.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Crippled Left Arm" />
+            <Label fx:id="labelCrippledRightLeg" layoutX="190.0" layoutY="127.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Crippled Right Leg" />
+            <Label fx:id="labelCrippledLeftLeg" layoutX="190.0" layoutY="141.0" prefHeight="14.0" prefWidth="120.0" styleClass="textInactiveLeft" text="Crippled Left Leg" />
+
+            <Label fx:id="labelArmorClassName" layoutX="190.0" layoutY="173.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Armor Class" />
+            <Label fx:id="labelActionPointsName" layoutX="190.0" layoutY="187.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Action Points" />
+            <Label fx:id="labelCarryWeightName" layoutX="190.0" layoutY="201.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Carry Weight" />
+            <Label fx:id="labelMeleeDamageName" layoutX="190.0" layoutY="215.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Melee Damage" />
+            <Label fx:id="labelDamageResName" layoutX="190.0" layoutY="229.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Damage res." />
+            <Label fx:id="labelPoisonResName" layoutX="190.0" layoutY="243.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Poison Res." />
+            <Label fx:id="labelRadiationResName" layoutX="190.0" layoutY="257.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Radiation Res." />
+            <Label fx:id="labelSequenceName" layoutX="190.0" layoutY="271.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Sequence" />
+            <Label fx:id="labelHealingRateName" layoutX="190.0" layoutY="285.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Healing Rate" />
+            <Label fx:id="labelCriticalChanceName" layoutX="190.0" layoutY="299.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="Critical Chance" />
+
+            <Label fx:id="labelArmorClassValue" layoutX="290.0" layoutY="173.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="3" />
+            <Label fx:id="labelActionPointsValue" layoutX="290.0" layoutY="187.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="5" />
+            <Label fx:id="labelCarryWeightValue" layoutX="290.0" layoutY="201.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="144" />
+            <Label fx:id="labelMeleeDamageValue" layoutX="290.0" layoutY="215.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="5" />
+            <Label fx:id="labelDamageResValue" layoutX="290.0" layoutY="229.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="0%" />
+            <Label fx:id="labelPoisonResValue" layoutX="290.0" layoutY="243.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="24" />
+            <Label fx:id="labelRadiationResValue" layoutX="290.0" layoutY="257.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="16" />
+            <Label fx:id="labelSequenceValue" layoutX="290.0" layoutY="271.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="20" />
+            <Label fx:id="labelHealingRateValue" layoutX="290.0" layoutY="285.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="11" />
+            <Label fx:id="labelCriticalChanceValue" layoutX="290.0" layoutY="299.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="1%" />
+
+            <Button fx:id="buttonNA" layoutX="729.0" layoutY="454.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
+            <Button fx:id="buttonDone" layoutX="838.0" layoutY="455.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
+            <Button fx:id="buttonBack" layoutX="935.0" layoutY="455.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
          </children></Pane>
+      <TextArea editable="false" prefHeight="278.0" prefWidth="1024.0" style="-fx-wrap-text: true;" styleClass="fofntTest" text="${'\tA package courier found shot in the head near Goodsprings has reportedly regained consciousness, and has made a full recovery. Now that is a delivery service you can count on.\n\tNCR officials at Camp McCarran were relieved when technical difficulties with its monorail line to the New Vegas Strip proved easy to fix. One anonymous official told us a serious mechanical failure would have been a disaster because of the age of the train and the scarcity of the replacement parts.\n\tCitizens of Outer Vegas are flocking to the Strip in droves amid a wave of terror caused by a band of raiders known as the Fiends. Those who can afford passports say that the added security is well worth the price of admission.\n\tTroubling news from Primm, as merchants report a large presence of armed and unsavoury figures patrolling the town. Residents are nowhere to be found.\n\tThe HELIOS One solar power plant remains dormant, despite NCR\'s effort to reactivate the facility. The chief scientist of the plant vowed to fix the problem, blaming it on an atmosphere of quote severe under-appreciation.'}" />
    </children>
 </VBox>

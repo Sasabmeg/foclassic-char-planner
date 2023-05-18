@@ -1,0 +1,44 @@
+@font-face {
+    /*font-family: 'Gothic 821 Condensed BT';*/
+    src: url('../fonts/GOTH821C.TTF');
+}
+
+.textTall {
+    -fx-background-color: transparent;
+    /*-fx-text-fill: #32cd32;*/
+    -fx-text-fill: #846924;
+    -fx-alignment: center;
+    -fx-font-family: "Gothic 821 Condensed BT";
+    /*-fx-font-family: "GillSansStd-BoldExtraCond";*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 30;
+    -fx-font-size: 28;
+    -fx-background-radius: 0;
+}
+
+#backgroundPane {
+    -fx-background-color: #000000;
+    -fx-background-image: url("../images/nuka_cola_background.png");
+}
+
+.buttonRedCircleMenu {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/menuup.png");
+    -fx-max-height: 26;
+    -fx-pref-height: 26;
+    -fx-max-width: 26;
+    -fx-pref-width: 26;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.buttonRedCircleMenu:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/menudown.png");
+    -fx-max-height: 26;
+    -fx-pref-height: 26;
+    -fx-max-width: 26;
+    -fx-pref-width: 26;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
