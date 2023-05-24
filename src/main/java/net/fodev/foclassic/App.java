@@ -7,8 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
-import net.fodev.foclassic.model.FoCharacter;
-import net.fodev.foclassic.model.FoCharacterFactory;
+import net.fodev.foclassic.model.fochar.FoCharacter;
+import net.fodev.foclassic.model.fochar.FoCharacterFactory;
 
 import java.io.IOException;
 

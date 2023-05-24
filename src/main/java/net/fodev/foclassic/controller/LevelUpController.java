@@ -2,15 +2,25 @@ package net.fodev.foclassic.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import net.fodev.foclassic.App;
-import net.fodev.foclassic.model.*;
+import javafx.scene.image.ImageView;
+import net.fodev.foclassic.model.dialog.DialogAnswerNode;
+import net.fodev.foclassic.model.dialog.DialogFactory;
+import net.fodev.foclassic.model.dialog.DialogQuestionNode;
+import net.fodev.foclassic.model.fochar.*;
 
 import java.util.List;
 
 public class LevelUpController extends CharacterController {
 
     private FoCharacter oldFoCharacter;
+    private DialogQuestionNode currentDialog;
+
     @FXML private ListView listViewPerks;
+    @FXML private ListView listViewDialogAnswer;
+    @FXML private ImageView imageViewTagPointLeft;
+    @FXML private ImageView imageViewTagPointRight;
+    @FXML private TextArea textAreaConsoleOut;
+    @FXML private TextArea textAreaDialogQuestion;
 
     public void setFoCharacter(FoCharacter foCharacter) {
         System.out.println("LevelUpController::setFoCharacter(FoCharacter foCharacter)");
@@ -20,20 +30,55 @@ public class LevelUpController extends CharacterController {
     @FXML
     @Override
     protected void initialize() {
-        System.out.println("RegisterController::initialize()");
         super.initialize();
+        System.out.println("Level up or mutate character.");
         oldFoCharacter = FoCharacterFactory.copy(foCharacter);
-        initListView();
+        initPerkListView();
+        initDialogs();
+        initDialogQuestion();
+        initDialogAnswer();
+        showUnusedSkillPointsValue(foCharacter.getUnusedSkillPoints());
     }
 
-    private void initListView() {
-        App.getScene().focusOwnerProperty().addListener((prop, oldNode, newNode) -> {
-            System.out.println("App.getScene().focusOwnerProperty() -> " + prop + " / " + oldNode + " / " + newNode);
+    private void initDialogs() {
+        currentDialog = DialogFactory.createRoot();
+    }
+
+    private void initDialogQuestion() {
+        textAreaDialogQuestion.setFocusTraversable(false);
+        textAreaDialogQuestion.setEditable(false);
+        updateDialogQuestionView();
+    }
+
+    private void updateDialogQuestionView() {
+        textAreaDialogQuestion.setText(currentDialog.getMessage());
+    }
+
+    private void initDialogAnswer() {
+        updateDialogAnswerListView();
+        listViewDialogAnswer.setFocusTraversable(false);
+        listViewDialogAnswer.setOnMouseClicked(mouseEvent -> {
+            System.out.println("Selected Dialog Answer: #" + (1 + listViewDialogAnswer.getSelectionModel().getSelectedIndex())
+                    + " = " + listViewDialogAnswer.getSelectionModel().getSelectedItem());
+            if (listViewDialogAnswer.getSelectionModel().getSelectedItem() instanceof DialogAnswerNode) {
+                DialogAnswerNode selectedItem = (DialogAnswerNode)listViewDialogAnswer.getSelectionModel().getSelectedItem();
+                currentDialog = selectedItem.getQuestion();
+                updateDialogAnswerListView();
+                updateDialogQuestionView();
+            };
         });
-        updateListView();
-        listViewPerks.focusedProperty().addListener((obs, oldVal, newVal) -> {
-            System.out.println("LevelUpController::initListView()::listViewPerks.focusedProperty() " + oldVal + " / " + newVal);
-        });
+
+    }
+
+    private void updateDialogAnswerListView() {
+        List items = listViewDialogAnswer.getItems();
+        items.clear();
+        currentDialog.getAnswers().forEach(a -> items.add(a));
+    }
+
+    private void initPerkListView() {
+        updatePerkListView();
+        listViewPerks.setFocusTraversable(false);
         listViewPerks.setOnMouseClicked(mouseEvent -> {
             System.out.println("selected item = " + listViewPerks.getSelectionModel().getSelectedItem());
             if (listViewPerks.getSelectionModel().getSelectedItem() instanceof Trait) {
@@ -51,12 +96,16 @@ public class LevelUpController extends CharacterController {
         });
     }
 
-    private void updateListView() {
+    private void updatePerkListView() {
         List items = listViewPerks.getItems();
         items.clear();
         items.add("-------------   TRAITS   -----------");
         foCharacter.getTraits().stream().filter(Trait::isTagged).forEach(items::add);
         items.add("-------------   PERKS    -----------");
         items.add("--------   SUPPORT PERKS    --------");
+    }
+
+    private void showUnusedSkillPointsValue(int value) {
+        showDoubleDigitNumber(imageViewTagPointLeft, imageViewTagPointRight, value);
     }
 }

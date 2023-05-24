@@ -4,18 +4,42 @@ import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import net.fodev.foclassic.App;
-import net.fodev.foclassic.model.FoCharacter;
-import net.fodev.foclassic.model.Skill;
-import net.fodev.foclassic.model.Special;
+import net.fodev.foclassic.model.fochar.FoCharacter;
+import net.fodev.foclassic.model.fochar.Skill;
+import net.fodev.foclassic.model.fochar.Special;
 
+import javafx.application.Platform;
+import java.io.OutputStream;
+
+import java.io.PrintStream;
 import java.net.URL;
 
 public class CharacterController {
+
+    public static class Console extends OutputStream {
+        private TextArea console;
+
+        public Console(TextArea console) {
+            this.console = console;
+        }
+
+        public void appendText(String valueOf) {
+            Platform.runLater(() -> console.appendText(valueOf));
+        }
+
+        public void write(int b) {
+            appendText(String.valueOf((char)b));
+        }
+    }
+
+    private PrintStream ps;
+
     protected static final int BIG_NUM_WIDTH = 14;
     protected static final int BIG_NUM_HEIGHT = 20;
     protected FoCharacter foCharacter;
@@ -57,15 +81,27 @@ public class CharacterController {
     @FXML protected Label labelCriticalChanceValue;
     @FXML protected Button buttonDone;
     @FXML protected Button buttonBack;
+    @FXML protected TextArea textAreaConsoleOut;
 
     @FXML
     protected void initialize() {
-        System.out.println("CharacterController::initialize()");
+        initDebugConsole();
         initImages();
         handleBaseLabelClickEvents();
         updateSKillLabelValues();
         updateSpecialPointsValues();
         updateStatLabelValues();
+        disableTextTraversableFocus();
+    }
+
+    private void initDebugConsole() {
+        ps = new PrintStream(new Console(textAreaConsoleOut));
+        System.setOut(ps);
+        System.setErr(ps);
+    }
+
+    private void disableTextTraversableFocus() {
+        textAreaConsoleOut.setFocusTraversable(false);
     }
 
     protected void updateSpecialPointsValues() {
@@ -100,7 +136,6 @@ public class CharacterController {
     }
 
     public void setFoCharacter(FoCharacter foCharacter) {
-        System.out.println("CharacterController::setFoCharacter(FoCharacter foCharacter)");
         this.foCharacter = foCharacter;
     }
 
@@ -123,13 +158,10 @@ public class CharacterController {
                         index = Integer.parseInt(l.getId().substring("labelSkillRight".length()));
                         ((Label) l).setText("" + foCharacter.getSkillValue(index - 1) + "%");
                     }
-                    System.out.println("Index = " + index);
                     if (foCharacter.isTaggedSkill(index - 1)) {
                         l.setStyle("-fx-text-fill: #CBCBCB;");
-                        System.out.println("Tagged skill: " + foCharacter.getSkillName(index - 1) + "\t" + l);
                     } else {
                         l.setStyle("-fx-text-fill: #38FB00;");
-                        System.out.println("Untagged skill: " + foCharacter.getSkillName(index - 1) + "\t" + l);
                     }
                 });
     }
@@ -272,5 +304,17 @@ public class CharacterController {
         labelCriticalChanceValue.setOnMouseClicked(mouseEvent -> {
             updateDescriptionText("Critical Chance", "The chance to cause a critical hit in combat is increased by this amount.", "images/skilldex/CRITCHNC.png");
         });
+    }
+
+    protected void showDoubleDigitNumber(ImageView imageViewleft, ImageView imageViewRight, int value) {
+        imageViewleft.setImage(bigNum);
+        int newValue = (value / 10) % 10;
+        Rectangle2D imagePart = new Rectangle2D(newValue * BIG_NUM_WIDTH, 2, BIG_NUM_WIDTH, BIG_NUM_HEIGHT);
+        imageViewleft.setViewport(imagePart);
+
+        imageViewRight.setImage(bigNum);
+        newValue = value % 10;
+        imagePart = new Rectangle2D(newValue * BIG_NUM_WIDTH, 2, BIG_NUM_WIDTH, BIG_NUM_HEIGHT);
+        imageViewRight.setViewport(imagePart);
     }
 }

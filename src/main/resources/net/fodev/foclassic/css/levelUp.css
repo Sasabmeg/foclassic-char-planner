@@ -32,18 +32,6 @@
 .listViewPerks .list-cell:filled {
     -fx-text-fill: #38FB00;
 }
-/*
-.listViewPerks .list-cell:filled:selected {
-    -fx-text-fill: orange;
-    -fx-highlight-fill: orange;
-    -fx-highlight-text-fill: red;
-}
-
-.listViewPerks:selected .list-cell:filled {
-    -fx-text-fill: red;
-    -fx-highlight-fill: red;
-    -fx-highlight-text-fill: red;
-}*/
 
 .listViewPerks:focused .list-cell:filled:selected:focused {
     -fx-text-fill: white;
@@ -60,6 +48,40 @@
     -fx-background-color: #000000;
     -fx-background-image: url("../images/level_up.png");
 }
+
+.dialogQuestion {
+    -fx-control-inner-background: transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: #00FF00;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 14;
+    -fx-background-radius: 0;
+}
+
+.dialogQuestion .scroll-pane,
+.dialogQuestion .scroll-pane .viewport,
+.dialogQuestion .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.listViewDialogAnswer {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-alignment: center-left;
+    -fx-font-size: 12;
+    -fx-background-radius: 0;
+    -fx-font-smoothing-type: grey;
+
+}
+
+.listViewDialogAnswer .list-cell:filled {
+    -fx-text-fill: #38FB00;
+}
+
+
+
 
 
 

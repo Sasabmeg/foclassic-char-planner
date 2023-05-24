@@ -8,7 +8,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import net.fodev.foclassic.App;
-import net.fodev.foclassic.model.*;
+import net.fodev.foclassic.model.fochar.Skill;
+import net.fodev.foclassic.model.fochar.Special;
+import net.fodev.foclassic.model.fochar.Trait;
+import net.fodev.foclassic.model.fochar.TraitFactory;
 
 import java.io.IOException;
 
@@ -22,7 +25,7 @@ public class RegisterController extends CharacterController {
     @Override
     protected void initialize() {
         super.initialize();
-        System.out.println("RegisterController::initialize()");
+        System.out.println("Register new character.");
         handleTraitLabelClickEvents();
         handleSkillButtonClickEvents();
         handleTraitButtonClickEvents();
@@ -44,12 +47,10 @@ public class RegisterController extends CharacterController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println("RegisterController::handleOtherButtonClickEvents(): setting root to levelUp");
             App.setRoot(parent);
         });
         buttonBack.setOnMouseClicked(mouseEvent -> {
             FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxml/primary.fxml"));
-            System.out.println("RegisterController::handleOtherButtonClickEvents(): setting root to primary");
             try {
                 App.setRoot("fxml/primary");
             } catch (IOException e) {
@@ -70,15 +71,7 @@ public class RegisterController extends CharacterController {
     }
 
     private void showUnusedSpecialPointsValue(int value) {
-        imageViewUnusedSpecialPointLeft.setImage(bigNum);
-        int newValue = value / 10;
-        Rectangle2D imagePart = new Rectangle2D(newValue * BIG_NUM_WIDTH, 2, BIG_NUM_WIDTH, BIG_NUM_HEIGHT);
-        imageViewUnusedSpecialPointLeft.setViewport(imagePart);
-
-        imageViewUnusedSpecialPointRight.setImage(bigNum);
-        newValue = value % 10;
-        imagePart = new Rectangle2D(newValue * BIG_NUM_WIDTH, 2, BIG_NUM_WIDTH, BIG_NUM_HEIGHT);
-        imageViewUnusedSpecialPointRight.setViewport(imagePart);
+        showDoubleDigitNumber(imageViewUnusedSpecialPointLeft, imageViewUnusedSpecialPointRight, value);
     }
 
     private boolean canTagSkill() {
@@ -92,7 +85,6 @@ public class RegisterController extends CharacterController {
                 .forEach(button -> {
                     ((Button)button).setOnAction(event -> {
                         int index = Integer.parseInt(button.getId().substring("buttonTrait".length()));
-                        System.out.println("Trait button index = " + index);
                         if (index != 8 && index != 16 ) {
                             Trait trait = foCharacter.getTrait(index - 1);
                             updateDescriptionText(trait.getName(), trait.getDescription(), trait.getImage());
@@ -103,7 +95,6 @@ public class RegisterController extends CharacterController {
                                             if (foCharacter.getStrength() <= 6) {
                                                 foCharacter.tagTrait(index - 1);
                                                 foCharacter.setStrength(foCharacter.getStrength() + 4);
-                                                System.out.println("RegisterController::handleTraitButtonClickEvents(): Tagging trait: " + foCharacter.getTraitName(index - 1));
                                             } else {
                                                 System.out.println("Cannot tag Bruiser because ST would overflow max stat of 10.");
                                             }
@@ -111,7 +102,6 @@ public class RegisterController extends CharacterController {
                                             if (foCharacter.getStrength() >= 5) {
                                                 foCharacter.untagTrait(index - 1);
                                                 foCharacter.setStrength(foCharacter.getStrength() - 4);
-                                                System.out.println("RegisterController::handleTraitButtonClickEvents(): Untagging trait: " + foCharacter.getTraitName(index - 1));
                                             } else {
                                                 System.out.println("Cannot untag Bruiser because ST would underflow min stat of 1.");
                                             }
@@ -122,7 +112,6 @@ public class RegisterController extends CharacterController {
                                             if (foCharacter.getIntellect() > 1) {
                                                 foCharacter.tagTrait(index - 1);
                                                 foCharacter.setIntellect(foCharacter.getIntellect() - 1);
-                                                System.out.println("RegisterController::handleTraitButtonClickEvents(): Tagging trait: " + foCharacter.getTraitName(index - 1));
                                             } else {
                                                 System.out.println("Cannot tag Bonehead because IN would underflow min stat of 1.");
                                             }
@@ -130,7 +119,6 @@ public class RegisterController extends CharacterController {
                                             if (foCharacter.getIntellect() < 10) {
                                                 foCharacter.untagTrait(index - 1);
                                                 foCharacter.setIntellect(foCharacter.getIntellect() + 1);
-                                                System.out.println("RegisterController::handleTraitButtonClickEvents(): Untagging trait: " + foCharacter.getTraitName(index - 1));
                                             } else {
                                                 System.out.println("Cannot untag Bonehead because IN would overflow max stat of 10.");
                                             }
@@ -139,10 +127,8 @@ public class RegisterController extends CharacterController {
                                     default:
                                         if (!foCharacter.isTaggedTrait(index - 1)) {
                                             foCharacter.tagTrait(index - 1);
-                                            System.out.println("RegisterController::handleTraitButtonClickEvents(): Tagging trait: " + foCharacter.getTraitName(index - 1));
                                         } else {
                                             foCharacter.untagTrait(index - 1);
-                                            System.out.println("RegisterController::handleTraitButtonClickEvents(): Untagging trait: " + foCharacter.getTraitName(index - 1));
                                         }
                                 }
                                 refreshTraitLabelColor(index);
@@ -183,11 +169,9 @@ public class RegisterController extends CharacterController {
                 .forEach(button -> {
                     ((Button)button).setOnAction(event -> {
                         int index = Integer.parseInt(button.getId().substring("buttonTagSkill".length()));
-                        System.out.println("Skill button index = " + index);
                         Skill skill = foCharacter.getSkill(index - 1);
                         updateDescriptionText(skill.getName(), skill.getDescription(), skill.getImage());
                         if (canTagSkill() || foCharacter.isTaggedSkill(index - 1)) {
-                            System.out.println("RegisterController::handleSKilButtonClickEvents(): Old skill value = " + foCharacter.getSkills().get(index - 1).getValue());
                             if (!foCharacter.isTaggedSkill(index - 1)) {
                                 foCharacter.tagSkill(index - 1);
                                 showTagPointsValue(foCharacter.getUnusedTagPoints());
@@ -205,13 +189,11 @@ public class RegisterController extends CharacterController {
                                             if (l.getId().equals("labelSkillRight" + index)) {
                                                 ((Label) l).setText("" + foCharacter.getSkillValue(index - 1) + "%");
                                             }
-                                            System.out.println("Tagged skill: " + foCharacter.getSkillName(index - 1) + "\t" + l);
                                         } else {
                                             ((Label)l).setStyle("-fx-text-fill: #38FB00;");
                                             if (l.getId().equals("labelSkillRight" + index)) {
                                                 ((Label) l).setText("" + foCharacter.getSkillValue(index - 1) + "%");
                                             }
-                                            System.out.println("Untagged skill: " + foCharacter.getSkillName(index - 1) + "\t" + l);
                                         }
                                     });
                         } else {
@@ -266,7 +248,6 @@ public class RegisterController extends CharacterController {
                                             .filtered(l -> l.getId().equals("textStatsInfo" + index))
                                             .forEach(l -> {
                                                 Label label = (Label)l;
-                                                System.out.println("Special = " + special.toString());
                                                 label.setText(foCharacter.getSpecial(index - 1).getValueRank());
                                             });
                                 } else {
@@ -295,7 +276,6 @@ public class RegisterController extends CharacterController {
                                         .filtered(l -> l.getId().equals("textStatsInfo" + index))
                                         .forEach(l -> {
                                             Label label = (Label)l;
-                                            System.out.println("Special = " + special.toString());
                                             label.setText(foCharacter.getSpecial(index - 1).getValueRank());
                                         });
                             } else {

@@ -1,8 +1,8 @@
 package net.fodev.foclassic.controller;
 
-import net.fodev.foclassic.model.FoCharacter;
-import net.fodev.foclassic.model.SkillFactory;
-import net.fodev.foclassic.model.TraitFactory;
+import net.fodev.foclassic.model.fochar.FoCharacter;
+import net.fodev.foclassic.model.fochar.SkillFactory;
+import net.fodev.foclassic.model.fochar.TraitFactory;
 
 public class FoCharacterRuleset {
     public static void updateSpecial(FoCharacter foCharacter, int index, int increment) {
@@ -32,7 +32,6 @@ public class FoCharacterRuleset {
     }
 
     public static void updateStrength(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updateStrength(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.CLOSE_COMBAT, foCharacter.getSkillValueByName(SkillFactory.CLOSE_COMBAT) + 2 * increment);
         foCharacter.setHitPoints(foCharacter.getHitPoints() + increment);
         foCharacter.setMeleeDamage((1 + (foCharacter.getStrength() >= 7 ? foCharacter.getStrength() - 6 : 1)) * (foCharacter.hasTrait(TraitFactory.BRUISER) ? 2 : 1)
@@ -41,7 +40,6 @@ public class FoCharacterRuleset {
     }
 
     public static void updatePerception(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updatePerception(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.FIRST_AID, foCharacter.getSkillValueByName(SkillFactory.FIRST_AID) + 2 * increment);
         foCharacter.setSkillValueByName(SkillFactory.DOCTOR, foCharacter.getSkillValueByName(SkillFactory.DOCTOR) + increment);
         foCharacter.setSkillValueByName(SkillFactory.LOCKPICK, foCharacter.getSkillValueByName(SkillFactory.LOCKPICK) + increment);
@@ -49,7 +47,6 @@ public class FoCharacterRuleset {
     }
 
     public static void updateEndurance(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updateEndurance(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.OUTDOORSMAN, foCharacter.getSkillValueByName(SkillFactory.OUTDOORSMAN) + 2 * increment);
         foCharacter.setHitPoints(foCharacter.getHitPoints() + 2 * increment);
         foCharacter.setPoisonResistance(foCharacter.getPoisonResistance() + 3 * increment);
@@ -58,13 +55,11 @@ public class FoCharacterRuleset {
     }
 
     public static void updateCharisma(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updateCharisma(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.SPEECH, foCharacter.getSkillValueByName(SkillFactory.SPEECH) + 5 * increment);
         foCharacter.setSkillValueByName(SkillFactory.BARTER, foCharacter.getSkillValueByName(SkillFactory.BARTER) + 4 * increment);
     }
 
     public static void updateIntellect(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updateIntellect(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.FIRST_AID, foCharacter.getSkillValueByName(SkillFactory.FIRST_AID) + 2 * increment);
         foCharacter.setSkillValueByName(SkillFactory.DOCTOR, foCharacter.getSkillValueByName(SkillFactory.DOCTOR) + increment);
         foCharacter.setSkillValueByName(SkillFactory.SCIENCE, foCharacter.getSkillValueByName(SkillFactory.SCIENCE) + 4 * increment);
@@ -73,7 +68,6 @@ public class FoCharacterRuleset {
     }
 
     public static void updateAgility(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updateAgility(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.SMALL_GUNS, foCharacter.getSkillValueByName(SkillFactory.SMALL_GUNS) + 4 * increment);
         foCharacter.setSkillValueByName(SkillFactory.BIG_GUNS, foCharacter.getSkillValueByName(SkillFactory.BIG_GUNS) + 2 * increment);
         foCharacter.setSkillValueByName(SkillFactory.ENERGY_WEAPONS, foCharacter.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) + 2 * increment);
@@ -89,13 +83,11 @@ public class FoCharacterRuleset {
     }
 
     public static void updateLuck(FoCharacter foCharacter, int increment) {
-        System.out.println("FoCharacterRuleset::updateIntellect(" + increment + ")");
         foCharacter.setSkillValueByName(SkillFactory.GAMBLING, foCharacter.getSkillValueByName(SkillFactory.GAMBLING) + 5 * increment);
         foCharacter.setCriticalChance(foCharacter.getLuck() + (foCharacter.hasTrait(TraitFactory.FINESSE) ? 10 : 0));
     }
 
     public static void updateTraits(FoCharacter foCharacter) {
-        System.out.println("FoCharacterRuleset::updateTraits()");
         foCharacter.setHealingRate((7 + foCharacter.getEndurance() / 2) * (foCharacter.hasTrait(TraitFactory.FAST_METABOLISM) ? 2 : 1));
         foCharacter.setMeleeDamage((1 + (foCharacter.getStrength() >= 7 ? foCharacter.getStrength() - 6 : 1)) * (foCharacter.hasTrait(TraitFactory.BRUISER) ? 2 : 1)
                 + (foCharacter.hasTrait(TraitFactory.HEAVY_HANDED) ? 5 : 0));
