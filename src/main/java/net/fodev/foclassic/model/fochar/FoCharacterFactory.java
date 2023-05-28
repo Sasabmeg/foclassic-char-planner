@@ -79,6 +79,9 @@ public class FoCharacterFactory {
         result.setHealingRate(7 + result.getEndurance() / 2);
         result.setCriticalChance(result.getLuck());
 
+        //  awareness support perk is given at start
+        result.addSupportPerk(PerkFactory.getSupportPerk(PerkFactory.AWARENESS));
+
         return result;
     }
 }

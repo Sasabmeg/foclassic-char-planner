@@ -20,6 +20,7 @@ public class SpecialFactory {
     public static SpecialFactory getInstance() {
         return instance;
     }
+
     private SpecialFactory() {
         System.out.println("SpecialFactory::Constructor()");
         specialProtos = new ArrayList<>();

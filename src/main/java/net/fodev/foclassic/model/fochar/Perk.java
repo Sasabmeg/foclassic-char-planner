@@ -8,7 +8,7 @@ public class Perk {
     @Getter @Setter protected String image;
     @Getter @Setter protected String description;
 
-    public Perk(String name, String description, String image) {
+    public Perk(String name, String image, String description) {
         this.name = name;
         this.description = description;
         this.image = image;

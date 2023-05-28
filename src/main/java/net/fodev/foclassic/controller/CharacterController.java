@@ -306,11 +306,11 @@ public class CharacterController {
         });
     }
 
-    protected void showDoubleDigitNumber(ImageView imageViewleft, ImageView imageViewRight, int value) {
-        imageViewleft.setImage(bigNum);
+    protected void showDoubleDigitNumber(ImageView imageViewLeft, ImageView imageViewRight, int value) {
+        imageViewLeft.setImage(bigNum);
         int newValue = (value / 10) % 10;
         Rectangle2D imagePart = new Rectangle2D(newValue * BIG_NUM_WIDTH, 2, BIG_NUM_WIDTH, BIG_NUM_HEIGHT);
-        imageViewleft.setViewport(imagePart);
+        imageViewLeft.setViewport(imagePart);
 
         imageViewRight.setImage(bigNum);
         newValue = value % 10;

@@ -10,6 +10,8 @@ public class FoCharacter {
     @Getter @Setter private String name;
     @Getter @Setter private int age;
     @Getter @Setter private String sex;
+    @Getter @Setter private int level;
+    @Getter @Setter private int experience;
     @Getter @Setter private List<Special> specials;
     @Getter @Setter private int hitPoints;
     @Getter @Setter private float poisoned;
@@ -47,7 +49,10 @@ public class FoCharacter {
         skills = new ArrayList<>();
         traits = new ArrayList<>();
         combatPerks = new ArrayList<>();
+        supportPerks = new ArrayList<>();
         unusedTraitPoints = 2;
+        experience = 0;
+        level = 1;
     }
 
     public boolean canTagTrait() {
@@ -283,5 +288,48 @@ public class FoCharacter {
 
     public boolean hasTrait(String traitName) {
         return traits.stream().filter(t -> traitName.equals(t.getName())).findFirst().orElseGet(() -> TraitFactory.get(TraitFactory.NA)).isTagged();
+    }
+
+    public int getExpForNextLevel() {
+        return FoCharacter.getExpForNextLevel(level);
+    }
+
+    public static int getExpForNextLevel(int currentLevel) {
+        int xpNext = 0;
+        xpNext = 500 * currentLevel * (currentLevel + 1);
+        return xpNext;
+    }
+
+    public void gainExperience(int value) {
+        int next = getExpForNextLevel();
+        if (next > value + getExperience()) {
+            experience += value;
+        } else {
+            int xpRemains = experience + value - getExpForNextLevel();
+            experience = getExpForNextLevel();
+            gainLevel();
+            if (xpRemains > 0) {
+                gainExperience(xpRemains);
+            }
+        }
+
+    }
+
+    public void gainLevel() {
+        level++;
+        System.out.println("You have reached level: " + level);
+        unusedSkillPoints += getSkillPointsPerLevel();
+    }
+
+    public int getSkillPointsPerLevel() {
+        return  5 + getIntellect() * 2;
+    }
+
+    public boolean hasSupportPerk(SupportPerk supportPerk) {
+        return supportPerks.stream().anyMatch(s -> s.equals(supportPerk));
+    }
+
+    public void addSupportPerk(SupportPerk supportPerk) {
+        supportPerks.add(supportPerk);
     }
 }
