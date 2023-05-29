@@ -9,7 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import net.fodev.foclassic.App;
+import net.fodev.foclassic.CharPlannerApp;
 import net.fodev.foclassic.model.fochar.FoCharacter;
 import net.fodev.foclassic.model.fochar.Skill;
 import net.fodev.foclassic.model.fochar.Special;
@@ -140,7 +140,7 @@ public class CharacterController {
     }
 
     protected void initImages() {
-        URL url = App.class.getResource("images/bignum.png");
+        URL url = CharPlannerApp.class.getResource("images/bignum.png");
         bigNum = new Image(url.toString());
     }
 
@@ -183,10 +183,9 @@ public class CharacterController {
     protected void updateDescriptionText(String name, String description, String image) {
         labelInfoCaption.setText(name);
         labelInfoDescription.setText(description);
-        URL url = App.class.getResource(image);
+        URL url = CharPlannerApp.class.getResource(image);
         Image img = new Image(url.toString());
         imageViewInfoImage.setImage(img);
-
     }
 
     protected void handleBaseLabelClickEvents() {

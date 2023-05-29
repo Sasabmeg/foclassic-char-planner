@@ -1,15 +1,23 @@
 package net.fodev.foclassic.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import net.fodev.foclassic.CharPlannerApp;
 import net.fodev.foclassic.model.dialog.DialogAnswerNode;
 import net.fodev.foclassic.model.dialog.DialogFactory;
 import net.fodev.foclassic.model.dialog.DialogQuestionNode;
 import net.fodev.foclassic.model.fochar.*;
 import net.fodev.foclassic.view.DialogFormatCell;
 
+import java.io.IOException;
 import java.util.List;
 
 public class LevelUpController extends CharacterController {
@@ -66,7 +74,7 @@ public class LevelUpController extends CharacterController {
     }
 
     private void initDialogs() {
-        currentDialog = DialogFactory.createRoot(foCharacter);
+        currentDialog = DialogFactory.createMainDialog(foCharacter);
     }
 
     private void initDialogQuestion() {
@@ -108,7 +116,6 @@ public class LevelUpController extends CharacterController {
                 }
             };
         });
-
     }
 
     private void updateDescriptionTextFromDialog(DialogAnswerNode selectedItem) {
@@ -148,6 +155,36 @@ public class LevelUpController extends CharacterController {
                 SupportPerk selectedItem = (SupportPerk)listViewPerks.getSelectionModel().getSelectedItem();
                 updateDescriptionText(selectedItem.getName(), selectedItem.getDescription(), selectedItem.getImage());
             };
+            if (listViewPerks.getSelectionModel().getSelectedItem() instanceof String) {
+                if (((String) listViewPerks.getSelectionModel().getSelectedItem()).contains("PERKS")
+                        && !((String) listViewPerks.getSelectionModel().getSelectedItem()).contains("SUPPORT")
+                        && foCharacter.hasMissingPerk()) {
+                    try {
+                        FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/gainPerk.fxml"));
+                        GainPerkController gainPerkController = new GainPerkController();
+                        gainPerkController.setFoCharacter(foCharacter);
+                        fxmlLoader.setController(gainPerkController);
+                        Parent parent = fxmlLoader.load();
+                        Stage gainPerkStage = new Stage();
+                        Scene gainPerkScene = new Scene(parent, 573, 230);
+                        Scene parentScene = listViewPerks.getScene();
+                        double pX = parentScene.getWindow().getX();
+                        double pY = parentScene.getWindow().getY();
+                        double pW = parentScene.getWindow().getWidth();
+                        double pH = parentScene.getWindow().getHeight();
+                        gainPerkStage.setX(pX + pW / 2 - gainPerkScene.getWidth() / 2);
+                        gainPerkStage.setY(pY + pH / 4 - gainPerkScene.getHeight() / 2);
+                        gainPerkStage.setScene(gainPerkScene);
+                        gainPerkStage.setResizable(false);
+                        gainPerkStage.initStyle(StageStyle.UNDECORATED);
+                        gainPerkStage.initOwner(listViewPerks.getScene().getWindow());
+                        gainPerkStage.initModality(Modality.WINDOW_MODAL);
+                        gainPerkStage.showAndWait();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         });
     }
 
@@ -157,6 +194,7 @@ public class LevelUpController extends CharacterController {
         items.add("-------------   TRAITS   -----------");
         foCharacter.getTraits().stream().filter(Trait::isTagged).forEach(items::add);
         items.add("-------------   PERKS    -----------");
+        foCharacter.getCombatPerks().stream().forEach(items::add);
         items.add("--------   SUPPORT PERKS    --------");
         foCharacter.getSupportPerks().forEach(items::add);
     }

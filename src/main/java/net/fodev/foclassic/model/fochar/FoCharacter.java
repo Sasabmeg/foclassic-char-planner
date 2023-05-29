@@ -332,4 +332,18 @@ public class FoCharacter {
     public void addSupportPerk(SupportPerk supportPerk) {
         supportPerks.add(supportPerk);
     }
+
+    public boolean hasMissingPerk() {
+        int actual = combatPerks.size();
+        int possible = hasTrait(TraitFactory.SKILLED) ? (level > 24 ? 6 : level / 4) : (level > 24 ? 8 : level / 3);
+        return possible > actual;
+    }
+
+    public boolean hasCombatPerk(CombatPerk combatPerk) {
+        return combatPerks.stream().anyMatch(c -> c.equals(combatPerk));
+    }
+
+    public void addCombatPerk(CombatPerk combatPerk) {
+        combatPerks.add(combatPerk);
+    }
 }

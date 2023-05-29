@@ -1,0 +1,140 @@
+@font-face {
+    src: url('../fonts/Fallout-Classic-Dialog-Regular.ttf');
+}
+
+@font-face {
+    src: url('../fonts/GOTH821C.TTF');
+}
+
+@font-face {
+    src: url('../fonts/gillsansstd-boldextracond.otf');
+}
+
+#backgroundPane {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/perkwin.png");
+}
+
+.falloutDialog {
+    -fx-control-inner-background: black;
+    -fx-background-color: #000000;
+    -fx-text-fill: #00FF00;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button,
+.scroll-bar:vertical .track {
+    -fx-background-color: #000000;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .corner,
+.scroll-bar:vertical .thumb,
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow {
+    -fx-background-color: #38FB00;
+    -fx-border-color: transparent;
+}
+
+.buttonRedCircle {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/lilredup.png");
+    -fx-max-height: 16;
+    -fx-pref-height: 16;
+    -fx-max-width: 15;
+    -fx-pref-width: 15;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.buttonRedCircle:pressed {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/lilreddn.png");
+    -fx-max-height: 16;
+    -fx-pref-height: 16;
+    -fx-max-width: 15;
+    -fx-pref-width: 15;
+    -fx-font-size: 1;
+    -fx-background-radius: 0;
+}
+
+.labelInfoCaption {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-alignment: center-left;
+    /*-fx-font-family: "Gothic 821 Condensed BT";*/
+    -fx-font-family: "GillSansStd-BoldExtraCond";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 26;
+    -fx-background-radius: 0;
+}
+
+.labelInfoSeparator {
+    -fx-background-color: #000000;
+    -fx-fill: #000000;
+    -fx-border-color: #000000;
+}
+
+.labelInfoText {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-alignment: top-left;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 10;
+    -fx-wrap-text: true;
+    -fx-background-radius: 0;
+}
+
+.labelInfoImage {
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+    -fx-image: url("../images/speech.png");
+}
+
+.textTall {
+    -fx-background-color: transparent;
+    /*-fx-text-fill: #32cd32;*/
+    -fx-text-fill: #846924;
+    -fx-alignment: center;
+    -fx-font-family: "Gothic 821 Condensed BT";
+    /*-fx-font-family: "GillSansStd-BoldExtraCond";*/
+    -fx-font-smoothing-type: grey;
+    -fx-max-height: 20;
+    -fx-font-size: 18;
+    -fx-background-radius: 0;
+}
+
+.listViewPerks {
+    -fx-control-inner-background: black;
+    -fx-background-color: #000000;
+    -fx-selection-bar: transparent;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-alignment: center-left;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+    -fx-font-smoothing-type: grey;
+}
+
+.listViewPerks .list-cell {
+    -fx-text-fill: black;
+}
+
+.listViewPerks .list-cell:filled {
+    -fx-text-fill: #38FB00;
+}
+
+.listViewPerks:focused .list-cell:filled:selected:focused {
+    -fx-text-fill: white;
+    -fx-highlight-fill: yellow;
+    -fx-highlight-text-fill: yellow;
+}
+
+.list-cell:filled:selected:focused,
+.list-cell:filled:selected {
+    -fx-background-color: transparent;
+}

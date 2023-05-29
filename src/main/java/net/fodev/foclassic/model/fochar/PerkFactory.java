@@ -1,6 +1,7 @@
 package net.fodev.foclassic.model.fochar;
 
 import lombok.Getter;
+import net.fodev.foclassic.controller.LevelUpController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +9,55 @@ import java.util.List;
 public class PerkFactory {
     private static final PerkFactory instance = new PerkFactory();
 
+    //  combat perks (or level perks)
+    //  level 3
+    public static final String MORE_CRITICAL = "More Critical";
+    public static final String QUICK_PCOKETS = "Quick Pockets";
+    public static final String ADRENALINE_RUSH = "Adrenaline Rush";
+    public static final String QUICK_RECOVERY = "Quick Recovery";
+    public static final String WEAPON_HANDLING = "Weapon Handling";
+    //  level 6
+    public static final String IN_YOUR_FACE = "In Your Face";
+    public static final String EVEN_MORE_CRITICALS = "Even More Criticals";
+    public static final String SILENT_RUNNING = "Silent Running";
+    public static final String TOUGHNESS = "Toughness";
+    //  level 9
+    public static final String SHARPSHOOTER = "Sharpshooter";
+    public static final String PYROMANIAC = "Pyromaniac";
+    public static final String CLOSE_COMBAT_MASTER = "Close Combat Master";
+    public static final String BONUS_RANGED_DAMAGE = "Bonus Ranged Damage";
+    public static final String EVEN_TOUGHER = "Even Tougher";
+    public static final String STONEWALL = "Stonewall";
+    public static final String MEDIC = "Medic";
+    public static final String HEAVE_HO = "Heave Ho!";
+    //  level 12
+    public static final String GAIN_AGILITY = "Gain Agility";
+    public static final String GAIN_CHARISMA = "Gain Charisma";
+    public static final String GAIN_ENDURANCE = "Gain Endurance";
+    public static final String GAIN_INTELLIGENCE = "Gain Intelligence";
+    public static final String GAIN_LUCK = "Gain Luck";
+    public static final String GAIN_PERCEPTION = "Gain Perception";
+    public static final String GAIN_STRENGTH = "Gain Strength";
+    public static final String BETTER_CRITICALS = "Better Criticals";
+    public static final String GHOST = "Ghost";
+    public static final String LIFEGIVER = "Lifegiver";
+    public static final String ACTIONBOY = "Actionboy";
+    //  level 15
+    public static final String ACTIONBOY2 = "Actionboy (2)";
+    public static final String LIFEGIVER2 = "Lifegiver (2)";
+    public static final String LIVEWIRE = "Livewire";
+    public static final String MAN_OF_STEEL = "Man of Steel";
+    public static final String FIELD_MEDIC = "Field Medic";
+    public static final String MORE_RANGED_DAMAGE = "More Ranged Damage";
+    public static final String SILENT_DEATH = "Silent Death";
+    public static final String IRON_LIMBS = "Iron Limbs";
+    public static final String DODGER = "Dodger";
+    //  level 18
+    public static final String DODGER2 = "Dodger (2)";
+    public static final String LIFEGIVER3 = "Lifegiver (3)";
+    public static final String BONUS_RATE_OF_ATTACK = "Bonus Rate of Attack";
+
+    //  support perks
     public static final String NA = "N/A";
     public static final String AWARENESS = "Awareness";
     public static final String CAUTIOUS_NATURE = "Cautious Nature";
@@ -49,12 +99,67 @@ public class PerkFactory {
 
     @Getter private static List<Perk> perks;
     @Getter private static List<SupportPerk> supportPerks;
+    @Getter private static List<CombatPerk> combatPerks;
 
     private PerkFactory() {
         System.out.println("PerkFactory::Constructor()");
         perks = new ArrayList<>();
         supportPerks = new ArrayList<>();
+        combatPerks = new ArrayList<>();
 
+        //  level 3
+        combatPerks.add(new CombatPerk(MORE_CRITICAL, "images/skilldex/MORECRIT.png", "With this perk, you are 5% more likely to cause critical hits in combat than without it."));
+        combatPerks.add(new CombatPerk(QUICK_PCOKETS, "images/skilldex/QUIKPOCK.png", "You have learned to pack your equipment better. (Un)equipping/picking up items is done at half its normal AP cost. Reloading cost reduced to 1 AP."));
+        combatPerks.add(new CombatPerk(ADRENALINE_RUSH, "images/skilldex/ADRNRUSH.png", "Adrenaline Rush increases one's damage thresholds and damage resistances depending on what percentage of his/her total hit points the player has temporarily lost."));
+        combatPerks.add(new CombatPerk(QUICK_RECOVERY, "images/skilldex/QWKRECOV.png", "You are quick at recovering from being knocked down"));
+        combatPerks.add(new CombatPerk(WEAPON_HANDLING, "images/skilldex/WEPNHAND.png", "You can wield weapons much larger than normally allowed. You gain a +2 bonus to your Strength for the purposes of Strength checks when trying to wield weaponry."));
+
+        //  level 6
+        combatPerks.add(new CombatPerk(IN_YOUR_FACE, "images/skilldex/p_inyfac.png", "You cut an intimidating figure, and people cower when you are near. Opponents have a 50% chance of missing you when in an adjacent square."));
+        combatPerks.add(new CombatPerk(EVEN_MORE_CRITICALS, "images/skilldex/p_evenmc.png", "Taking this perk increases your critical hit chance by 10%."));
+        combatPerks.add(new CombatPerk(SILENT_RUNNING, "images/skilldex/SILNTRUN.png", "With this perk, you now have the ability to move quickly and still remain quiet. You can sneak and run at the same time. Without this perk, you would automatically stop sneaking if you ran."));
+        combatPerks.add(new CombatPerk(TOUGHNESS, "images/skilldex/TOUGHNES.png", "When you are tough, you take less damage. This perk adds 5% to all Damage Resistances and 1 to all your Damage Threshold."));
+
+        //  level 9
+        combatPerks.add(new CombatPerk(SHARPSHOOTER, "images/skilldex/SHARPSHT.png", "You have a talent for hitting things at longer distances. This perk expands your field of vision by 6 hexes, and increases your chance to hit by 8% and -50% to your target's armor's (both head and body) critical chance modifiers for aimed attacks only."));
+        combatPerks.add(new CombatPerk(PYROMANIAC, "images/skilldex/PYROMNAC.png", "You do 25% more fire-based damage."));
+        combatPerks.add(new CombatPerk(CLOSE_COMBAT_MASTER, "images/skilldex/DAMAGE.png", "+15 critical chance for melee/unarmed attacks and +10 melee damage"));
+        combatPerks.add(new CombatPerk(BONUS_RANGED_DAMAGE, "images/skilldex/BONUSRNG.png", "Your training in firearms and other ranged weapons has made you more deadly in ranged combat. For each level of this perk, you do +3 damage with ranged weapons."));
+        combatPerks.add(new CombatPerk(EVEN_TOUGHER, "images/skilldex/p_evtoug.png", "This Perk increases your normal Damage Threshold by 3, and normal Damage Resistances by 10%."));
+        combatPerks.add(new CombatPerk(STONEWALL, "images/skilldex/STONWALL.png", "You are much less likely to be knocked down in combat."));
+        combatPerks.add(new CombatPerk(MEDIC, "images/skilldex/MEDIC.png", "The Medic perk halves the cooldowns for using the First Aid and Doctor skills, and the ability to remove knockout effect with Doctor skill."));
+        combatPerks.add(new CombatPerk(HEAVE_HO, "images/skilldex/HEAVEHO.png", "Heave Ho! gives you a +2 bonus to Strength (up to 10) for purposes of determining Range with thrown weapons only. This perk will increase a weapon's maximum Range by 6."));
+
+        //  level 12
+        combatPerks.add(new CombatPerk(GAIN_AGILITY, "images/skilldex/p_gainag.png", "With this perk you gain +2 to your Agility."));
+        combatPerks.add(new CombatPerk(GAIN_CHARISMA, "images/skilldex/p_gainch.png", "With this perk you gain +2 to your Charisma."));
+        combatPerks.add(new CombatPerk(GAIN_ENDURANCE, "images/skilldex/p_gainen.png", "With this perk you gain +2 to your Endurance."));
+        combatPerks.add(new CombatPerk(GAIN_INTELLIGENCE, "images/skilldex/p_gainin.png", "With this perk you gain +2 to your Intelligence."));
+        combatPerks.add(new CombatPerk(GAIN_LUCK, "images/skilldex/p_gainlk.png", "With this perk you gain +2 to your Luck."));
+        combatPerks.add(new CombatPerk(GAIN_PERCEPTION, "images/skilldex/p_gainpe.png", "With this perk you gain +2 to your Perception."));
+        combatPerks.add(new CombatPerk(GAIN_STRENGTH, "images/skilldex/p_gainst.png", "With this perk you gain +2 to your Strength."));
+        combatPerks.add(new CombatPerk(BETTER_CRITICALS, "images/skilldex/BETRCRIT.png", "The critical hits you cause in combat are more devastating."));
+        combatPerks.add(new CombatPerk(GHOST, "images/skilldex/GHOST.png", "The Ghost perk gives a +30 bonus to Sneak whenever the player who took it finds himself within 5 hexes from a wall."));
+        combatPerks.add(new CombatPerk(LIFEGIVER, "images/skilldex/LIFEGIVR.png", "With each respective level of this perk, you gain an additional 30 Hit Points."));
+        combatPerks.add(new CombatPerk(ACTIONBOY, "images/skilldex/ACTION.png", "Each level of Action Boy gives you an additional action point to spend every combat turn. You can use these generic APs on any task."));
+
+        //  level 15
+        combatPerks.add(new CombatPerk(ACTIONBOY2, "images/skilldex/ACTION.png", "Each level of Action Boy gives you an additional action point to spend every combat turn. You can use these generic APs on any task."));
+        combatPerks.add(new CombatPerk(LIFEGIVER2, "images/skilldex/LIFEGIVR.png", "With each respective level of this perk, you gain an additional 30 Hit Points."));
+        combatPerks.add(new CombatPerk(LIVEWIRE, "images/skilldex/p_lvewre.png", "You have learned to harness your extra energy and in battle you are a blur. With this Perk, your AC derived from Agility gets doubled."));
+        combatPerks.add(new CombatPerk(MAN_OF_STEEL, "images/skilldex/p_manste.png", "You are as tough as they come. Critical hits just don’t seem to affect you as much as they do others."));
+        combatPerks.add(new CombatPerk(FIELD_MEDIC, "images/skilldex/MEDIC.png", "You get +20 to +40 HP healed when using First Aid skill, 5% chance to score critical success when using First Aid, when you use First Aid/Doctor on other players, your cooldown is applied to them."));
+        combatPerks.add(new CombatPerk(MORE_RANGED_DAMAGE, "images/skilldex/p_mrrndm.png", "Your advanced training in firearms and other ranged weapons has made you even more deadly in ranged combat. You do +4 damage with ranged weapons."));
+        combatPerks.add(new CombatPerk(SILENT_DEATH, "images/skilldex/SILENTD.png", "While sneaking, if you attack a critter(whether it's Player or NPC) from behind, you will always cause a critical hit with a +10 bonus on the critical power roll. Silent Death is that kind of perk."));
+        combatPerks.add(new CombatPerk(IRON_LIMBS, "images/skilldex/p_treett.png", "Gain a chance to avoid leg and arm cripples or weapon drop."));
+        combatPerks.add(new CombatPerk(DODGER, "images/skilldex/DODGER.png", "-5% to final hit chance (works only with melee/unarmed/throwing weapons in both hands)"));
+
+        //  level 18
+        combatPerks.add(new CombatPerk(DODGER2, "images/skilldex/DODGER.png", "-5% to final hit chance (works only with melee/unarmed/throwing weapons in both hands)"));
+        combatPerks.add(new CombatPerk(LIFEGIVER3, "images/skilldex/LIFEGIVR.png", "With each respective level of this perk, you gain an additional 30 Hit Points."));
+        combatPerks.add(new CombatPerk(BONUS_RATE_OF_ATTACK, "images/skilldex/BONUSRAT.png", "This Perk allows you to shoot and punch a little faster and still remain as accurate as before. Each attack costs 1 AP less to perform."));
+
+        //  support perks
         supportPerks.add(new SupportPerk(AWARENESS, "images/skilldex/AWARENES.png", "With Awareness, you are given detailed information about any critters you examine. You see their exact Hit Points and information about any Weapon they are equipped with."));
         supportPerks.add(new SupportPerk(CAUTIOUS_NATURE, "images/skilldex/CAUTIOUS.png", "You are more alert outdoors and enemies are less likely to sneak up on you. With this perk you get a +3 bonus to your Perception in random encounters when determining placement."));
         supportPerks.add(new SupportPerk(DEAD_MAN_WALKING, "images/skilldex/deadmanwalking.png", "Like Rasputin, it takes a lot to finally finish you off. Your hit points can drop to twice the normally allowed negative value before you finally die."));
@@ -97,4 +202,10 @@ public class PerkFactory {
                 .orElse(null);
     }
 
+    public static CombatPerk getCombatPerk(String name) {
+        return combatPerks.stream()
+                .filter(t -> name.equals(t.getName()))
+                .findFirst()
+                .orElse(null);
+    }
 }

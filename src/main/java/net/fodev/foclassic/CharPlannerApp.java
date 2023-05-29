@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class CharPlannerApp extends Application {
 
     @Getter @Setter private static Scene scene;
     private FoCharacter foCharacter;
@@ -46,7 +46,7 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         System.out.println("App::loadFXML(\"" + fxml + "\")");
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
 

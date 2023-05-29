@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
-import net.fodev.foclassic.App;
+import net.fodev.foclassic.CharPlannerApp;
 import net.fodev.foclassic.model.fochar.Skill;
 import net.fodev.foclassic.model.fochar.Special;
 import net.fodev.foclassic.model.fochar.Trait;
@@ -37,7 +37,7 @@ public class RegisterController extends CharacterController {
     //  Buttons: Done, Back
     private void handleOtherButtonClickEvents() {
         buttonDone.setOnMouseClicked(mouseEvent -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxml/levelUp.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/levelUp.fxml"));
             LevelUpController levelUpController = new LevelUpController();
             levelUpController.setFoCharacter(foCharacter);
             fxmlLoader.setController(levelUpController);
@@ -47,12 +47,12 @@ public class RegisterController extends CharacterController {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            App.setRoot(parent);
+            CharPlannerApp.setRoot(parent);
         });
         buttonBack.setOnMouseClicked(mouseEvent -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("fxml/primary.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/primary.fxml"));
             try {
-                App.setRoot("fxml/primary");
+                CharPlannerApp.setRoot("fxml/primary");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

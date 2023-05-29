@@ -7,7 +7,7 @@ public class DialogFactory {
 
     public static final DialogQuestionNode EXIT = new DialogQuestionNode(0, "Exit!");
 
-    public static DialogQuestionNode createRoot(FoCharacter foCharacter) {
+    public static DialogQuestionNode createMainDialog(FoCharacter foCharacter) {
 
         DialogQuestionNode root = new DialogQuestionNode(2, "What would you like to do?");
         DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add.");
@@ -40,6 +40,17 @@ public class DialogFactory {
         DialogAnswerNode backToRoot = new DialogAnswerNode("[Back]", root, foCharacter);
         supportPerkQuestion.addAnswer(backToRoot);
 
+        return root;
+    }
+
+    public static DialogQuestionNode createChooseCombatPerkDialog(FoCharacter foCharacter) {
+        DialogQuestionNode root = new DialogQuestionNode(2, "Choose your perk.");
+        PerkFactory.getCombatPerks().forEach(cp -> {
+            DialogAnswerNode answer = new DialogAnswerNode(cp.getName(), root, foCharacter);
+            answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(cp), "Combat Perk already picked: " + cp.getName()));
+            answer.addResult(new DialogResultNode(fc -> fc.addCombatPerk(cp)));
+            root.addAnswer(answer);
+        });
         return root;
     }
 }
