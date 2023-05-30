@@ -20,4 +20,8 @@ public class DialogQuestionNode {
     public void addAnswer(DialogAnswerNode answer) {
         answers.add(answer);
     }
+
+    public DialogAnswerNode getAnswer(String message) {
+        return answers.stream().filter(a -> message.equals(a.getMessage())).findFirst().orElse(null);
+    }
 }

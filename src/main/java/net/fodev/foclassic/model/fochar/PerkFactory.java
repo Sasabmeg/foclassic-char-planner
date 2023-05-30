@@ -1,7 +1,6 @@
 package net.fodev.foclassic.model.fochar;
 
 import lombok.Getter;
-import net.fodev.foclassic.controller.LevelUpController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,7 @@ public class PerkFactory {
     //  combat perks (or level perks)
     //  level 3
     public static final String MORE_CRITICAL = "More Critical";
-    public static final String QUICK_PCOKETS = "Quick Pockets";
+    public static final String QUICK_POCKETS = "Quick Pockets";
     public static final String ADRENALINE_RUSH = "Adrenaline Rush";
     public static final String QUICK_RECOVERY = "Quick Recovery";
     public static final String WEAPON_HANDLING = "Weapon Handling";
@@ -60,6 +59,7 @@ public class PerkFactory {
     //  support perks
     public static final String NA = "N/A";
     public static final String AWARENESS = "Awareness";
+    public static final String BONEYARD_GUARD = "Boneyard Guard";
     public static final String CAUTIOUS_NATURE = "Cautious Nature";
     public static final String DEAD_MAN_WALKING = "Dead Man Walking";
     public static final String DEMOLITION_EXPERT = "Demolition Expert";
@@ -109,7 +109,7 @@ public class PerkFactory {
 
         //  level 3
         combatPerks.add(new CombatPerk(MORE_CRITICAL, "images/skilldex/MORECRIT.png", "With this perk, you are 5% more likely to cause critical hits in combat than without it."));
-        combatPerks.add(new CombatPerk(QUICK_PCOKETS, "images/skilldex/QUIKPOCK.png", "You have learned to pack your equipment better. (Un)equipping/picking up items is done at half its normal AP cost. Reloading cost reduced to 1 AP."));
+        combatPerks.add(new CombatPerk(QUICK_POCKETS, "images/skilldex/QUIKPOCK.png", "You have learned to pack your equipment better. (Un)equipping/picking up items is done at half its normal AP cost. Reloading cost reduced to 1 AP."));
         combatPerks.add(new CombatPerk(ADRENALINE_RUSH, "images/skilldex/ADRNRUSH.png", "Adrenaline Rush increases one's damage thresholds and damage resistances depending on what percentage of his/her total hit points the player has temporarily lost."));
         combatPerks.add(new CombatPerk(QUICK_RECOVERY, "images/skilldex/QWKRECOV.png", "You are quick at recovering from being knocked down"));
         combatPerks.add(new CombatPerk(WEAPON_HANDLING, "images/skilldex/WEPNHAND.png", "You can wield weapons much larger than normally allowed. You gain a +2 bonus to your Strength for the purposes of Strength checks when trying to wield weaponry."));
@@ -161,6 +161,7 @@ public class PerkFactory {
 
         //  support perks
         supportPerks.add(new SupportPerk(AWARENESS, "images/skilldex/AWARENES.png", "With Awareness, you are given detailed information about any critters you examine. You see their exact Hit Points and information about any Weapon they are equipped with."));
+        supportPerks.add(new SupportPerk(BONEYARD_GUARD, "images/skilldex/STRANGER.png", "+10% in any fighting skill of your choice."));
         supportPerks.add(new SupportPerk(CAUTIOUS_NATURE, "images/skilldex/CAUTIOUS.png", "You are more alert outdoors and enemies are less likely to sneak up on you. With this perk you get a +3 bonus to your Perception in random encounters when determining placement."));
         supportPerks.add(new SupportPerk(DEAD_MAN_WALKING, "images/skilldex/deadmanwalking.png", "Like Rasputin, it takes a lot to finally finish you off. Your hit points can drop to twice the normally allowed negative value before you finally die."));
         supportPerks.add(new SupportPerk(DEMOLITION_EXPERT, "images/skilldex/P_DEMO.png", "You are an expert when it comes to the fine art of handling explosives. They always go off when they're supposed to, as well as causing extra damage."));
@@ -184,12 +185,12 @@ public class PerkFactory {
         supportPerks.add(new SupportPerk(RANGER, "images/skilldex/RANGER.png", "Over the extensive amount of time you have spent in the wilderness, you have learned to create a number of items and tools necessary for survival. Also, when you make a tent, it is automatically upgraded to a safe house."));
         supportPerks.add(new SupportPerk(SCOUT, "images/skilldex/SCOUT.png", "You have improved your ability to see and recognize distant locations and events, increasing the size of explorations on the World Map by one square in each direction. Additionally, you get information about possible encounters in area."));
         supportPerks.add(new SupportPerk(SCROUNGER, "images/skilldex/STRANGER.png", "(This perk is planned for a future update, and not implemented yet.)"));
-        supportPerks.add(new SupportPerk(SEX_APPEAL, "images/skilldex/EMPHATY.png", "Your raw sexual magnetism affects your relationship with the opposite sex in your favor. All reputations in such relationships are better for 250 points."));
+        supportPerks.add(new SupportPerk(SEX_APPEAL, "images/skilldex/EMPATHY.png", "Your raw sexual magnetism affects your relationship with the opposite sex in your favor. All reputations in such relationships are better for 250 points."));
         supportPerks.add(new SupportPerk(SNAKE_EATER, "images/skilldex/SNAKEEAT.png", "Yum! Tastes like chicken. This perk gives you a 30% bonus to your Poison Resistance and a 20% bonus to your Rad Resistance."));
         supportPerks.add(new SupportPerk(SPEAKER, "images/skilldex/SPEAKER.png", "Being a speaker means that your Followers’ loyalty decreases at half the normal rate."));
         supportPerks.add(new SupportPerk(STEALTH_GIRL, "images/skilldex/p_steboy.png", "Your intuitive understanding of the inner mechanism of Stealth Boys and Motion Sensor allows you to use them for twice as long."));
         supportPerks.add(new SupportPerk(STRONG_BACK, "images/skilldex/CARRYAMT.png", "AKA Mule. You can carry much more than an ordinary person."));
-        supportPerks.add(new SupportPerk(SWIFT_LEARNER, "images/skilldex/SWIFTLERN.png", "You are indeed a Swift Learner with this perk, as it gives you a +10% bonus whenever you earn experience points."));
+        supportPerks.add(new SupportPerk(SWIFT_LEARNER, "images/skilldex/SWFTLERN.png", "You are indeed a Swift Learner with this perk, as it gives you a +10% bonus whenever you earn experience points."));
         supportPerks.add(new SupportPerk(THIEF, "images/skilldex/STEAL.png", "The blood of a thief runs through your veins. You are granted a Luck/50 chance of no timeout when unsuccessfully attempting to steal. A well-rounded thief is a live thief."));
         supportPerks.add(new SupportPerk(TREASURE_HUNTER, "images/skilldex/p_treahu.png", "Treasure Hunter is a support perk that enables you to find more items in the lockers that sometimes appear in random encounters than you would have been able to find without it. It gives a bonus 25% more items found from encounter containers."));
         supportPerks.add(new SupportPerk(WAY_OF_THE_FRUIT, "images/skilldex/p_wfruit.png", "Ever since you were a child you loved Fruit. Your body can digest them better; you heal for 16 Hit Points and don't suffer from radiation when eating Fruits."));

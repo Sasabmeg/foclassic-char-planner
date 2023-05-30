@@ -180,6 +180,7 @@ public class LevelUpController extends CharacterController {
                         gainPerkStage.initOwner(listViewPerks.getScene().getWindow());
                         gainPerkStage.initModality(Modality.WINDOW_MODAL);
                         gainPerkStage.showAndWait();
+                        updatePerkListView();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

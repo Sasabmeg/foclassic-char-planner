@@ -18,7 +18,6 @@ import net.fodev.foclassic.model.dialog.DialogQuestionNode;
 import net.fodev.foclassic.model.fochar.CombatPerk;
 import net.fodev.foclassic.model.fochar.FoCharacter;
 import net.fodev.foclassic.model.fochar.PerkFactory;
-import net.fodev.foclassic.model.fochar.SupportPerk;
 import net.fodev.foclassic.view.DialogFormatCell;
 
 import java.net.URL;
@@ -71,8 +70,15 @@ public class GainPerkController {
 
     private void handleButtonEvents() {
         buttonDone.setOnMouseClicked(mouseEvent -> {
-            System.out.println("Done.");
-            ((Stage)buttonBack.getScene().getWindow()).close();
+            if (listViewPerks.getSelectionModel().getSelectedItem() instanceof DialogAnswerNode) {
+                DialogAnswerNode selection = (DialogAnswerNode)listViewPerks.getSelectionModel().getSelectedItem();
+                if (selection.areDemandsMet()) {
+                    selection.applyResults();
+                    ((Stage)buttonBack.getScene().getWindow()).close();
+                } else {
+                    System.out.println("Perk not available.");
+                }
+            }
         });
         buttonBack.setOnMouseClicked(mouseEvent -> {
             ((Stage)buttonBack.getScene().getWindow()).close();
@@ -82,7 +88,7 @@ public class GainPerkController {
     private void updatePerkListView() {
         List items = listViewPerks.getItems();
         items.clear();
-        currentDialog.getAnswers().forEach(a -> items.add(a));
+        currentDialog.getAnswers().stream().filter(a -> a.areDemandsMet()).forEach(a -> items.add(a));
     }
 
     protected void updateDescriptionText(String name, String description, String image) {

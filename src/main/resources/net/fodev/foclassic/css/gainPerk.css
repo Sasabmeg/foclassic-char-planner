@@ -110,22 +110,30 @@
 }
 
 .listViewPerks {
-    -fx-control-inner-background: black;
-    -fx-background-color: #000000;
-    -fx-selection-bar: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-color: transparent;
+    -fx-text-fill: #00FF00;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 14;
+    -fx-background-radius: 0;
+}
+
+.listViewPerks .scroll-pane,
+.listViewPerks .scroll-pane .viewport,
+.listViewPerks .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+.listViewPerks {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
     -fx-font-family: "Fallout Classic Dialog";
     -fx-alignment: center-left;
-    -fx-font-size: 10;
+    -fx-font-size: 12;
     -fx-background-radius: 0;
     -fx-font-smoothing-type: grey;
-}
 
-.listViewPerks .list-cell {
-    -fx-text-fill: black;
-}
-
-.listViewPerks .list-cell:filled {
-    -fx-text-fill: #38FB00;
 }
 
 .listViewPerks:focused .list-cell:filled:selected:focused {
