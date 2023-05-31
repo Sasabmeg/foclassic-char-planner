@@ -9,7 +9,7 @@ public class DialogFormatCell extends ListCell<DialogAnswerNode> {
     protected void updateItem(DialogAnswerNode item, boolean empty) {
         super.updateItem(item, empty);
         if (item != null) {
-            setText(item.toString());
+            setText(this.getIndex() + 1 + ". " + item.toString());
             setTextFill(isSelected() ? Color.WHITE : item.areDemandsMet() ? Color.valueOf("38FB00") : Color.GREEN);
         } else {
             setText("");

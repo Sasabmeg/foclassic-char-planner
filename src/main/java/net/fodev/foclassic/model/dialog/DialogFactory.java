@@ -12,6 +12,7 @@ public class DialogFactory {
 
         DialogQuestionNode root = new DialogQuestionNode(2, "What would you like to do?");
         DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add.");
+        DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(3, "Which support perk would you like to add.");
 
         //  main dialog
         DialogAnswerNode gainOneLevel = new DialogAnswerNode("Gain one level.", root, foCharacter);
@@ -22,16 +23,19 @@ public class DialogFactory {
         gainThreeLevels.addResult(new DialogResultNode(fc -> fc.gainExperience((fc.getLevel() * 3 + 1 + 2) * 1000)));
         gainThreeLevels.addDemand(new DialogDemandNode(fc -> fc.getUnusedSkillPoints() + fc.getSkillPointsPerLevel() * 3 <= 99, "Gaining three levels would overflow unspent skill point above 99."));
 
-        DialogAnswerNode gainSupportPerk = new DialogAnswerNode("Gain a support perk.", supportPerkQuestion, foCharacter);
+        DialogAnswerNode gainSupportPerk = new DialogAnswerNode("Gain a support perk. (Available)", supportPerkQuestion, foCharacter);
+
+        DialogAnswerNode gainSupportPerkShowAll = new DialogAnswerNode("Gain a support perk. (Show all)", supportPerkShowAllQuestion, foCharacter);
 
         DialogAnswerNode mutate = new DialogAnswerNode("Mutate.", root, foCharacter);
 
         root.addAnswer(gainOneLevel);
         root.addAnswer(gainThreeLevels);
         root.addAnswer(gainSupportPerk);
+        root.addAnswer(gainSupportPerkShowAll);
         root.addAnswer(mutate);
 
-        //  support perks
+        //  support perks (available)
         PerkFactory.getSupportPerks().forEach(sp -> {
             DialogAnswerNode answer = new DialogAnswerNode(sp.getName(), root, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(sp), "Support Perk already picked: " + sp.getName()));
@@ -42,6 +46,20 @@ public class DialogFactory {
         supportPerkQuestion.addAnswer(backToRoot);
 
         addSupportPerkDemands(supportPerkQuestion, foCharacter);
+        supportPerkQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+
+        //  support perks (show all)
+        PerkFactory.getSupportPerks().forEach(sp -> {
+            DialogAnswerNode answer = new DialogAnswerNode(sp.getName(), root, foCharacter);
+            answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(sp), "Support Perk already picked: " + sp.getName()));
+            answer.addResult(new DialogResultNode(fc -> fc.addSupportPerk(sp)));
+            supportPerkShowAllQuestion.addAnswer(answer);
+        });
+        DialogAnswerNode backToRootShowAll = new DialogAnswerNode("[Back]", root, foCharacter);
+        supportPerkShowAllQuestion.addAnswer(backToRootShowAll);
+
+        addSupportPerkDemands(supportPerkShowAllQuestion, foCharacter);
+
 
         return root;
     }

@@ -15,6 +15,16 @@
     -fx-background-image: url("../images/perkwin.png");
 }
 
+.fofntTest {
+    -fx-control-inner-background: black;
+    -fx-background-color: #000000;
+    -fx-text-fill: #00FF00;
+    -fx-font-family: "Fallout Classic Dialog";
+    -fx-font-smoothing-type: grey;
+    -fx-font-size: 10;
+    -fx-background-radius: 0;
+}
+
 .falloutDialog {
     -fx-control-inner-background: black;
     -fx-background-color: #000000;
@@ -146,3 +156,29 @@
 .list-cell:filled:selected {
     -fx-background-color: transparent;
 }
+
+.list-view .scroll-bar:horizontal .increment-arrow,
+.list-view .scroll-bar:horizontal .decrement-arrow,
+.list-view .scroll-bar:horizontal .increment-button,
+.list-view .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
+
+.check-box>.box {
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-background-color: transparent;
+}
+
+.check-box>.box>.mark {
+    -fx-background-image: url("../images/prfxout.png");
+    -fx-background-position: center;
+    -fx-background-repeat: stretch;
+    -fx-shape: none;
+}
+
+.check-box:selected>.box>.mark{
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/prfxin.png");
+}
+

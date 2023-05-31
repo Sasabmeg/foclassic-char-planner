@@ -1,10 +1,7 @@
 package net.fodev.foclassic.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -33,6 +30,7 @@ public class GainPerkController {
     @FXML ImageView imageViewInfoImage;
 
     @FXML ListView listViewPerks;
+    @FXML CheckBox checkBoxPerkFilter;
 
     @FXML Button buttonDone;
     @FXML Button buttonBack;
@@ -83,12 +81,15 @@ public class GainPerkController {
         buttonBack.setOnMouseClicked(mouseEvent -> {
             ((Stage)buttonBack.getScene().getWindow()).close();
         });
+        checkBoxPerkFilter.selectedProperty().addListener(cl -> {
+            updatePerkListView();
+        });
     }
 
     private void updatePerkListView() {
         List items = listViewPerks.getItems();
         items.clear();
-        currentDialog.getAnswers().stream().filter(a -> a.areDemandsMet()).forEach(a -> items.add(a));
+        currentDialog.getAnswers().stream().filter(a -> a.areDemandsMet() || checkBoxPerkFilter.isSelected()).forEach(a -> items.add(a));
     }
 
     protected void updateDescriptionText(String name, String description, String image) {
