@@ -259,11 +259,11 @@ public class DialogFactory {
         DialogAnswerNode evenMoreCriticals = dialogQuestionNode.getAnswer(PerkFactory.EVEN_MORE_CRITICALS);
         evenMoreCriticals.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 6, "Missing requirement: Level 6"));
         evenMoreCriticals.addDemand(new DialogDemandNode(fc ->
-                fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
-                        || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
-                        || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
-                        || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
-                        || fc.getSkillValueByName(SkillFactory.THROWING) >= 100,
+                fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 125
+                        || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 125
+                        || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 125
+                        || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 125
+                        || fc.getSkillValueByName(SkillFactory.THROWING) >= 125,
                 "Missing requirement: SG, BG, EW, Close Combat or Throwing >= 125%"));
 
         DialogAnswerNode silentRunning = dialogQuestionNode.getAnswer(PerkFactory.SILENT_RUNNING);
@@ -272,8 +272,8 @@ public class DialogFactory {
                 "Missing requirement: Sneak >= 100%"));
 
         DialogAnswerNode toughness = dialogQuestionNode.getAnswer(PerkFactory.TOUGHNESS);
-        silentRunning.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 6, "Missing requirement: Level 6"));
-        silentRunning.addDemand(new DialogDemandNode(fc -> fc.getEndurance() >= 4,
+        toughness.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 6, "Missing requirement: Level 6"));
+        toughness.addDemand(new DialogDemandNode(fc -> fc.getEndurance() >= 4,
                 "Missing requirement: Endurance >= 4"));
 
     }
