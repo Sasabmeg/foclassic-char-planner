@@ -346,4 +346,106 @@ public class FoCharacter {
     public void addCombatPerk(CombatPerk combatPerk) {
         combatPerks.add(combatPerk);
     }
+
+    public void raiseSkill(int selectedSkillIndex) {
+        Skill skill = getSkill(selectedSkillIndex);
+        if (skill != null && skill.getSkillRaiseCost() <= unusedSkillPoints) {
+            unusedSkillPoints -= skill.getSkillRaiseCost();
+            skill.raiseSkillValue();
+        } else {
+            System.out.println("FoCharacter::raiseSKill() - not enough skill points to raise skill.");
+        }
+    }
+
+    public void unraiseSkill(int selectedSkillIndex, int minimum) {
+        Skill skill = getSkill(selectedSkillIndex);
+        if (skill != null && skill.getValue() > minimum) {
+            unusedSkillPoints += skill.getSkillRaiseCost();
+            skill.unraiseSkillValue();
+        } else {
+            System.out.println("FoCharacter::raiseSKill() - cannot lower skill below minimum or last level up save.");
+        }
+
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FoCharacter)) return false;
+
+        FoCharacter that = (FoCharacter) o;
+
+        if (age != that.age) return false;
+        if (level != that.level) return false;
+        if (experience != that.experience) return false;
+        if (hitPoints != that.hitPoints) return false;
+        if (Float.compare(that.poisoned, poisoned) != 0) return false;
+        if (Float.compare(that.radiated, radiated) != 0) return false;
+        if (eyeDamage != that.eyeDamage) return false;
+        if (crippledRightArm != that.crippledRightArm) return false;
+        if (crippledLeftArm != that.crippledLeftArm) return false;
+        if (crippledRightLeg != that.crippledRightLeg) return false;
+        if (crippledLeftLeg != that.crippledLeftLeg) return false;
+        if (armorClass != that.armorClass) return false;
+        if (actionPoints != that.actionPoints) return false;
+        if (carryWeight != that.carryWeight) return false;
+        if (meleeDamage != that.meleeDamage) return false;
+        if (damageResistance != that.damageResistance) return false;
+        if (poisonResistance != that.poisonResistance) return false;
+        if (radiationResistance != that.radiationResistance) return false;
+        if (sequence != that.sequence) return false;
+        if (healingRate != that.healingRate) return false;
+        if (criticalChance != that.criticalChance) return false;
+        if (unusedSpecialPoints != that.unusedSpecialPoints) return false;
+        if (unusedSkillPoints != that.unusedSkillPoints) return false;
+        if (unusedTagPoints != that.unusedTagPoints) return false;
+        if (unusedTraitPoints != that.unusedTraitPoints) return false;
+        if (unusedPerkPoints != that.unusedPerkPoints) return false;
+        if (!name.equals(that.name)) return false;
+        if (!sex.equals(that.sex)) return false;
+        if (!specials.equals(that.specials)) return false;
+        if (!skills.equals(that.skills)) return false;
+        if (!traits.equals(that.traits)) return false;
+        if (!combatPerks.equals(that.combatPerks)) return false;
+        if (!supportPerks.equals(that.supportPerks)) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + age;
+        result = 31 * result + sex.hashCode();
+        result = 31 * result + level;
+        result = 31 * result + experience;
+        result = 31 * result + specials.hashCode();
+        result = 31 * result + hitPoints;
+        result = 31 * result + (poisoned != +0.0f ? Float.floatToIntBits(poisoned) : 0);
+        result = 31 * result + (radiated != +0.0f ? Float.floatToIntBits(radiated) : 0);
+        result = 31 * result + (eyeDamage ? 1 : 0);
+        result = 31 * result + (crippledRightArm ? 1 : 0);
+        result = 31 * result + (crippledLeftArm ? 1 : 0);
+        result = 31 * result + (crippledRightLeg ? 1 : 0);
+        result = 31 * result + (crippledLeftLeg ? 1 : 0);
+        result = 31 * result + armorClass;
+        result = 31 * result + actionPoints;
+        result = 31 * result + carryWeight;
+        result = 31 * result + meleeDamage;
+        result = 31 * result + damageResistance;
+        result = 31 * result + poisonResistance;
+        result = 31 * result + radiationResistance;
+        result = 31 * result + sequence;
+        result = 31 * result + healingRate;
+        result = 31 * result + criticalChance;
+        result = 31 * result + unusedSpecialPoints;
+        result = 31 * result + skills.hashCode();
+        result = 31 * result + unusedSkillPoints;
+        result = 31 * result + unusedTagPoints;
+        result = 31 * result + traits.hashCode();
+        result = 31 * result + unusedTraitPoints;
+        result = 31 * result + combatPerks.hashCode();
+        result = 31 * result + supportPerks.hashCode();
+        result = 31 * result + unusedPerkPoints;
+        return result;
+    }
 }

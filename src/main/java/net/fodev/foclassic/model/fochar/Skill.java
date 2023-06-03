@@ -18,6 +18,26 @@ public class Skill {
         this.value += byValue;
     }
 
+    public void raiseSkillValue() {
+        if (isTagged()) {
+            value+= 2;
+        } else {
+            value++;
+        }
+    }
+
+    public int getSkillRaiseCost() {
+        return 1;
+    }
+
+    public void unraiseSkillValue() {
+        if (isTagged()) {
+            value-= 2;
+        } else {
+            value--;
+        }
+    }
+
     public void decreaseValue(int byValue) {
         this.value -= byValue;
     }
@@ -37,5 +57,26 @@ public class Skill {
 
     public String getImage() {
         return proto.getImage();
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Skill)) return false;
+
+        Skill skill = (Skill) o;
+
+        if (value != skill.value) return false;
+        if (tagged != skill.tagged) return false;
+        return proto.equals(skill.proto);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = proto.hashCode();
+        result = 31 * result + value;
+        result = 31 * result + (tagged ? 1 : 0);
+        return result;
     }
 }

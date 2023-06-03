@@ -38,4 +38,17 @@ public class TestFoCharacter {
         Assert.assertFalse(foCharacter.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.STRONG_BACK)));
     }
 
+    @Test
+    public void equals_simple_valid() {
+        FoCharacter foChar1 = FoCharacterFactory.createNewCharacter("Test1", 15, "Male");
+        FoCharacter foChar2 = FoCharacterFactory.createNewCharacter("Test1", 15, "Male");
+        System.out.println("FoCharacter.equals() = " + foChar1.equals(foChar2));
+
+        foChar1.setSkillValue(0, 0);
+        System.out.println("FoCharacter.equals() = " + foChar1.equals(foChar2));
+
+        FoCharacterFactory.copyTo(foChar1, foChar2);
+        System.out.println("FoCharacter.equals() = " + foChar1.equals(foChar2));
+    }
+
 }

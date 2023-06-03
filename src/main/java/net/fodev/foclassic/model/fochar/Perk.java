@@ -18,4 +18,24 @@ public class Perk {
     public String toString() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Perk)) return false;
+
+        Perk perk = (Perk) o;
+
+        if (!name.equals(perk.name)) return false;
+        if (!image.equals(perk.image)) return false;
+        return description.equals(perk.description);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + image.hashCode();
+        result = 31 * result + description.hashCode();
+        return result;
+    }
 }

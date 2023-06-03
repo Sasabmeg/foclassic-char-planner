@@ -24,6 +24,7 @@ public class LevelUpController extends CharacterController {
 
     private FoCharacter oldFoCharacter;
     private DialogQuestionNode currentDialog;
+    private int selectedSkillIndex = 0;
 
     @FXML private ListView listViewPerks;
     @FXML private ListView listViewDialogAnswer;
@@ -34,6 +35,11 @@ public class LevelUpController extends CharacterController {
     @FXML private Label labelLevel;
     @FXML private Label labelExperience;
     @FXML private Label labelNextLevel;
+    @FXML private ImageView imageViewSkillChange;
+    @FXML private Button buttonSkillChangePlus;
+    @FXML private Button buttonSkillChangeMinus;
+
+
 
     public void setFoCharacter(FoCharacter foCharacter) {
         System.out.println("LevelUpController::setFoCharacter(FoCharacter foCharacter)");
@@ -51,8 +57,43 @@ public class LevelUpController extends CharacterController {
         initDialogQuestion();
         initDialogAnswer();
         initLabels();
+        initButtonClickEvents();
         updateLevelAndExperience();
-        showUnusedSkillPointsValue();
+        updateUnusedSkillPointsValue();
+    }
+
+    private void initButtonClickEvents() {
+        buttonSkillChangePlus.setOnMouseClicked(mouseEvent -> {
+            if (selectedSkillIndex >= 0 && selectedSkillIndex <= 18) {
+                System.out.println(String.format("Raising selected skill [%d] %s.", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex)));
+                int cost = foCharacter.getSkill(selectedSkillIndex).getSkillRaiseCost();
+                if (foCharacter.getUnusedSkillPoints() >= cost) {
+                    foCharacter.raiseSkill(selectedSkillIndex);
+                    updateSKillLabelValues();
+                    updateUnusedSkillPointsValue();
+                    updateDialogAnswerListView();
+                } else {
+                    System.out.println("Not enough skill points to raise skill, need: " + cost);
+                }
+            } else {
+                System.out.println("Selected skill index out of bounds: " + selectedSkillIndex);
+            }
+        });
+        buttonSkillChangeMinus.setOnMouseClicked(mouseEvent -> {
+            if (selectedSkillIndex >= 0 && selectedSkillIndex <= 18) {
+                if (foCharacter.getSkillValue(selectedSkillIndex) > oldFoCharacter.getSkillValue(selectedSkillIndex)) {
+                    System.out.println(String.format("Raising selected skill [%d] %s.", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex)));
+                    foCharacter.unraiseSkill(selectedSkillIndex, oldFoCharacter.getSkillValue(selectedSkillIndex));
+                    updateSKillLabelValues();
+                    updateUnusedSkillPointsValue();
+                    updateDialogAnswerListView();
+                } else {
+                    System.out.println("Cannot lower skill bellow minimum or last level up save value: " + oldFoCharacter.getSkillValue(selectedSkillIndex));
+                }
+            } else {
+                System.out.println("Selected skill index out of bounds: " + selectedSkillIndex);
+            }
+        });
     }
 
     private void initLabels() {
@@ -67,6 +108,46 @@ public class LevelUpController extends CharacterController {
         });
     }
 
+    @Override
+    protected void handleBaseLabelClickEvents() {
+        super.handleBaseLabelClickEvents();
+        backgroundPane.getChildren()
+                .filtered(node -> node instanceof Label)
+                .filtered(node -> node != null && node.getId() != null)
+                .forEach(node -> {
+                    if (node.getId().contains("labelSkillLeft")) {
+                        int index = Integer.parseInt(node.getId().substring("labelSkillLeft".length()));
+                        (node).setOnMouseClicked(mouseEvent -> {
+                            Skill skill = foCharacter.getSkill(index - 1);
+                            updateDescriptionText(skill.getName(), skill.getDescription(), skill.getImage());
+                            updateSlider(index - 1, node.getLayoutX() + 218, node.getLayoutY() - 7);
+                        });
+                    }
+                    if (node.getId().contains("labelSkillRight")) {
+                        int index = Integer.parseInt(node.getId().substring("labelSkillRight".length()));
+                        (node).setOnMouseClicked(mouseEvent -> {
+                            Skill skill = foCharacter.getSkill(index - 1);
+                            updateDescriptionText(skill.getName(), skill.getDescription(), skill.getImage());
+                            updateSlider(index - 1, node.getLayoutX() + 35, node.getLayoutY() - 7);
+                        });
+                    }
+                });
+
+    }
+
+    private void updateSlider(int index, double x, double y) {
+        selectedSkillIndex = index;
+        imageViewSkillChange.setLayoutX(x);
+        imageViewSkillChange.setLayoutY(y);
+        //imageViewSkillChange.setViewOrder(100);
+        buttonSkillChangePlus.setLayoutX(x + 24);
+        buttonSkillChangePlus.setLayoutY(y + 4);
+        //buttonSkillChangePlus.setViewOrder(100);
+        buttonSkillChangeMinus.setLayoutX(x + 24);
+        buttonSkillChangeMinus.setLayoutY(y + 15);
+        //buttonSkillChangeMinus.setViewOrder(100);
+    }
+
     private void updateLevelAndExperience() {
         labelLevel.setText("Level: " + foCharacter.getLevel());
         labelExperience.setText("Experience: " + String.format("%,d", foCharacter.getExperience()));
@@ -74,7 +155,7 @@ public class LevelUpController extends CharacterController {
     }
 
     private void initDialogs() {
-        currentDialog = DialogFactory.createMainDialog(foCharacter);
+        currentDialog = DialogFactory.createMainDialog(foCharacter, oldFoCharacter);
     }
 
     private void initDialogQuestion() {
@@ -92,8 +173,6 @@ public class LevelUpController extends CharacterController {
         listViewDialogAnswer.setFocusTraversable(false);
         listViewDialogAnswer.setCellFactory((Callback<ListView<DialogAnswerNode>, ListCell<DialogAnswerNode>>) dialogAnswerNodeListView -> new DialogFormatCell());
         listViewDialogAnswer.setOnMouseClicked(mouseEvent -> {
-            System.out.println("Selected Dialog Answer: #" + (1 + listViewDialogAnswer.getSelectionModel().getSelectedIndex())
-                    + " = " + listViewDialogAnswer.getSelectionModel().getSelectedItem());
             if (listViewDialogAnswer.getSelectionModel().getSelectedItem() instanceof DialogAnswerNode) {
                 DialogAnswerNode selectedItem = (DialogAnswerNode)listViewDialogAnswer.getSelectionModel().getSelectedItem();
                 if (selectedItem.areDemandsMet()) {
@@ -103,7 +182,7 @@ public class LevelUpController extends CharacterController {
                     updateDialogAnswerListView();
                     updateDialogQuestionView();
                     updateLevelAndExperience();
-                    showUnusedSkillPointsValue();
+                    updateUnusedSkillPointsValue();
                     updatePerkListView();
                 } else {
                     updateDescriptionTextFromDialog(selectedItem);
@@ -200,7 +279,7 @@ public class LevelUpController extends CharacterController {
         foCharacter.getSupportPerks().forEach(items::add);
     }
 
-    private void showUnusedSkillPointsValue() {
+    private void updateUnusedSkillPointsValue() {
         showDoubleDigitNumber(imageViewTagPointLeft, imageViewTagPointRight, foCharacter.getUnusedSkillPoints());
     }
 }

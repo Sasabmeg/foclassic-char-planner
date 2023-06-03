@@ -76,16 +76,8 @@
 
 }
 
-/*
-.listViewDialogAnswer .list-cell:filled {
-    -fx-text-fill: #38FB00;
+.imageViewSkillChange {
+    -fx-background-color: transparent;
+    -fx-image: url("../images/slider.png");
 }
-
- */
-
-
-
-
-
-
 

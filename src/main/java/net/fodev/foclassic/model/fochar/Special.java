@@ -3,6 +3,8 @@ package net.fodev.foclassic.model.fochar;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 public class Special {
     @Getter @Setter private SpecialProto proto;
     @Getter @Setter private int value;
@@ -74,5 +76,23 @@ public class Special {
 
     public String getImage() {
         return proto.getImage();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Special)) return false;
+
+        Special special = (Special) o;
+
+        if (value != special.value) return false;
+        return Objects.equals(proto, special.proto);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = proto != null ? proto.hashCode() : 0;
+        result = 31 * result + value;
+        return result;
     }
 }

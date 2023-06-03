@@ -2,19 +2,57 @@ package net.fodev.foclassic.model.fochar;
 
 public class FoCharacterFactory {
     public static FoCharacter copy(FoCharacter other) {
-        FoCharacter result = new FoCharacter(other.getName(), other.getAge(), other.getSex());
-        other.getSpecials().forEach(special -> result.getSpecials().add(special));
-        other.getSkills().forEach(skill -> result.getSkills().add(skill));
-        other.getTraits().forEach(trait -> result.getTraits().add(trait));
+        FoCharacter result = createNewCharacter(other.getName(), other.getAge(), other.getSex());
+        cpy(other, result);
+        return result;
+    }
+
+    private static void cpy(FoCharacter other, FoCharacter result) {
+        result.setLevel(other.getLevel());
+        result.setExperience(other.getExperience());
+        result.setHitPoints(other.getHitPoints());
+        result.setPoisoned(other.getPoisoned());
+        result.setRadiated(other.getRadiated());
+        result.setEyeDamage(other.isEyeDamage());
+        result.setCrippledRightArm(other.isCrippledRightArm());
+        result.setCrippledLeftArm(other.isCrippledLeftArm());
+        result.setCrippledRightLeg(other.isCrippledRightLeg());
+        result.setCrippledLeftLeg(other.isCrippledLeftLeg());
+        result.setArmorClass(other.getArmorClass());
+        result.setActionPoints(other.getActionPoints());
+        result.setCarryWeight(other.getCarryWeight());
+        result.setMeleeDamage(other.getMeleeDamage());
+        result.setDamageResistance(other.getDamageResistance());
+        result.setPoisonResistance(other.getPoisonResistance());
+        result.setRadiationResistance(other.getRadiationResistance());
+        result.setSequence(other.getSequence());
+        result.setHealingRate(other.getHealingRate());
+        result.setCriticalChance(other.getCriticalChance());
         result.setUnusedSpecialPoints(other.getUnusedSpecialPoints());
         result.setUnusedSkillPoints(other.getUnusedSkillPoints());
         result.setUnusedTagPoints(other.getUnusedTagPoints());
         result.setUnusedTraitPoints(other.getUnusedTraitPoints());
         result.setUnusedPerkPoints(other.getUnusedPerkPoints());
+        for (int i = 0; i < result.getSpecials().size(); i++) {
+            result.getSpecial(i).setValue(other.getSpecial(i).getValue());
+        }
+        for (int i = 0; i < result.getSkills().size(); i++) {
+            result.getSkill(i).setValue(other.getSkill(i).getValue());
+        }
+        for (int i = 0; i < result.getTraits().size(); i++) {
+            result.getTrait(i).setTagged(other.getTrait(i).isTagged());
+        }
+        result.getCombatPerks().clear();
+        other.getCombatPerks().forEach(cp-> result.getCombatPerks().add(cp));
+        result.getSupportPerks().clear();
+        other.getSupportPerks().forEach(sp -> result.getSupportPerks().add(sp));
+    }
 
-        result.setHitPoints(other.getHitPoints());
-
-        return result;
+    public static void copyTo(FoCharacter to, FoCharacter from) {
+        to.setName(from.getName());
+        to.setAge(from.getAge());
+        to.setSex(from.getSex());
+        cpy(from, to);
     }
 
     public static FoCharacter createNewCharacter(String name, int age, String sex) {

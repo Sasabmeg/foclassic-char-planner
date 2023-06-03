@@ -1,6 +1,7 @@
 package net.fodev.foclassic.model.dialog;
 
 import net.fodev.foclassic.model.fochar.FoCharacter;
+import net.fodev.foclassic.model.fochar.FoCharacterFactory;
 import net.fodev.foclassic.model.fochar.PerkFactory;
 import net.fodev.foclassic.model.fochar.SkillFactory;
 
@@ -8,7 +9,7 @@ public class DialogFactory {
 
     public static final DialogQuestionNode EXIT = new DialogQuestionNode(0, "Exit!");
 
-    public static DialogQuestionNode createMainDialog(FoCharacter foCharacter) {
+    public static DialogQuestionNode createMainDialog(FoCharacter foCharacter, FoCharacter oldCharacter) {
 
         DialogQuestionNode root = new DialogQuestionNode(2, "What would you like to do?");
         DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add.");
@@ -16,12 +17,16 @@ public class DialogFactory {
 
         //  main dialog
         DialogAnswerNode gainOneLevel = new DialogAnswerNode("Gain one level.", root, foCharacter);
-        gainOneLevel.addResult(new DialogResultNode(fc -> fc.gainExperience(fc.getLevel() * 1000)));
         gainOneLevel.addDemand(new DialogDemandNode(fc -> fc.getUnusedSkillPoints() + fc.getSkillPointsPerLevel() <= 99, "Gaining one level would overflow unspent skill point above 99."));
+        gainOneLevel.addResult(new DialogResultNode(fc -> fc.gainExperience(fc.getLevel() * 1000)));
+        gainOneLevel.addResult(new DialogResultNode(fc -> FoCharacterFactory.copyTo(oldCharacter, fc)));
+        gainOneLevel.addResult(new DialogResultNode(fc -> System.out.println("Gained one level. Character saved.")));
 
         DialogAnswerNode gainThreeLevels = new DialogAnswerNode("Gain three levels.", root, foCharacter);
-        gainThreeLevels.addResult(new DialogResultNode(fc -> fc.gainExperience((fc.getLevel() * 3 + 1 + 2) * 1000)));
         gainThreeLevels.addDemand(new DialogDemandNode(fc -> fc.getUnusedSkillPoints() + fc.getSkillPointsPerLevel() * 3 <= 99, "Gaining three levels would overflow unspent skill point above 99."));
+        gainThreeLevels.addResult(new DialogResultNode(fc -> fc.gainExperience((fc.getLevel() * 3 + 1 + 2) * 1000)));
+        gainThreeLevels.addResult(new DialogResultNode(fc -> FoCharacterFactory.copyTo(oldCharacter, fc)));
+        gainThreeLevels.addResult(new DialogResultNode(fc -> System.out.println("Gained three level. Character saved.")));
 
         DialogAnswerNode gainSupportPerk = new DialogAnswerNode("Gain a support perk. (Available)", supportPerkQuestion, foCharacter);
 
@@ -29,17 +34,24 @@ public class DialogFactory {
 
         DialogAnswerNode mutate = new DialogAnswerNode("Mutate.", root, foCharacter);
 
+        DialogAnswerNode saveChanges = new DialogAnswerNode("Save changes.", root, foCharacter);
+        saveChanges.addDemand(new DialogDemandNode(fc -> !fc.equals(oldCharacter), "Error: No character changes to save."));
+        saveChanges.addResult(new DialogResultNode(fc -> FoCharacterFactory.copyTo(oldCharacter, fc)));
+        saveChanges.addResult(new DialogResultNode(fc -> System.out.println("Character saved.")));
+
         root.addAnswer(gainOneLevel);
         root.addAnswer(gainThreeLevels);
         root.addAnswer(gainSupportPerk);
         root.addAnswer(gainSupportPerkShowAll);
         root.addAnswer(mutate);
+        root.addAnswer(saveChanges);
 
         //  support perks (available)
         PerkFactory.getSupportPerks().forEach(sp -> {
             DialogAnswerNode answer = new DialogAnswerNode(sp.getName(), root, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(sp), "Support Perk already picked: " + sp.getName()));
             answer.addResult(new DialogResultNode(fc -> fc.addSupportPerk(sp)));
+            answer.addResult(new DialogResultNode(fc -> System.out.println("Added support perk: " + sp.getName())));
             supportPerkQuestion.addAnswer(answer);
         });
         DialogAnswerNode backToRoot = new DialogAnswerNode("[Back]", root, foCharacter);
@@ -53,6 +65,7 @@ public class DialogFactory {
             DialogAnswerNode answer = new DialogAnswerNode(sp.getName(), root, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(sp), "Support Perk already picked: " + sp.getName()));
             answer.addResult(new DialogResultNode(fc -> fc.addSupportPerk(sp)));
+            answer.addResult(new DialogResultNode(fc -> System.out.println("Added support perk: " + sp.getName())));
             supportPerkShowAllQuestion.addAnswer(answer);
         });
         DialogAnswerNode backToRootShowAll = new DialogAnswerNode("[Back]", root, foCharacter);

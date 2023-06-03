@@ -70,6 +70,11 @@
                 <Label fx:id="labelSkillRight16" layoutX="935.0" layoutY="188.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="49%" />
                 <Label fx:id="labelSkillRight17" layoutX="935.0" layoutY="199.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="33%" />
                 <Label fx:id="labelSkillRight18" layoutX="935.0" layoutY="210.0" prefHeight="16.0" prefWidth="35.0" styleClass="textTraitRight" text="69%" />
+
+                <ImageView fx:id="imageViewSkillChange" layoutX="970.0" layoutY="16.0" fitWidth="43.0" fitHeight="29.0" pickOnBounds="true" preserveRatio="true" styleClass="imageViewSkillChange" />
+                <Button fx:id="buttonSkillChangePlus" layoutX="994.0" layoutY="20.0" mnemonicParsing="false" styleClass="buttonPlus" text="" />
+                <Button fx:id="buttonSkillChangeMinus" layoutX="994.0" layoutY="31.0" mnemonicParsing="false" styleClass="buttonMinus" text="" />
+
                 <ImageView fx:id="imageViewTagPointLeft" fitHeight="20.0" fitWidth="14.0" layoutX="907.0" layoutY="236.0" pickOnBounds="true" preserveRatio="false" />
                 <ImageView fx:id="imageViewTagPointRight" fitHeight="20.0" fitWidth="14.0" layoutX="921.0" layoutY="236.0" pickOnBounds="true" preserveRatio="false" />
                 <ImageView fx:id="imageViewUnusedSpecialPointLeft" fitHeight="20.0" fitWidth="14.0" layoutX="126.0" layoutY="285.0" pickOnBounds="true" preserveRatio="false" />
