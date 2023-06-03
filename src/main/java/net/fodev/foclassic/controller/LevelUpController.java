@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -18,6 +20,7 @@ import net.fodev.foclassic.model.fochar.*;
 import net.fodev.foclassic.view.DialogFormatCell;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LevelUpController extends CharacterController {
@@ -25,6 +28,8 @@ public class LevelUpController extends CharacterController {
     private FoCharacter oldFoCharacter;
     private DialogQuestionNode currentDialog;
     private int selectedSkillIndex = 0;
+    private List<Integer> fontSizeSteps;
+    private int fontsizeIndex = 0;
 
     @FXML private ListView listViewPerks;
     @FXML private ListView listViewDialogAnswer;
@@ -52,6 +57,7 @@ public class LevelUpController extends CharacterController {
         super.initialize();
         System.out.println("Level up or mutate character.");
         oldFoCharacter = FoCharacterFactory.copy(foCharacter);
+        initializeFontSizeSteps();
         initPerkListView();
         initDialogs();
         initDialogQuestion();
@@ -61,6 +67,37 @@ public class LevelUpController extends CharacterController {
         updateLevelAndExperience();
         updateUnusedSkillPointsValue();
     }
+
+    private void initializeFontSizeSteps() {
+        fontSizeSteps = new ArrayList<>();
+        fontSizeSteps.add(10);
+        fontSizeSteps.add(12);
+        fontSizeSteps.add(14);
+        fontSizeSteps.add(16);
+        fontSizeSteps.add(18);
+        fontSizeSteps.add(20);
+        fontSizeSteps.add(24);
+        fontsizeIndex = 0;
+    }
+
+    private int nextFontSize() {
+        if (fontsizeIndex >= 0 && fontsizeIndex < fontSizeSteps.size() - 1) {
+            fontsizeIndex++;
+            return fontSizeSteps.get(fontsizeIndex);
+        } else {
+            return fontSizeSteps.get(fontSizeSteps.size() -1);
+        }
+    }
+
+    private int previousFontSize() {
+        if (fontsizeIndex > 0 && fontsizeIndex < fontSizeSteps.size()) {
+            fontsizeIndex--;
+            return fontSizeSteps.get(fontsizeIndex);
+        } else {
+            return fontSizeSteps.get(0);
+        }
+    }
+
 
     private void initButtonClickEvents() {
         buttonSkillChangePlus.setOnMouseClicked(mouseEvent -> {
@@ -161,6 +198,22 @@ public class LevelUpController extends CharacterController {
     private void initDialogQuestion() {
         textAreaDialogQuestion.setFocusTraversable(false);
         textAreaDialogQuestion.setEditable(false);
+        textAreaDialogQuestion.setWrapText(true);
+        textAreaDialogQuestion.addEventFilter(ScrollEvent.SCROLL, e -> {
+            if (e.isControlDown()) {
+                if (e.getDeltaY() < 0) {
+                    String style = "-fx-font-size: " + previousFontSize();
+                    textAreaDialogQuestion.setStyle(style);;
+                    listViewDialogAnswer.setStyle(style);
+                } else {
+                    String style = "-fx-font-size: " + nextFontSize();
+                    textAreaDialogQuestion.setStyle(style);;
+                    listViewDialogAnswer.setStyle(style);
+                }
+                updateDialogQuestionView();
+                updateDialogAnswerListView();
+            }
+        });
         updateDialogQuestionView();
     }
 

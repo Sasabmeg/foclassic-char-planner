@@ -73,7 +73,6 @@ public class DialogFactory {
 
         addSupportPerkDemands(supportPerkShowAllQuestion, foCharacter);
 
-
         return root;
     }
 
@@ -211,17 +210,17 @@ public class DialogFactory {
             root.addAnswer(answer);
         });
 
-        addLevelThreeCombatPerkDemands(root, foCharacter);
-        addLevelSixCombatPerkDemands(root, foCharacter);
-        addLevelNineCombatPerkDemands(root, foCharacter);
-        addLevelTwelveCombatPerkDemands(root, foCharacter);
-        addLevelFifteenCombatPerkDemands(root, foCharacter);
-        addLevelEighteenCombatPerkDemands(root, foCharacter);
+        addLevelThreeCombatPerkDemands(root);
+        addLevelSixCombatPerkDemands(root);
+        addLevelNineCombatPerkDemands(root);
+        addLevelTwelveCombatPerkDemands(root);
+        addLevelFifteenCombatPerkDemands(root);
+        addLevelEighteenCombatPerkDemands(root);
 
         return root;
     }
 
-    private static void addLevelThreeCombatPerkDemands(DialogQuestionNode dialogQuestionNode, FoCharacter foCharacter) {
+    private static void addLevelThreeCombatPerkDemands(DialogQuestionNode dialogQuestionNode) {
         DialogAnswerNode moreCritical = dialogQuestionNode.getAnswer(PerkFactory.MORE_CRITICAL);
         moreCritical.addDemand(new DialogDemandNode(fc ->
                 fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
@@ -250,7 +249,7 @@ public class DialogFactory {
 
     }
 
-    private static void addLevelSixCombatPerkDemands(DialogQuestionNode dialogQuestionNode, FoCharacter foCharacter) {
+    private static void addLevelSixCombatPerkDemands(DialogQuestionNode dialogQuestionNode) {
         DialogAnswerNode inYourFace = dialogQuestionNode.getAnswer(PerkFactory.IN_YOUR_FACE);
         inYourFace.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 6, "Missing requirement: Level 6"));
         inYourFace.addDemand(new DialogDemandNode(fc -> fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 125,
@@ -278,7 +277,7 @@ public class DialogFactory {
 
     }
 
-    private static void addLevelNineCombatPerkDemands(DialogQuestionNode dialogQuestionNode, FoCharacter foCharacter) {
+    private static void addLevelNineCombatPerkDemands(DialogQuestionNode dialogQuestionNode) {
         DialogAnswerNode sharpShooter = dialogQuestionNode.getAnswer(PerkFactory.SHARPSHOOTER);
         sharpShooter.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 9, "Missing requirement: Level 9"));
         sharpShooter.addDemand(new DialogDemandNode(fc ->
@@ -337,7 +336,7 @@ public class DialogFactory {
                 "Missing requirement: Throwing ≥ 125%"));
     }
 
-    private static void addLevelTwelveCombatPerkDemands(DialogQuestionNode dialogQuestionNode, FoCharacter foCharacter) {
+    private static void addLevelTwelveCombatPerkDemands(DialogQuestionNode dialogQuestionNode) {
         DialogAnswerNode gainAgility = dialogQuestionNode.getAnswer(PerkFactory.GAIN_AGILITY);
         gainAgility.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 12, "Missing requirement: Level 12"));
         gainAgility.addDemand(new DialogDemandNode(fc -> fc.getAgility() < 9, "Missing requirement: Agility <= 9"));
@@ -389,7 +388,7 @@ public class DialogFactory {
         actionBoy.addDemand(new DialogDemandNode(fc -> fc.getAgility() >= 6, "Missing requirement: Agility >= 6"));
     }
 
-    private static void addLevelFifteenCombatPerkDemands(DialogQuestionNode dialogQuestionNode, FoCharacter foCharacter) {
+    private static void addLevelFifteenCombatPerkDemands(DialogQuestionNode dialogQuestionNode) {
         DialogAnswerNode actionBoy2 = dialogQuestionNode.getAnswer(PerkFactory.ACTIONBOY2);
         actionBoy2.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 15, "Missing requirement: Level 15"));
         actionBoy2.addDemand(new DialogDemandNode(fc -> fc.getAgility() >= 6, "Missing requirement: Agility >= 6"));
@@ -443,7 +442,7 @@ public class DialogFactory {
                 "Missing requirement: Agility >= 6 and Close Combat >= 175"));
     }
 
-    private static void addLevelEighteenCombatPerkDemands(DialogQuestionNode dialogQuestionNode, FoCharacter foCharacter) {
+    private static void addLevelEighteenCombatPerkDemands(DialogQuestionNode dialogQuestionNode) {
         DialogAnswerNode dodger2 = dialogQuestionNode.getAnswer(PerkFactory.DODGER2);
         dodger2.addDemand(new DialogDemandNode(fc -> fc.getLevel() >= 18, "Missing requirement: Level 18"));
         dodger2.addDemand(new DialogDemandNode(fc ->
