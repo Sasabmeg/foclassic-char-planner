@@ -360,7 +360,7 @@ public class FoCharacter {
     public void unraiseSkill(int selectedSkillIndex, int minimum) {
         Skill skill = getSkill(selectedSkillIndex);
         if (skill != null && skill.getValue() > minimum) {
-            unusedSkillPoints += skill.getSkillRaiseCost();
+            unusedSkillPoints += skill.getSkillUnraiseGain();
             skill.unraiseSkillValue();
         } else {
             System.out.println("FoCharacter::raiseSKill() - cannot lower skill below minimum or last level up save.");

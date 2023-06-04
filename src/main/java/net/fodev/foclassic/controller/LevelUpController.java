@@ -6,7 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -28,8 +27,8 @@ public class LevelUpController extends CharacterController {
     private FoCharacter oldFoCharacter;
     private DialogQuestionNode currentDialog;
     private int selectedSkillIndex = 0;
-    private List<Integer> fontSizeSteps;
-    private int fontsizeIndex = 0;
+    private int dialogQuestionFontSizeIndex;
+    private int dialogAnswerFontSizeIndex;
 
     @FXML private ListView listViewPerks;
     @FXML private ListView listViewDialogAnswer;
@@ -68,41 +67,18 @@ public class LevelUpController extends CharacterController {
         updateUnusedSkillPointsValue();
     }
 
-    private void initializeFontSizeSteps() {
-        fontSizeSteps = new ArrayList<>();
-        fontSizeSteps.add(10);
-        fontSizeSteps.add(12);
-        fontSizeSteps.add(14);
-        fontSizeSteps.add(16);
-        fontSizeSteps.add(18);
-        fontSizeSteps.add(20);
-        fontSizeSteps.add(24);
-        fontsizeIndex = 0;
-    }
-
-    private int nextFontSize() {
-        if (fontsizeIndex >= 0 && fontsizeIndex < fontSizeSteps.size() - 1) {
-            fontsizeIndex++;
-            return fontSizeSteps.get(fontsizeIndex);
-        } else {
-            return fontSizeSteps.get(fontSizeSteps.size() -1);
-        }
-    }
-
-    private int previousFontSize() {
-        if (fontsizeIndex > 0 && fontsizeIndex < fontSizeSteps.size()) {
-            fontsizeIndex--;
-            return fontSizeSteps.get(fontsizeIndex);
-        } else {
-            return fontSizeSteps.get(0);
-        }
+    @Override
+    protected void initializeFontSizeSteps() {
+        super.initializeFontSizeSteps();
+        dialogQuestionFontSizeIndex = 5;
+        dialogAnswerFontSizeIndex = 2;
     }
 
 
     private void initButtonClickEvents() {
         buttonSkillChangePlus.setOnMouseClicked(mouseEvent -> {
             if (selectedSkillIndex >= 0 && selectedSkillIndex <= 18) {
-                System.out.println(String.format("Raising selected skill [%d] %s.", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex)));
+                System.out.printf("Raising selected skill [%d] %s.%n", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex));
                 int cost = foCharacter.getSkill(selectedSkillIndex).getSkillRaiseCost();
                 if (foCharacter.getUnusedSkillPoints() >= cost) {
                     foCharacter.raiseSkill(selectedSkillIndex);
@@ -119,7 +95,7 @@ public class LevelUpController extends CharacterController {
         buttonSkillChangeMinus.setOnMouseClicked(mouseEvent -> {
             if (selectedSkillIndex >= 0 && selectedSkillIndex <= 18) {
                 if (foCharacter.getSkillValue(selectedSkillIndex) > oldFoCharacter.getSkillValue(selectedSkillIndex)) {
-                    System.out.println(String.format("Raising selected skill [%d] %s.", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex)));
+                    System.out.printf("Raising selected skill [%d] %s.%n", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex));
                     foCharacter.unraiseSkill(selectedSkillIndex, oldFoCharacter.getSkillValue(selectedSkillIndex));
                     updateSKillLabelValues();
                     updateUnusedSkillPointsValue();
@@ -202,16 +178,13 @@ public class LevelUpController extends CharacterController {
         textAreaDialogQuestion.addEventFilter(ScrollEvent.SCROLL, e -> {
             if (e.isControlDown()) {
                 if (e.getDeltaY() < 0) {
-                    String style = "-fx-font-size: " + previousFontSize();
-                    textAreaDialogQuestion.setStyle(style);;
-                    listViewDialogAnswer.setStyle(style);
+                    dialogQuestionFontSizeIndex = dialogQuestionFontSizeIndex <= 0 ? 0 : dialogQuestionFontSizeIndex - 1;
                 } else {
-                    String style = "-fx-font-size: " + nextFontSize();
-                    textAreaDialogQuestion.setStyle(style);;
-                    listViewDialogAnswer.setStyle(style);
+                    dialogQuestionFontSizeIndex = dialogQuestionFontSizeIndex >= fontSizeSteps.size() - 1
+                            ? fontSizeSteps.size() - 1 : dialogQuestionFontSizeIndex + 1;
                 }
+                System.out.println("DialogQuestionFontSize = " + fontSizeSteps.get(dialogQuestionFontSizeIndex));
                 updateDialogQuestionView();
-                updateDialogAnswerListView();
             }
         });
         updateDialogQuestionView();
@@ -219,6 +192,8 @@ public class LevelUpController extends CharacterController {
 
     private void updateDialogQuestionView() {
         textAreaDialogQuestion.setText(currentDialog.getMessage());
+        String style = "-fx-font-size: " + getFontSize(dialogQuestionFontSizeIndex);
+        textAreaDialogQuestion.setStyle(style);
     }
 
     private void initDialogAnswer() {
@@ -248,6 +223,18 @@ public class LevelUpController extends CharacterController {
                 }
             };
         });
+        listViewDialogAnswer.addEventFilter(ScrollEvent.SCROLL, e -> {
+            if (e.isControlDown()) {
+                if (e.getDeltaY() < 0) {
+                    dialogAnswerFontSizeIndex = dialogAnswerFontSizeIndex <= 0 ? 0 : dialogAnswerFontSizeIndex - 1;
+                } else {
+                    dialogAnswerFontSizeIndex = dialogAnswerFontSizeIndex >= fontSizeSteps.size() - 1
+                            ? fontSizeSteps.size() - 1 : dialogAnswerFontSizeIndex + 1;
+                }
+                System.out.println("DialogAnswerFontSize = " + fontSizeSteps.get(dialogAnswerFontSizeIndex));
+                updateDialogAnswerListView();
+            }
+        });
     }
 
     private void updateDescriptionTextFromDialog(DialogAnswerNode selectedItem) {
@@ -268,6 +255,8 @@ public class LevelUpController extends CharacterController {
         List items = listViewDialogAnswer.getItems();
         items.clear();
         currentDialog.getAnswers().forEach(a -> items.add(a));
+        String style = "-fx-font-size: " + getFontSize(dialogAnswerFontSizeIndex);
+        listViewDialogAnswer.setStyle(style);;
     }
 
     private void initPerkListView() {

@@ -12,8 +12,8 @@ public class DialogFactory {
     public static DialogQuestionNode createMainDialog(FoCharacter foCharacter, FoCharacter oldCharacter) {
 
         DialogQuestionNode root = new DialogQuestionNode(2, "What would you like to do?");
-        DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add.");
-        DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(3, "Which support perk would you like to add.");
+        DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
+        DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
 
         //  main dialog
         DialogAnswerNode gainOneLevel = new DialogAnswerNode("Gain one level.", root, foCharacter);

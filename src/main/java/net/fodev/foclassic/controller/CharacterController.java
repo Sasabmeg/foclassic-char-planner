@@ -8,6 +8,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import net.fodev.foclassic.CharPlannerApp;
 import net.fodev.foclassic.model.fochar.FoCharacter;
@@ -19,6 +20,8 @@ import java.io.OutputStream;
 
 import java.io.PrintStream;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CharacterController {
 
@@ -44,6 +47,11 @@ public class CharacterController {
     protected static final int BIG_NUM_HEIGHT = 20;
     protected FoCharacter foCharacter;
     protected Image bigNum;
+
+    protected List<Integer> fontSizeSteps;
+    protected int consoleOutFontSizeIndex;
+
+
     @FXML protected Pane backgroundPane;
     @FXML protected TextField textName;
     @FXML protected TextField textAge;
@@ -86,6 +94,7 @@ public class CharacterController {
     @FXML
     protected void initialize() {
         initDebugConsole();
+        initializeFontSizeSteps();
         initImages();
         handleBaseLabelClickEvents();
         updateSKillLabelValues();
@@ -98,6 +107,36 @@ public class CharacterController {
         ps = new PrintStream(new Console(textAreaConsoleOut));
         System.setOut(ps);
         System.setErr(ps);
+        textAreaConsoleOut.addEventFilter(ScrollEvent.SCROLL, e -> {
+            if (e.isControlDown()) {
+                if (e.getDeltaY() < 0) {
+                    consoleOutFontSizeIndex = consoleOutFontSizeIndex <= 0 ? 0 : consoleOutFontSizeIndex - 1;
+                } else {
+                    consoleOutFontSizeIndex = consoleOutFontSizeIndex >= fontSizeSteps.size() - 1
+                            ? fontSizeSteps.size() - 1 : consoleOutFontSizeIndex + 1;
+                }
+                String style = "-fx-font-size: " + getFontSize(consoleOutFontSizeIndex);
+                textAreaConsoleOut.setStyle(style);
+            }
+        });
+    }
+
+    protected void initializeFontSizeSteps() {
+        fontSizeSteps = new ArrayList<>();
+        fontSizeSteps.add(10);
+        fontSizeSteps.add(12);
+        fontSizeSteps.add(14);
+        fontSizeSteps.add(16);
+        fontSizeSteps.add(18);
+        fontSizeSteps.add(20);
+        fontSizeSteps.add(24);
+        consoleOutFontSizeIndex = 1;
+    }
+
+    protected int getFontSize(int index) {
+        if (index < 0) return fontSizeSteps.get(0);
+        if (index >= fontSizeSteps.size() - 1) return fontSizeSteps.get(fontSizeSteps.size() - 1);
+        return fontSizeSteps.get(index);
     }
 
     private void disableTextTraversableFocus() {

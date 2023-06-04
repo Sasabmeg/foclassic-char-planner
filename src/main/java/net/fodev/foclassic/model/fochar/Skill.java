@@ -18,6 +18,15 @@ public class Skill {
         this.value += byValue;
     }
 
+    public int getSkillRaiseCost() {
+        if (value > 200) return 6;
+        if (value > 175) return 5;
+        if (value > 150) return 4;
+        if (value > 125) return 3;
+        if (value > 100) return 2;
+        return 1;
+    }
+
     public void raiseSkillValue() {
         if (isTagged()) {
             value+= 2;
@@ -26,9 +35,25 @@ public class Skill {
         }
     }
 
-    public int getSkillRaiseCost() {
+    public int getSkillUnraiseGain() {
+        if (tagged) {
+            if (value > 202) return 6;
+            if (value > 177) return 5;
+            if (value > 152) return 4;
+            if (value > 127) return 3;
+            if (value > 102) return 2;
+
+        } else {
+            if (value > 200) return 6;
+            if (value > 175) return 5;
+            if (value > 150) return 4;
+            if (value > 125) return 3;
+            if (value > 100) return 2;
+
+        }
         return 1;
     }
+
 
     public void unraiseSkillValue() {
         if (isTagged()) {

@@ -185,8 +185,8 @@
             <Label fx:id="labelCriticalChanceValue" layoutX="290.0" layoutY="299.0" prefHeight="14.0" prefWidth="120.0" styleClass="textActiveLeft" text="1%" />
 
             <Button fx:id="buttonNA" layoutX="729.0" layoutY="454.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
-            <Button fx:id="buttonDone" layoutX="838.0" layoutY="455.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
-            <Button fx:id="buttonBack" layoutX="935.0" layoutY="455.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
+            <Button fx:id="buttonDone" layoutX="839.0" layoutY="455.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
+            <Button fx:id="buttonBack" layoutX="936.0" layoutY="455.0" mnemonicParsing="false" styleClass="buttonRedCircle" text="" />
          </children></Pane>
       <TextArea fx:id="textAreaConsoleOut" editable="false" prefHeight="278.0" prefWidth="1024.0" style="-fx-wrap-text: true;" styleClass="fofntTest" />
    </children>
