@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class CharPlannerApp extends Application {
         scene = new Scene(loadFXML("fxml/primary"), 1024, 768);
         System.out.println("App::stage.setScene(scene)");
         stage.setScene(scene);
+        stage.getIcons().add(new Image(CharPlannerApp.class.getResource("images/dice-icon.png").openStream()));
         System.out.println("App::stage.show()");
         stage.show();
     }
