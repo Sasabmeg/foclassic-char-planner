@@ -34,6 +34,7 @@ public class CharPlannerApp extends Application {
         System.out.println("App::stage.setScene(scene)");
         stage.setScene(scene);
         stage.getIcons().add(new Image(CharPlannerApp.class.getResource("images/dice-icon.png").openStream()));
+        stage.setTitle("FOClassic Character Planner");
         System.out.println("App::stage.show()");
         stage.show();
     }
