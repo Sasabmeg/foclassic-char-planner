@@ -1,6 +1,7 @@
 net\fodev\foclassic\controller\RegisterController.class
 net\fodev\foclassic\model\fochar\PerkFactory.class
 net\fodev\foclassic\model\fochar\Skill.class
+net\fodev\foclassic\view\DialogFormatCell.class
 net\fodev\foclassic\model\dialog\DialogDemandNode.class
 net\fodev\foclassic\model\dialog\DialogAnswerNode.class
 net\fodev\foclassic\controller\LevelUpController.class
@@ -20,10 +21,11 @@ net\fodev\foclassic\model\dialog\DialogResultNode.class
 net\fodev\foclassic\model\fochar\SkillProto.class
 net\fodev\foclassic\model\dialog\DialogQuestionNode.class
 net\fodev\foclassic\model\fochar\Special.class
+net\fodev\foclassic\CharPlannerApp.class
+net\fodev\foclassic\controller\GainPerkController.class
 net\fodev\foclassic\GUIStarter.class
 net\fodev\foclassic\model\fochar\SpecialFactory.class
 net\fodev\foclassic\controller\SecondaryController.class
 net\fodev\foclassic\controller\FoCharacterRuleset.class
 net\fodev\foclassic\controller\CharacterController.class
-net\fodev\foclassic\App.class
 net\fodev\foclassic\model\fochar\Perk.class

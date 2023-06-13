@@ -9,11 +9,13 @@ E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\focla
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SkillProto.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SpecialFactory.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SupportPerk.java
+E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\CharPlannerApp.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\FoCharacter.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\module-info.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\dialog\DialogResultNode.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\Special.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\dialog\DialogQuestionNode.java
+E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\controller\GainPerkController.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\CombatPerk.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\Perk.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SkillFactory.java
@@ -24,5 +26,5 @@ E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\focla
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\TraitFactory.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\GUIStarter.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\dialog\DialogFactory.java
+E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\view\DialogFormatCell.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\controller\FoCharacterRuleset.java
-E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\App.java
