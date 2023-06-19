@@ -51,4 +51,18 @@ public class TestFoCharacter {
         System.out.println("FoCharacter.equals() = " + foChar1.equals(foChar2));
     }
 
+    @Test
+    public void equals_afterCopy_valid() {
+        FoCharacter oldChar = FoCharacterFactory.createNewCharacter("Test1", 15, "Male");
+        FoCharacter newChar = FoCharacterFactory.createNewCharacter("Test1", 15, "Male");
+        System.out.println("FoCharacter.equals() = " + newChar.equals(oldChar));
+
+        newChar.setSkillValue(0, 200);
+        newChar.tagSkill(2);
+        System.out.println("After setting first skill to 200 and tagging 3rd skill, FoCharacter.equals() = " + newChar.equals(oldChar));
+        System.out.println("Copying second to first.");
+        FoCharacterFactory.copyTo(oldChar, newChar);
+        System.out.println("After copying mew to old, FoCharacter.equals() = " + newChar.equals(oldChar));
+    }
+
 }

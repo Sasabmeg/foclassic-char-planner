@@ -12,9 +12,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import net.fodev.foclassic.CharPlannerApp;
-import net.fodev.foclassic.model.dialog.DialogAnswerNode;
-import net.fodev.foclassic.model.dialog.DialogFactory;
-import net.fodev.foclassic.model.dialog.DialogQuestionNode;
+import net.fodev.foclassic.model.dialog.*;
 import net.fodev.foclassic.model.fochar.*;
 import net.fodev.foclassic.view.DialogFormatCell;
 
@@ -43,6 +41,8 @@ public class LevelUpController extends CharacterController {
     @FXML private Button buttonSkillChangePlus;
     @FXML private Button buttonSkillChangeMinus;
 
+    public LevelUpController() {
+    }
 
 
     public void setFoCharacter(FoCharacter foCharacter) {
@@ -107,6 +107,23 @@ public class LevelUpController extends CharacterController {
                 System.out.println("Selected skill index out of bounds: " + selectedSkillIndex);
             }
         });
+        buttonBack.setOnMouseClicked(mouseEvent -> {
+            FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/primary.fxml"));
+            try {
+                CharPlannerApp.setRoot("fxml/primary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        buttonDone.setOnMouseClicked(mouseEvent -> {
+            if (!foCharacter.equals(oldFoCharacter)) {
+                FoCharacterFactory.copyTo(oldFoCharacter, foCharacter);
+                System.out.println("Character saved.");
+            } else {
+                System.out.println("Error: No character changes to save.");
+            }
+        });
+
     }
 
     private void initLabels() {

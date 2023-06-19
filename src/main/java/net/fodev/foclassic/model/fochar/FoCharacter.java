@@ -365,7 +365,6 @@ public class FoCharacter {
         } else {
             System.out.println("FoCharacter::raiseSKill() - cannot lower skill below minimum or last level up save.");
         }
-
     }
 
     @Override

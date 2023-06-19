@@ -37,17 +37,23 @@ public class RegisterController extends CharacterController {
     //  Buttons: Done, Back
     private void handleOtherButtonClickEvents() {
         buttonDone.setOnMouseClicked(mouseEvent -> {
-            FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/levelUp.fxml"));
-            LevelUpController levelUpController = new LevelUpController();
-            levelUpController.setFoCharacter(foCharacter);
-            fxmlLoader.setController(levelUpController);
-            Parent parent = null;
-            try {
-                parent = fxmlLoader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (foCharacter.getUnusedSpecialPoints() > 0) {
+                System.out.println("Must spend all Special points to finish character.");
+            } else if (foCharacter.getUnusedTagPoints() > 0) {
+                System.out.println("Must spend all Skill Tag points to finish character.");
+            } else {
+                FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/levelUp.fxml"));
+                LevelUpController levelUpController = new LevelUpController();
+                levelUpController.setFoCharacter(foCharacter);
+                fxmlLoader.setController(levelUpController);
+                Parent parent = null;
+                try {
+                    parent = fxmlLoader.load();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                CharPlannerApp.setRoot(parent);
             }
-            CharPlannerApp.setRoot(parent);
         });
         buttonBack.setOnMouseClicked(mouseEvent -> {
             FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/primary.fxml"));

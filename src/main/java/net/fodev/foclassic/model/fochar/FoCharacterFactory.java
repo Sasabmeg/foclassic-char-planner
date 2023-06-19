@@ -37,13 +37,16 @@ public class FoCharacterFactory {
             result.getSpecial(i).setValue(other.getSpecial(i).getValue());
         }
         for (int i = 0; i < result.getSkills().size(); i++) {
+            //System.out.println(String.format("Skill (%s:%d) -> (%s:%d)",
+            //        result.getSkillName(i), result.getSkillValue(i), other.getSkillName(i), other.getSkillValue(i)));
             result.getSkill(i).setValue(other.getSkill(i).getValue());
+            result.getSkill(i).setTagged(other.getSkill(i).isTagged());
         }
         for (int i = 0; i < result.getTraits().size(); i++) {
             result.getTrait(i).setTagged(other.getTrait(i).isTagged());
         }
         result.getCombatPerks().clear();
-        other.getCombatPerks().forEach(cp-> result.getCombatPerks().add(cp));
+        other.getCombatPerks().forEach(cp -> result.getCombatPerks().add(cp));
         result.getSupportPerks().clear();
         other.getSupportPerks().forEach(sp -> result.getSupportPerks().add(sp));
     }
