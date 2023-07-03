@@ -401,9 +401,7 @@ public class FoCharacter {
         if (skillBook != null) {
             if (skillBook.getUsed() < skillBook.getMaxUses()) {
                 SkillProto skillProto = SkillFactory.getSkillProto(skillBook.getProto().getProto().getName());
-                System.out.println(skillProto.getName());
                 Skill skill = getSkillByName(skillProto.getName());
-                System.out.println(skill.getName());
                 switch (skill.getSkillRaiseCost()) {
                     case 1:
                         skill.increaseValue(skill.isTagged() ? 12 : 6);
