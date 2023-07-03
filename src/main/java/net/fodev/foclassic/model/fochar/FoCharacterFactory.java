@@ -120,6 +120,13 @@ public class FoCharacterFactory {
         result.setHealingRate(7 + result.getEndurance() / 2);
         result.setCriticalChance(result.getLuck());
 
+        result.getSkillBooks().add(new SkillBook(SkillBookFactory.getSkillBookProto(SkillBookFactory.SCIENCE), 0, 10));
+        result.getSkillBooks().add(new SkillBook(SkillBookFactory.getSkillBookProto(SkillBookFactory.REPAIR), 0, 10));
+        result.getSkillBooks().add(new SkillBook(SkillBookFactory.getSkillBookProto(SkillBookFactory.OUTDOORSMAN), 0, 10));
+        result.getSkillBooks().add(new SkillBook(SkillBookFactory.getSkillBookProto(SkillBookFactory.BARTER), 0, 10));
+        result.getSkillBooks().add(new SkillBook(SkillBookFactory.getSkillBookProto(SkillBookFactory.FIRST_AID), 0, 10));
+        result.getSkillBooks().add(new SkillBook(SkillBookFactory.getSkillBookProto(SkillBookFactory.SMALL_GUNS), 0, 10));
+
         //  awareness support perk is given at start
         result.addSupportPerk(PerkFactory.getSupportPerk(PerkFactory.AWARENESS));
 

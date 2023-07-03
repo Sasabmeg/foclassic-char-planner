@@ -1,9 +1,6 @@
 package net.fodev.foclassic.model.dialog;
 
-import net.fodev.foclassic.model.fochar.FoCharacter;
-import net.fodev.foclassic.model.fochar.FoCharacterFactory;
-import net.fodev.foclassic.model.fochar.PerkFactory;
-import net.fodev.foclassic.model.fochar.SkillFactory;
+import net.fodev.foclassic.model.fochar.*;
 
 public class DialogFactory {
 
@@ -14,6 +11,7 @@ public class DialogFactory {
         DialogQuestionNode root = new DialogQuestionNode(2, "What would you like to do?");
         DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
         DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
+        DialogQuestionNode readSkillBookQuestion = new DialogQuestionNode(5, "Which skill book would you like to read?");
 
         //  main dialog
         DialogAnswerNode gainOneLevel = new DialogAnswerNode("Gain one level.", root, foCharacter);
@@ -29,9 +27,8 @@ public class DialogFactory {
         gainThreeLevels.addResult(new DialogResultNode(fc -> System.out.println("Gained three level. Character saved.")));
 
         DialogAnswerNode gainSupportPerk = new DialogAnswerNode("Gain a support perk. (Available)", supportPerkQuestion, foCharacter);
-
         DialogAnswerNode gainSupportPerkShowAll = new DialogAnswerNode("Gain a support perk. (Show all)", supportPerkShowAllQuestion, foCharacter);
-
+        DialogAnswerNode readSkillBook = new DialogAnswerNode("Read a skill book.", readSkillBookQuestion, foCharacter);
         DialogAnswerNode mutate = new DialogAnswerNode("Mutate.", root, foCharacter);
 
         DialogAnswerNode saveChanges = new DialogAnswerNode("Save changes.", root, foCharacter);
@@ -43,6 +40,7 @@ public class DialogFactory {
         root.addAnswer(gainThreeLevels);
         root.addAnswer(gainSupportPerk);
         root.addAnswer(gainSupportPerkShowAll);
+        root.addAnswer(readSkillBook);
         root.addAnswer(mutate);
         root.addAnswer(saveChanges);
 
@@ -72,6 +70,18 @@ public class DialogFactory {
         supportPerkShowAllQuestion.addAnswer(backToRootShowAll);
 
         addSupportPerkDemands(supportPerkShowAllQuestion, foCharacter);
+
+        //  read a book
+        SkillBookFactory.getSkillBookProtos().forEach(sbp -> {
+            DialogAnswerNode answer = new DialogAnswerNode(sbp.getName(), root, foCharacter);
+            answer.addDemand(new DialogDemandNode(fc -> fc.canReadSkillBook(sbp.getName()), "Cannot read any more of " + sbp.getName() + " skill books."));
+            answer.addResult(new DialogResultNode(fc -> fc.readSkillBook(sbp.getName())));
+            answer.addResult(new DialogResultNode(fc -> System.out.printf("Read skill book: %s (%d/%d)\n",
+                    sbp.getName(), fc.getSkillBookRead(sbp.getName()), fc.getSkillBookMaxUses(sbp.getName()) ) ) );
+            readSkillBookQuestion.addAnswer(answer);
+        });
+        DialogAnswerNode backToRootReadSkillBook = new DialogAnswerNode("[Back]", root, foCharacter);
+        readSkillBookQuestion.addAnswer(backToRootReadSkillBook);
 
         return root;
     }

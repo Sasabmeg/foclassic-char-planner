@@ -78,7 +78,7 @@ public class LevelUpController extends CharacterController {
     private void initButtonClickEvents() {
         buttonSkillChangePlus.setOnMouseClicked(mouseEvent -> {
             if (selectedSkillIndex >= 0 && selectedSkillIndex <= 18) {
-                System.out.printf("Raising selected skill [%d] %s.%n", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex));
+                //System.out.printf("Raising selected skill [%d] %s.%n", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex));
                 int cost = foCharacter.getSkill(selectedSkillIndex).getSkillRaiseCost();
                 if (foCharacter.getUnusedSkillPoints() >= cost) {
                     foCharacter.raiseSkill(selectedSkillIndex);
@@ -95,7 +95,7 @@ public class LevelUpController extends CharacterController {
         buttonSkillChangeMinus.setOnMouseClicked(mouseEvent -> {
             if (selectedSkillIndex >= 0 && selectedSkillIndex <= 18) {
                 if (foCharacter.getSkillValue(selectedSkillIndex) > oldFoCharacter.getSkillValue(selectedSkillIndex)) {
-                    System.out.printf("Raising selected skill [%d] %s.%n", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex));
+                    //System.out.printf("Raising selected skill [%d] %s.%n", selectedSkillIndex, foCharacter.getSkillName(selectedSkillIndex));
                     foCharacter.unraiseSkill(selectedSkillIndex, oldFoCharacter.getSkillValue(selectedSkillIndex));
                     updateSKillLabelValues();
                     updateUnusedSkillPointsValue();
@@ -200,7 +200,7 @@ public class LevelUpController extends CharacterController {
                     dialogQuestionFontSizeIndex = dialogQuestionFontSizeIndex >= fontSizeSteps.size() - 1
                             ? fontSizeSteps.size() - 1 : dialogQuestionFontSizeIndex + 1;
                 }
-                System.out.println("DialogQuestionFontSize = " + fontSizeSteps.get(dialogQuestionFontSizeIndex));
+                //System.out.println("DialogQuestionFontSize = " + fontSizeSteps.get(dialogQuestionFontSizeIndex));
                 updateDialogQuestionView();
             }
         });
@@ -248,7 +248,7 @@ public class LevelUpController extends CharacterController {
                     dialogAnswerFontSizeIndex = dialogAnswerFontSizeIndex >= fontSizeSteps.size() - 1
                             ? fontSizeSteps.size() - 1 : dialogAnswerFontSizeIndex + 1;
                 }
-                System.out.println("DialogAnswerFontSize = " + fontSizeSteps.get(dialogAnswerFontSizeIndex));
+                //System.out.println("DialogAnswerFontSize = " + fontSizeSteps.get(dialogAnswerFontSizeIndex));
                 updateDialogAnswerListView();
             }
         });
@@ -280,7 +280,7 @@ public class LevelUpController extends CharacterController {
         updatePerkListView();
         listViewPerks.setFocusTraversable(false);
         listViewPerks.setOnMouseClicked(mouseEvent -> {
-            System.out.println("selected item = " + listViewPerks.getSelectionModel().getSelectedItem());
+            //System.out.println("selected item = " + listViewPerks.getSelectionModel().getSelectedItem());
             if (listViewPerks.getSelectionModel().getSelectedItem() instanceof Trait) {
                 Trait selectedItem = (Trait)listViewPerks.getSelectionModel().getSelectedItem();
                 updateDescriptionText(selectedItem.getName(), selectedItem.getDescription(), selectedItem.getImage());
@@ -336,6 +336,9 @@ public class LevelUpController extends CharacterController {
         foCharacter.getCombatPerks().stream().forEach(items::add);
         items.add("--------   SUPPORT PERKS    --------");
         foCharacter.getSupportPerks().forEach(items::add);
+        items.add("---------   SKILL BOOKS    ---------");
+        foCharacter.getSkillBooks().stream().filter(sb -> sb.getUsed() > 0).forEach(sb -> items.add(String.format("%s (%d)",
+                sb.getProto().getName(), sb.getUsed(), sb.getMaxUses())));
     }
 
     private void updateUnusedSkillPointsValue() {

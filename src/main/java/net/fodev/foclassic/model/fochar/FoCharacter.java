@@ -40,6 +40,7 @@ public class FoCharacter {
     @Getter @Setter private List<CombatPerk> combatPerks;
     @Getter @Setter private List<SupportPerk> supportPerks;
     @Getter @Setter private int unusedPerkPoints;
+    @Getter @Setter private List<SkillBook> skillBooks;
 
     public FoCharacter(String name, int age, String sex) {
         this.name = name;
@@ -50,6 +51,7 @@ public class FoCharacter {
         traits = new ArrayList<>();
         combatPerks = new ArrayList<>();
         supportPerks = new ArrayList<>();
+        skillBooks = new ArrayList<>();
         unusedTraitPoints = 2;
         experience = 0;
         level = 1;
@@ -367,6 +369,41 @@ public class FoCharacter {
         }
     }
 
+    public int getSkillBookRead(String protoName) {
+        if (protoName == null) return 0;
+        SkillBook sb = skillBooks.stream().filter(n -> protoName.equals(n.getProto().getName())).findFirst().orElse(null);
+        return (sb == null) ? 0 : sb.getUsed();
+    }
+
+    public int getSkillBookMaxUses(String protoName) {
+        if (protoName == null) return 0;
+        SkillBook sb = skillBooks.stream().filter(n -> protoName.equals(n.getProto().getName())).findFirst().orElse(null);
+        return (sb == null) ? 0 : sb.getMaxUses();
+    }
+
+    public boolean canReadSkillBook(String protoName) {
+        SkillBook skillBook = skillBooks.stream().filter(b -> b.getProto().getName().equals(protoName)).findFirst().orElse(null);
+        if (skillBook != null) {
+            return skillBook.getUsed() < skillBook.getMaxUses();
+        } else {
+            return false;
+        }
+    }
+
+    public void readSkillBook(String protoName) {
+        SkillBook skillBook = skillBooks.stream().filter(b -> b.getProto().getName().equals(protoName)).findFirst().orElse(null);
+        if (skillBook != null) {
+            if (skillBook.getUsed() < skillBook.getMaxUses()) {
+                skillBook.readBook();
+            } else {
+                System.out.println("Debug: Already read maximum of skill books - " + name);
+            }
+        } else {
+            System.out.println("Debug: Could not read skill book - " + name);
+        }
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -407,6 +444,7 @@ public class FoCharacter {
         if (!traits.equals(that.traits)) return false;
         if (!combatPerks.equals(that.combatPerks)) return false;
         if (!supportPerks.equals(that.supportPerks)) return false;
+        if (!skillBooks.equals(that.skillBooks)) return false;
         return true;
     }
 
@@ -444,6 +482,7 @@ public class FoCharacter {
         result = 31 * result + unusedTraitPoints;
         result = 31 * result + combatPerks.hashCode();
         result = 31 * result + supportPerks.hashCode();
+        result = 31 * result + skillBooks.hashCode();
         result = 31 * result + unusedPerkPoints;
         return result;
     }
