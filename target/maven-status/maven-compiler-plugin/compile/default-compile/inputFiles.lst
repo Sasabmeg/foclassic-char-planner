@@ -3,6 +3,7 @@ E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\focla
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\controller\SecondaryController.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SpecialProto.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\controller\LevelUpController.java
+E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SkillBookProto.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\Trait.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\controller\RegisterController.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\dialog\DialogAnswerNode.java
@@ -11,6 +12,8 @@ E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\focla
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SupportPerk.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\CharPlannerApp.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\FoCharacter.java
+E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SkillBookFactory.java
+E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\SkillBook.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\module-info.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\dialog\DialogResultNode.java
 E:\Coding\IntelliJ-Projects\foclassic-char-planner\src\main\java\net\fodev\foclassic\model\fochar\Special.java

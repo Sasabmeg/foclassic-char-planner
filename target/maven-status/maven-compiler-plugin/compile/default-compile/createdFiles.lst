@@ -12,6 +12,7 @@ net\fodev\foclassic\model\fochar\SkillFactory.class
 net\fodev\foclassic\model\fochar\FoCharacter.class
 net\fodev\foclassic\controller\PrimaryController.class
 net\fodev\foclassic\model\dialog\DialogFactory.class
+net\fodev\foclassic\model\fochar\SkillBookProto.class
 net\fodev\foclassic\controller\CharacterController$Console.class
 net\fodev\foclassic\model\fochar\SupportPerk.class
 net\fodev\foclassic\model\fochar\TraitFactory.class
@@ -26,6 +27,8 @@ net\fodev\foclassic\controller\GainPerkController.class
 net\fodev\foclassic\GUIStarter.class
 net\fodev\foclassic\model\fochar\SpecialFactory.class
 net\fodev\foclassic\controller\SecondaryController.class
+net\fodev\foclassic\model\fochar\SkillBookFactory.class
 net\fodev\foclassic\controller\FoCharacterRuleset.class
+net\fodev\foclassic\model\fochar\SkillBook.class
 net\fodev\foclassic\controller\CharacterController.class
 net\fodev\foclassic\model\fochar\Perk.class

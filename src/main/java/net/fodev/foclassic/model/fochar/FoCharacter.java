@@ -142,6 +142,12 @@ public class FoCharacter {
                 .findFirst().get().getValue();
     }
 
+    public Skill getSkillByName(String name) {
+        return skills.stream()
+                .filter(s -> name.equals(s.getName()))
+                .findFirst().get();
+    }
+
     public String getSkillName(int index) {
         if (index >= 0 && index < skills.size()) {
             return skills.get(index).getName();
@@ -394,7 +400,32 @@ public class FoCharacter {
         SkillBook skillBook = skillBooks.stream().filter(b -> b.getProto().getName().equals(protoName)).findFirst().orElse(null);
         if (skillBook != null) {
             if (skillBook.getUsed() < skillBook.getMaxUses()) {
-                skillBook.readBook();
+                SkillProto skillProto = SkillFactory.getSkillProto(skillBook.getProto().getProto().getName());
+                System.out.println(skillProto.getName());
+                Skill skill = getSkillByName(skillProto.getName());
+                System.out.println(skill.getName());
+                switch (skill.getSkillRaiseCost()) {
+                    case 1:
+                        skill.increaseValue(skill.isTagged() ? 12 : 6);
+                        skillBook.readBook();
+                        break;
+                    case 2:
+                        skill.increaseValue(skill.isTagged() ? 6 : 3);
+                        skillBook.readBook();
+                        break;
+                    case 3:
+                        skill.increaseValue(skill.isTagged() ? 4 : 2);
+                        skillBook.readBook();
+                        break;
+                    case 4:
+                    case 5:
+                    case 6:
+                        skill.increaseValue(skill.isTagged() ? 2 : 1);
+                        skillBook.readBook();
+                        break;
+                    default:
+                        System.out.println("Debug: Read skill book failed, not able to compute raise skill value.");
+                }
             } else {
                 System.out.println("Debug: Already read maximum of skill books - " + name);
             }

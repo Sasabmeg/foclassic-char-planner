@@ -200,7 +200,6 @@ public class LevelUpController extends CharacterController {
                     dialogQuestionFontSizeIndex = dialogQuestionFontSizeIndex >= fontSizeSteps.size() - 1
                             ? fontSizeSteps.size() - 1 : dialogQuestionFontSizeIndex + 1;
                 }
-                //System.out.println("DialogQuestionFontSize = " + fontSizeSteps.get(dialogQuestionFontSizeIndex));
                 updateDialogQuestionView();
             }
         });
@@ -229,6 +228,7 @@ public class LevelUpController extends CharacterController {
                     updateLevelAndExperience();
                     updateUnusedSkillPointsValue();
                     updatePerkListView();
+                    updateSKillLabelValues();
                 } else {
                     updateDescriptionTextFromDialog(selectedItem);
                     if (selectedItem.getDemandErrors().length() > 2) {
