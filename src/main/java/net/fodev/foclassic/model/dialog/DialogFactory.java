@@ -10,8 +10,10 @@ public class DialogFactory {
 
         DialogQuestionNode root = new DialogQuestionNode(2, "What would you like to do?");
         DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
-        DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
+        DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(4, "Which support perk would you like to add?");
         DialogQuestionNode readSkillBookQuestion = new DialogQuestionNode(5, "Which skill book would you like to read?");
+        DialogQuestionNode mutateQuestion = new DialogQuestionNode(6,
+                "The radiation of the wasteland has changed you! One of your traits, perks, specials, skill tags or skills might have mutated into something else...");
 
         //  main dialog
         DialogAnswerNode gainOneLevel = new DialogAnswerNode("Gain one level.", root, foCharacter);
@@ -29,7 +31,7 @@ public class DialogFactory {
         DialogAnswerNode gainSupportPerk = new DialogAnswerNode("Gain a support perk. (Available)", supportPerkQuestion, foCharacter);
         DialogAnswerNode gainSupportPerkShowAll = new DialogAnswerNode("Gain a support perk. (Show all)", supportPerkShowAllQuestion, foCharacter);
         DialogAnswerNode readSkillBook = new DialogAnswerNode("Read a skill book.", readSkillBookQuestion, foCharacter);
-        DialogAnswerNode mutate = new DialogAnswerNode("Mutate.", root, foCharacter);
+        DialogAnswerNode mutate = new DialogAnswerNode("Mutate.", mutateQuestion, foCharacter);
 
         DialogAnswerNode saveChanges = new DialogAnswerNode("Save changes.", root, foCharacter);
         saveChanges.addDemand(new DialogDemandNode(fc -> !fc.equals(oldCharacter), "Error: No character changes to save."));
@@ -45,6 +47,90 @@ public class DialogFactory {
         root.addAnswer(saveChanges);
 
         //  support perks (available)
+        addSupportPerkAnswers(foCharacter, root, supportPerkQuestion);
+        addSupportPerkDemands(supportPerkQuestion, foCharacter);
+        supportPerkQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+
+        //  support perks (show all)
+        addSupportPerkAnswers(foCharacter, root, supportPerkShowAllQuestion);
+        addSupportPerkDemands(supportPerkShowAllQuestion, foCharacter);
+
+        //  read a book
+        addReadSkillBookAnswers(foCharacter, root, readSkillBookQuestion);
+        
+        //  mutate
+        addMutateAnswers(foCharacter, root, mutateQuestion);
+
+        return root;
+    }
+
+    private static void addMutateAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode mutateQuestion) {
+        mutateSpecials(foCharacter, mutateQuestion);
+
+        DialogAnswerNode backToRoot = new DialogAnswerNode("[Back]", root, foCharacter);
+        mutateQuestion.addAnswer(backToRoot);
+    }
+
+    private static void mutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+        DialogQuestionNode mutateSpecialQuestion = new DialogQuestionNode(1, "Your S.P.E.C.I.A.L. attributes are mutating...");
+
+        DialogAnswerNode looseStrengthAnswer = new DialogAnswerNode("Loose Strength.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseStrengthAnswer, 0);
+        DialogAnswerNode loosePerceptionAnswer = new DialogAnswerNode("Loose Perception.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, loosePerceptionAnswer, 1);
+        DialogAnswerNode looseEnduranceAnswer = new DialogAnswerNode("Loose Endurance.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseEnduranceAnswer, 2);
+        DialogAnswerNode looseCharismaAnswer = new DialogAnswerNode("Loose Charisma.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseCharismaAnswer, 3);
+        DialogAnswerNode looseIntellectAnswer = new DialogAnswerNode("Loose Intellect.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseIntellectAnswer, 4);
+        DialogAnswerNode looseAgilityAnswer = new DialogAnswerNode("Loose Agility.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseAgilityAnswer, 5);
+        DialogAnswerNode looseLuckAnswer = new DialogAnswerNode("Loose Luck.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseLuckAnswer, 6);
+
+        mutateSpecialQuestion.addResultToAllAnswers(new DialogResultNode(fc -> mutateSpecials(fc, mutateQuestion)));
+
+        DialogAnswerNode gainStrengthAnswer = new DialogAnswerNode("Gain Strength.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainStrengthAnswer, 0);
+        DialogAnswerNode gainPerceptionAnswer = new DialogAnswerNode("Gain Perception.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainPerceptionAnswer, 1);
+        DialogAnswerNode gainEnduranceAnswer = new DialogAnswerNode("Gain Endurance.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainEnduranceAnswer, 2);
+        DialogAnswerNode gainCharismaAnswer = new DialogAnswerNode("Gain Charisma.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainCharismaAnswer, 3);
+        DialogAnswerNode gainIntellectAnswer = new DialogAnswerNode("Gain Intellect.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainIntellectAnswer, 4);
+        DialogAnswerNode gainAgilityAnswer = new DialogAnswerNode("Gain Agility.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainAgilityAnswer, 5);
+        DialogAnswerNode gainLuckAnswer = new DialogAnswerNode("Gain Luck.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainLuckAnswer, 6);
+
+        DialogAnswerNode backToMutateSpecials = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
+        mutateSpecialQuestion.addAnswer(backToMutateSpecials);
+
+        mutateSpecialQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+
+        mutateQuestion.removeAnswer("Mutate S.P.E.C.I.A.L. attributes.");
+        DialogAnswerNode mutateSpecialAnswer = new DialogAnswerNode("Mutate S.P.E.C.I.A.L. attributes.", mutateSpecialQuestion, foCharacter);
+        mutateQuestion.addAnswer(mutateSpecialAnswer);
+    }
+
+    private static void addLooseSpecialsDemandsAndResults(DialogQuestionNode mutateSpecialQuestion, DialogAnswerNode looseSpecialAnswer, int specialIndex) {
+        looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSpecialPoints() == 0, "Error: Must spend unused special points first."));
+        looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getSpecial(specialIndex).getValue() > 1, "Error: Special attribute must be higher than 1 to remove points in it."));
+        looseSpecialAnswer.addResult(new DialogResultNode(fc -> fc.setUnusedSpecialPoints(fc.getUnusedSpecialPoints() + 1)));
+        mutateSpecialQuestion.addAnswer(looseSpecialAnswer);
+    }
+
+    private static void addGainSpecialsDemandsAndResults(DialogQuestionNode mutateSpecialQuestion, DialogAnswerNode gainSpecialAnswer, int specialIndex) {
+        gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSpecialPoints() > 0, "Error: No unused special points left."));
+        gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getSpecial(specialIndex).getValue() <= 9, "Error: Cannot raise special attribute above maximum."));
+        gainSpecialAnswer.addResult(new DialogResultNode(fc -> fc.setUnusedSpecialPoints(fc.getUnusedSpecialPoints() - 1)));
+        mutateSpecialQuestion.addAnswer(gainSpecialAnswer);
+    }
+
+    private static void addSupportPerkAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode supportPerkQuestion) {
         PerkFactory.getSupportPerks().forEach(sp -> {
             DialogAnswerNode answer = new DialogAnswerNode(sp.getName(), root, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(sp), "Support Perk already picked: " + sp.getName()));
@@ -54,24 +140,9 @@ public class DialogFactory {
         });
         DialogAnswerNode backToRoot = new DialogAnswerNode("[Back]", root, foCharacter);
         supportPerkQuestion.addAnswer(backToRoot);
+    }
 
-        addSupportPerkDemands(supportPerkQuestion, foCharacter);
-        supportPerkQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
-
-        //  support perks (show all)
-        PerkFactory.getSupportPerks().forEach(sp -> {
-            DialogAnswerNode answer = new DialogAnswerNode(sp.getName(), root, foCharacter);
-            answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(sp), "Support Perk already picked: " + sp.getName()));
-            answer.addResult(new DialogResultNode(fc -> fc.addSupportPerk(sp)));
-            answer.addResult(new DialogResultNode(fc -> System.out.println("Added support perk: " + sp.getName())));
-            supportPerkShowAllQuestion.addAnswer(answer);
-        });
-        DialogAnswerNode backToRootShowAll = new DialogAnswerNode("[Back]", root, foCharacter);
-        supportPerkShowAllQuestion.addAnswer(backToRootShowAll);
-
-        addSupportPerkDemands(supportPerkShowAllQuestion, foCharacter);
-
-        //  read a book
+    private static void addReadSkillBookAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode readSkillBookQuestion) {
         SkillBookFactory.getSkillBookProtos().forEach(sbp -> {
             DialogAnswerNode answer = new DialogAnswerNode(sbp.getName(), root, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> fc.canReadSkillBook(sbp.getName()), "Cannot read any more of " + sbp.getName() + " skill books."));
@@ -82,8 +153,6 @@ public class DialogFactory {
         });
         DialogAnswerNode backToRootReadSkillBook = new DialogAnswerNode("[Back]", root, foCharacter);
         readSkillBookQuestion.addAnswer(backToRootReadSkillBook);
-
-        return root;
     }
 
     private static void addSupportPerkDemands(DialogQuestionNode root, FoCharacter foCharacter) {

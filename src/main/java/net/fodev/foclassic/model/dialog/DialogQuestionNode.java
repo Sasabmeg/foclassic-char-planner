@@ -24,4 +24,16 @@ public class DialogQuestionNode {
     public DialogAnswerNode getAnswer(String message) {
         return answers.stream().filter(a -> message.equals(a.getMessage())).findFirst().orElse(null);
     }
+
+    public void clear() {
+        answers.clear();
+    }
+
+    public void removeAnswer(String message) {
+        answers.removeIf(a -> message.equals(a.getMessage()));
+    }
+
+    public void addResultToAllAnswers(DialogResultNode resultNode) {
+        answers.forEach(a -> a.addResult(resultNode));
+    }
 }
