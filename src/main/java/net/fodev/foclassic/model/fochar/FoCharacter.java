@@ -180,6 +180,12 @@ public class FoCharacter {
         }
     }
 
+    public void setSpecialValue(int index, int value) {
+        if (index >= 0 && index < specials.size()) {
+            specials.get(index).setValue(value);
+        }
+    }
+
     public void tagSkill(int index) {
         if (index >= 0 && index < skills.size()) {
             if (!skills.get(index).isTagged()) {

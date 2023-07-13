@@ -17,7 +17,6 @@ import net.fodev.foclassic.model.fochar.*;
 import net.fodev.foclassic.view.DialogFormatCell;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LevelUpController extends CharacterController {
@@ -229,6 +228,7 @@ public class LevelUpController extends CharacterController {
                     updateUnusedSkillPointsValue();
                     updatePerkListView();
                     updateSKillLabelValues();
+                    updateSpecialPointsValues();
                 } else {
                     updateDescriptionTextFromDialog(selectedItem);
                     if (selectedItem.getDemandErrors().length() > 2) {

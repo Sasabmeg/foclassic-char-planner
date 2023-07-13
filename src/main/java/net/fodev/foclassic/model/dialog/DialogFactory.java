@@ -3,6 +3,7 @@ package net.fodev.foclassic.model.dialog;
 import net.fodev.foclassic.model.fochar.*;
 
 public class DialogFactory {
+    public static int specialMutateLooseIndex = -1;
 
     public static final DialogQuestionNode EXIT = new DialogQuestionNode(0, "Exit!");
 
@@ -127,6 +128,7 @@ public class DialogFactory {
         looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSpecialPoints() == 0, "Error: Must spend unused special points first."));
         looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getSpecial(specialIndex).getValue() > 1, "Error: Special attribute must be higher than 1 to remove points in it."));
         looseSpecialAnswer.addResult(new DialogResultNode(fc -> fc.setUnusedSpecialPoints(fc.getUnusedSpecialPoints() + 1)));
+        looseSpecialAnswer.addResult(new DialogResultNode(fc -> specialMutateLooseIndex = specialIndex));
         mutateSpecialQuestion.addAnswer(looseSpecialAnswer);
     }
 
@@ -134,6 +136,10 @@ public class DialogFactory {
         gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSpecialPoints() > 0, "Error: No unused special points left."));
         gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getSpecial(specialIndex).getValue() <= 9, "Error: Cannot raise special attribute above maximum."));
         gainSpecialAnswer.addResult(new DialogResultNode(fc -> fc.setUnusedSpecialPoints(fc.getUnusedSpecialPoints() - 1)));
+        gainSpecialAnswer.addResult(new DialogResultNode(fc -> {
+            fc.setSpecialValue(specialMutateLooseIndex, fc.getSpecial(specialMutateLooseIndex).getValue() - 1);
+            fc.setSpecialValue(specialIndex, fc.getSpecial(specialIndex).getValue() + 1);
+        }));
         mutateSpecialQuestion.addAnswer(gainSpecialAnswer);
     }
 
