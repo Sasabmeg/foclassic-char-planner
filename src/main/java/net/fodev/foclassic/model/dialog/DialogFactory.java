@@ -71,8 +71,19 @@ public class DialogFactory {
         mutateQuestion.addAnswer(backToRoot);
     }
 
-    private static void mutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+    private static DialogQuestionNode mutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
         DialogQuestionNode mutateSpecialQuestion = new DialogQuestionNode(1, "Your S.P.E.C.I.A.L. attributes are mutating...");
+
+        refreshMutateSpecials(foCharacter, mutateQuestion, mutateSpecialQuestion);
+
+        DialogAnswerNode mutateSpecialAnswer = new DialogAnswerNode("Mutate S.P.E.C.I.A.L. attributes.", mutateSpecialQuestion, foCharacter);
+        mutateQuestion.addAnswer(mutateSpecialAnswer);
+
+        return mutateSpecialQuestion;
+    }
+
+    private static void refreshMutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        mutateSpecialQuestion.clear();
 
         DialogAnswerNode looseStrengthAnswer = new DialogAnswerNode("Loose Strength.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseStrengthAnswer, 0);
@@ -88,8 +99,6 @@ public class DialogFactory {
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseAgilityAnswer, 5);
         DialogAnswerNode looseLuckAnswer = new DialogAnswerNode("Loose Luck.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseLuckAnswer, 6);
-
-        mutateSpecialQuestion.addResultToAllAnswers(new DialogResultNode(fc -> mutateSpecials(fc, mutateQuestion)));
 
         DialogAnswerNode gainStrengthAnswer = new DialogAnswerNode("Gain Strength.", mutateQuestion, foCharacter);
         addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainStrengthAnswer, 0);
@@ -111,9 +120,7 @@ public class DialogFactory {
 
         mutateSpecialQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
 
-        mutateQuestion.removeAnswer("Mutate S.P.E.C.I.A.L. attributes.");
-        DialogAnswerNode mutateSpecialAnswer = new DialogAnswerNode("Mutate S.P.E.C.I.A.L. attributes.", mutateSpecialQuestion, foCharacter);
-        mutateQuestion.addAnswer(mutateSpecialAnswer);
+        mutateSpecialQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateSpecials(foCharacter, mutateQuestion, mutateSpecialQuestion)));
     }
 
     private static void addLooseSpecialsDemandsAndResults(DialogQuestionNode mutateSpecialQuestion, DialogAnswerNode looseSpecialAnswer, int specialIndex) {
