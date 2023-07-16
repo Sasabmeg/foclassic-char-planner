@@ -1,5 +1,6 @@
 package net.fodev.foclassic.model.dialog;
 
+import net.fodev.foclassic.controller.FoCharacterRuleset;
 import net.fodev.foclassic.model.fochar.*;
 
 public class DialogFactory {
@@ -66,55 +67,642 @@ public class DialogFactory {
     }
 
     private static void addMutateAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode mutateQuestion) {
+        refreshMutateAnswers(foCharacter, root, mutateQuestion);
+        mutateQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateAnswers(foCharacter, root, mutateQuestion)));
+    }
+
+    private static void refreshMutateAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode mutateQuestion) {
+        mutateQuestion.clear();
+
         mutateSpecials(foCharacter, mutateQuestion);
+        mutateSkills(foCharacter, mutateQuestion);
+        mutateTraits(foCharacter, mutateQuestion);
+        mutateSupportPerks(foCharacter, mutateQuestion);
 
         DialogAnswerNode backToRoot = new DialogAnswerNode("[Back]", root, foCharacter);
         mutateQuestion.addAnswer(backToRoot);
+
+        mutateQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateAnswers(foCharacter, root, mutateQuestion)));
     }
 
-    private static DialogQuestionNode mutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+    private static void mutateSkills(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+        DialogQuestionNode mutateSkillsQuestion = new DialogQuestionNode(1, "Your skills are mutating... \n[Select skill to free up skill points from]");
+
+        refreshMutateSkills(foCharacter, mutateQuestion, mutateSkillsQuestion);
+
+        DialogAnswerNode mutateSkillsAnswer = new DialogAnswerNode("Mutate skills.", mutateSkillsQuestion, foCharacter);
+        mutateQuestion.addAnswer(mutateSkillsAnswer);
+    }
+
+    private static void refreshMutateSkills(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSkillsQuestion) {
+        mutateSkillsQuestion.clear();
+
+        addMutateSmallGunsAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateBigGunsAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateEnergyWeaponsAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateCloseCombatAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateThrowingAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateScavengingAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateFirstAidAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateDoctorAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateSneakAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateLockpickAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateStealAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateTrapsAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateScienceAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateRepairAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateSpeechAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateBarterAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateGamblingAnswer(foCharacter, mutateSkillsQuestion);
+        addMutateOutdoorsmanAnswer(foCharacter, mutateSkillsQuestion);
+
+        DialogAnswerNode backToMutateSkills = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
+        mutateSkillsQuestion.addAnswer(backToMutateSkills);
+
+        mutateSkillsQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateSkills(foCharacter, mutateQuestion, mutateSkillsQuestion)));
+    }
+
+    private static void addMutateSmallGunsAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode mutateSmallGunsAnswer = new DialogAnswerNode(SkillFactory.SMALL_GUNS, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, mutateSmallGunsAnswer, SkillFactory.SMALL_GUNS);
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.WEAPON_HANDLING))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 101 : 100)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.WEAPON_HANDLING));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.PYROMANIAC))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 101 : 100)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.PYROMANIAC));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_CRITICAL))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 101 : 100)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_CRITICAL));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.EVEN_MORE_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 125
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 125
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 125
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 125
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 126 : 125)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.EVEN_MORE_CRITICALS));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 151 : 150)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RANGED_DAMAGE));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 151 : 150)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.SHARPSHOOTER));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BETTER_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 175
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 175
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 175
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 175
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 176 : 175)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.BETTER_CRITICALS));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RATE_OF_ATTACK))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 180
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 180
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 180
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 180
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 181 : 180)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RATE_OF_ATTACK));
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 200
+                    || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 200
+                    || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 200
+                    || fc.getSkillValueByName(SkillFactory.THROWING) >= 200
+                    || fc.getSkillValueByName(SkillFactory.SMALL_GUNS) > (fc.isTaggedSkill(SkillFactory.SMALL_GUNS) ? 201 : 200)
+                ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_RANGED_DAMAGE));
+    }
+
+    private static void addMutateBigGunsAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.BIG_GUNS, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.BIG_GUNS);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.WEAPON_HANDLING))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.WEAPON_HANDLING));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.PYROMANIAC))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.PYROMANIAC));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_CRITICAL))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_CRITICAL));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.EVEN_MORE_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 125
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 125
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 125
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 126 : 125)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.EVEN_MORE_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RANGED_DAMAGE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.SHARPSHOOTER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BETTER_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 175
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 175
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 175
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 176 : 175)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BETTER_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RATE_OF_ATTACK))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 180
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 180
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 180
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 181 : 180)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RATE_OF_ATTACK));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 200
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 200
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 200
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) > (fc.isTaggedSkill(SkillFactory.BIG_GUNS) ? 201 : 200)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_RANGED_DAMAGE));
+    }
+
+    private static void addMutateEnergyWeaponsAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.ENERGY_WEAPONS, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.ENERGY_WEAPONS);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.WEAPON_HANDLING))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.WEAPON_HANDLING));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.PYROMANIAC))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.PYROMANIAC));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_CRITICAL))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_CRITICAL));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.EVEN_MORE_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 125
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 125
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 126 : 125)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.EVEN_MORE_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RANGED_DAMAGE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.SHARPSHOOTER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BETTER_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 175
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 175
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 176 : 175)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BETTER_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RATE_OF_ATTACK))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 180
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 180
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 181 : 180)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RATE_OF_ATTACK));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 200
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 200
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) > (fc.isTaggedSkill(SkillFactory.ENERGY_WEAPONS) ? 201 : 200)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_RANGED_DAMAGE));
+    }
+
+    private static void addMutateCloseCombatAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.CLOSE_COMBAT, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.CLOSE_COMBAT);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.PYROMANIAC))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.PYROMANIAC));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_CRITICAL))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_CRITICAL));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.EVEN_MORE_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 125
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 125
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 126 : 125)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.EVEN_MORE_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RANGED_DAMAGE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.SHARPSHOOTER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BETTER_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 175
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 175
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 176 : 175)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BETTER_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RATE_OF_ATTACK))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 180
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 180
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 181 : 180)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RATE_OF_ATTACK));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 200
+                || fc.getSkillValueByName(SkillFactory.THROWING) >= 200
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 201 : 200)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_RANGED_DAMAGE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.IN_YOUR_FACE))
+                || (fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.IN_YOUR_FACE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.CLOSE_COMBAT_MASTER))
+                || (fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.CLOSE_COMBAT_MASTER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.DODGER))
+                || (fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.DODGER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.DODGER2))
+                || (fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) > (fc.isTaggedSkill(SkillFactory.CLOSE_COMBAT) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.DODGER2));
+    }
+
+    private static void addMutateThrowingAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.THROWING, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.THROWING);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.WEAPON_HANDLING))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.WEAPON_HANDLING));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.PYROMANIAC))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.PYROMANIAC));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_CRITICAL))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 100
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 100
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 100
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 101 : 100)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_CRITICAL));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.EVEN_MORE_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 125
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 125
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 125
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 126 : 125)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.EVEN_MORE_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RANGED_DAMAGE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 150
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 150
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 150
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 151 : 150)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.SHARPSHOOTER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BETTER_CRITICALS))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 175
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 175
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 175
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 176 : 175)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BETTER_CRITICALS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.BONUS_RATE_OF_ATTACK))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 180
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 180
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 180
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 181 : 180)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.BONUS_RATE_OF_ATTACK));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MORE_RANGED_DAMAGE))
+                || (fc.getSkillValueByName(SkillFactory.SMALL_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.BIG_GUNS) >= 200
+                || fc.getSkillValueByName(SkillFactory.ENERGY_WEAPONS) >= 200
+                || fc.getSkillValueByName(SkillFactory.CLOSE_COMBAT) >= 200
+                || fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 201 : 200)
+        ),
+                "Error: Perk limiting mutation - " + PerkFactory.MORE_RANGED_DAMAGE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.HEAVE_HO))
+                || (fc.getSkillValueByName(SkillFactory.THROWING) > (fc.isTaggedSkill(SkillFactory.THROWING) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.HEAVE_HO));
+    }
+
+    private static void addMutateScavengingAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.SCAVENGING, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.SCAVENGING);
+        answer.addDemand(new DialogDemandNode(fc -> false, "Error: Your scavenging skill does not seem to be affected by mutation."));
+    }
+
+    private static void addMutateFirstAidAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.FIRST_AID, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.FIRST_AID);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MEDIC))
+                || (fc.getSkillValueByName(SkillFactory.FIRST_AID) > (fc.isTaggedSkill(SkillFactory.FIRST_AID) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.MEDIC));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.FIELD_MEDIC))
+                || (fc.getSkillValueByName(SkillFactory.FIRST_AID) > (fc.isTaggedSkill(SkillFactory.FIRST_AID) ? 176 : 175)),
+                "Error: Perk limiting mutation - " + PerkFactory.FIELD_MEDIC));
+    }
+
+    private static void addMutateDoctorAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.DOCTOR, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.DOCTOR);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.DEAD_MAN_WALKING))
+                || (fc.getSkillValueByName(SkillFactory.DOCTOR) > (fc.isTaggedSkill(SkillFactory.DOCTOR) ? 51 : 50)),
+                "Error: Perk limiting mutation - " + PerkFactory.DEAD_MAN_WALKING));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.FASTER_HEALING))
+                || (fc.getSkillValueByName(SkillFactory.DOCTOR) > (fc.isTaggedSkill(SkillFactory.DOCTOR) ? 76 : 75)),
+                "Error: Perk limiting mutation - " + PerkFactory.FASTER_HEALING));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.RAD_RESISTANCE))
+                || (fc.getSkillValueByName(SkillFactory.DOCTOR) > (fc.isTaggedSkill(SkillFactory.DOCTOR) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.RAD_RESISTANCE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.MEDIC))
+                || (fc.getSkillValueByName(SkillFactory.DOCTOR) > (fc.isTaggedSkill(SkillFactory.DOCTOR) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.MEDIC));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.FIELD_MEDIC))
+                || (fc.getSkillValueByName(SkillFactory.DOCTOR) > (fc.isTaggedSkill(SkillFactory.DOCTOR) ? 176 : 175)),
+                "Error: Perk limiting mutation - " + PerkFactory.FIELD_MEDIC));
+    }
+
+    private static void addMutateSneakAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.SNEAK, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.SNEAK);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SILENT_RUNNING))
+                || (fc.getSkillValueByName(SkillFactory.SNEAK) > (fc.isTaggedSkill(SkillFactory.SNEAK) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.SILENT_RUNNING));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GHOST))
+                || (fc.getSkillValueByName(SkillFactory.SNEAK) > (fc.isTaggedSkill(SkillFactory.SNEAK) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.GHOST));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SILENT_DEATH))
+                || (fc.getSkillValueByName(SkillFactory.SNEAK) > (fc.isTaggedSkill(SkillFactory.SNEAK) ? 176 : 175)),
+                "Error: Perk limiting mutation - " + PerkFactory.SILENT_DEATH));
+    }
+
+    private static void addMutateLockpickAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.LOCKPICK, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.LOCKPICK);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.TREASURE_HUNTER))
+                || (fc.getSkillValueByName(SkillFactory.LOCKPICK) > (fc.isTaggedSkill(SkillFactory.LOCKPICK) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.TREASURE_HUNTER));
+    }
+
+    private static void addMutateStealAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.STEAL, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.STEAL);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.THIEF))
+                || (fc.getSkillValueByName(SkillFactory.STEAL) > (fc.isTaggedSkill(SkillFactory.STEAL) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.THIEF));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.PICKPOCKET))
+                || (fc.getSkillValueByName(SkillFactory.STEAL) > (fc.isTaggedSkill(SkillFactory.STEAL) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.PICKPOCKET));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.MASTER_THIEF))
+                || (fc.getSkillValueByName(SkillFactory.STEAL) > (fc.isTaggedSkill(SkillFactory.STEAL) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.MASTER_THIEF));
+    }
+
+    private static void addMutateTrapsAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.TRAPS, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.TRAPS);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.DEMOLITION_EXPERT))
+                || (fc.getSkillValueByName(SkillFactory.TRAPS) > (fc.isTaggedSkill(SkillFactory.TRAPS) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.DEMOLITION_EXPERT));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.LIGHT_STEP))
+                || (fc.getSkillValueByName(SkillFactory.TRAPS) > (fc.isTaggedSkill(SkillFactory.TRAPS) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.LIGHT_STEP));
+    }
+
+    private static void addMutateScienceAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.SCIENCE, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.SCIENCE);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SWIFT_LEARNER))
+                || (fc.getSkillValueByName(SkillFactory.SCIENCE) > (fc.isTaggedSkill(SkillFactory.SCIENCE) ? 51 : 50)),
+                "Error: Perk limiting mutation - " + PerkFactory.SWIFT_LEARNER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.EDUCATED))
+                || (fc.getSkillValueByName(SkillFactory.SCIENCE) > (fc.isTaggedSkill(SkillFactory.SCIENCE) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.EDUCATED));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.DISMANTLER))
+                || (fc.getSkillValueByName(SkillFactory.SCIENCE) > (fc.isTaggedSkill(SkillFactory.SCIENCE) ? 121 : 120)),
+                "Error: Perk limiting mutation - " + PerkFactory.DISMANTLER));
+    }
+
+    private static void addMutateRepairAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.REPAIR, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.REPAIR);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.STEALTH_GIRL))
+                || (fc.getSkillValueByName(SkillFactory.REPAIR) > (fc.isTaggedSkill(SkillFactory.REPAIR) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.STEALTH_GIRL));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.MR_FIXIT))
+                || (fc.getSkillValueByName(SkillFactory.REPAIR) > (fc.isTaggedSkill(SkillFactory.REPAIR) ? 121 : 120)),
+                "Error: Perk limiting mutation - " + PerkFactory.MR_FIXIT));
+    }
+
+    private static void addMutateSpeechAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.SPEECH, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.SPEECH);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.MAGNETIC_PERSONALITY))
+                || (fc.getSkillValueByName(SkillFactory.SPEECH) > (fc.isTaggedSkill(SkillFactory.SPEECH) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.MAGNETIC_PERSONALITY));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SPEAKER))
+                || (fc.getSkillValueByName(SkillFactory.SPEECH) > (fc.isTaggedSkill(SkillFactory.SPEECH) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.SPEAKER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SEX_APPEAL))
+                || (fc.getSkillValueByName(SkillFactory.SPEECH) > (fc.isTaggedSkill(SkillFactory.SPEECH) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.SEX_APPEAL));
+    }
+
+    private static void addMutateBarterAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.BARTER, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.BARTER);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.NEGOTIATOR))
+                || (fc.getSkillValueByName(SkillFactory.BARTER) > (fc.isTaggedSkill(SkillFactory.BARTER) ? 126 : 125)),
+                "Error: Perk limiting mutation - " + PerkFactory.NEGOTIATOR));
+    }
+
+    private static void addMutateGamblingAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.GAMBLING, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.GAMBLING);
+    }
+
+    private static void addMutateOutdoorsmanAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSkillsQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode(SkillFactory.OUTDOORSMAN, mutateSkillsQuestion, foCharacter);
+        addMutateSkillDemandsResults(mutateSkillsQuestion, answer, SkillFactory.OUTDOORSMAN);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SNAKE_EATER))
+                || (fc.getSkillValueByName(SkillFactory.OUTDOORSMAN) > (fc.isTaggedSkill(SkillFactory.OUTDOORSMAN) ? 76 : 75)),
+                "Error: Perk limiting mutation - " + PerkFactory.SNAKE_EATER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.CAUTIOUS_NATURE))
+                || (fc.getSkillValueByName(SkillFactory.OUTDOORSMAN) > (fc.isTaggedSkill(SkillFactory.OUTDOORSMAN) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.CAUTIOUS_NATURE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.RANGER))
+                || (fc.getSkillValueByName(SkillFactory.OUTDOORSMAN) > (fc.isTaggedSkill(SkillFactory.OUTDOORSMAN) ? 101 : 100)),
+                "Error: Perk limiting mutation - " + PerkFactory.RANGER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.PATHFINDER))
+                || (fc.getSkillValueByName(SkillFactory.OUTDOORSMAN) > (fc.isTaggedSkill(SkillFactory.OUTDOORSMAN) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.PATHFINDER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.EXPLORER))
+                || (fc.getSkillValueByName(SkillFactory.OUTDOORSMAN) > (fc.isTaggedSkill(SkillFactory.OUTDOORSMAN) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.EXPLORER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SCOUT))
+                || (fc.getSkillValueByName(SkillFactory.OUTDOORSMAN) > (fc.isTaggedSkill(SkillFactory.OUTDOORSMAN) ? 151 : 150)),
+                "Error: Perk limiting mutation - " + PerkFactory.SCOUT));
+    }
+
+    private static void addMutateSkillDemandsResults(DialogQuestionNode mutateSkillsQuestion, DialogAnswerNode mutateSmallGunsAnswer, String skillName) {
+        mutateSmallGunsAnswer.addDemand(new DialogDemandNode(fc -> fc.getSkillValueByName(skillName) >
+                FoCharacterRuleset.getMinimumSkillValueWithoutPointsSpentByName(fc, skillName), "Error: Cannot remove more points from " + skillName + "."));
+        mutateSmallGunsAnswer.addResult(new DialogResultNode(fc -> fc.unraiseSkill(skillName, FoCharacterRuleset.getMinimumSkillValueWithoutPointsSpentByName(fc, skillName))));
+        mutateSkillsQuestion.addAnswer(mutateSmallGunsAnswer);
+    }
+
+    private static void mutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
         DialogQuestionNode mutateSpecialQuestion = new DialogQuestionNode(1, "Your S.P.E.C.I.A.L. attributes are mutating...");
 
         refreshMutateSpecials(foCharacter, mutateQuestion, mutateSpecialQuestion);
 
         DialogAnswerNode mutateSpecialAnswer = new DialogAnswerNode("Mutate S.P.E.C.I.A.L. attributes.", mutateSpecialQuestion, foCharacter);
         mutateQuestion.addAnswer(mutateSpecialAnswer);
-
-        return mutateSpecialQuestion;
     }
 
     private static void refreshMutateSpecials(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
         mutateSpecialQuestion.clear();
 
-        DialogAnswerNode looseStrengthAnswer = new DialogAnswerNode("Loose Strength.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseStrengthAnswer, 0);
-        DialogAnswerNode loosePerceptionAnswer = new DialogAnswerNode("Loose Perception.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, loosePerceptionAnswer, 1);
-        DialogAnswerNode looseEnduranceAnswer = new DialogAnswerNode("Loose Endurance.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseEnduranceAnswer, 2);
-        DialogAnswerNode looseCharismaAnswer = new DialogAnswerNode("Loose Charisma.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseCharismaAnswer, 3);
-        DialogAnswerNode looseIntellectAnswer = new DialogAnswerNode("Loose Intellect.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseIntellectAnswer, 4);
-        DialogAnswerNode looseAgilityAnswer = new DialogAnswerNode("Loose Agility.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseAgilityAnswer, 5);
-        DialogAnswerNode looseLuckAnswer = new DialogAnswerNode("Loose Luck.", mutateSpecialQuestion, foCharacter);
-        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, looseLuckAnswer, 6);
+        addMutateLooseStrengthAnswer(foCharacter, mutateSpecialQuestion);
+        addMutateLoosePerceptionAnswer(foCharacter, mutateSpecialQuestion);
+        addMutateLooseEnduranceAnswer(foCharacter, mutateSpecialQuestion);
+        addMutateLooseCharismaAnswer(foCharacter, mutateSpecialQuestion);
+        addMutateLooseIntelligenceAnswer(foCharacter, mutateSpecialQuestion);
+        addMutateLooseAgilityAnswer(foCharacter, mutateSpecialQuestion);
+        addMutateLooseLuckAnswer(foCharacter, mutateSpecialQuestion);
 
-        DialogAnswerNode gainStrengthAnswer = new DialogAnswerNode("Gain Strength.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainStrengthAnswer, 0);
-        DialogAnswerNode gainPerceptionAnswer = new DialogAnswerNode("Gain Perception.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainPerceptionAnswer, 1);
-        DialogAnswerNode gainEnduranceAnswer = new DialogAnswerNode("Gain Endurance.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainEnduranceAnswer, 2);
-        DialogAnswerNode gainCharismaAnswer = new DialogAnswerNode("Gain Charisma.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainCharismaAnswer, 3);
-        DialogAnswerNode gainIntellectAnswer = new DialogAnswerNode("Gain Intellect.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainIntellectAnswer, 4);
-        DialogAnswerNode gainAgilityAnswer = new DialogAnswerNode("Gain Agility.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainAgilityAnswer, 5);
-        DialogAnswerNode gainLuckAnswer = new DialogAnswerNode("Gain Luck.", mutateQuestion, foCharacter);
-        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainLuckAnswer, 6);
+        addMutateGainStrengthAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
+        addMutateGainPerceptionAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
+        addMutateGainEnduranceAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
+        addMutateGainCharismaAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
+        addMutateGainIntelligenceAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
+        addMutateGainAgilityAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
+        addMutateGainLuckAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
 
         DialogAnswerNode backToMutateSpecials = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
         mutateSpecialQuestion.addAnswer(backToMutateSpecials);
@@ -122,6 +710,200 @@ public class DialogFactory {
         mutateSpecialQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
 
         mutateSpecialQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateSpecials(foCharacter, mutateQuestion, mutateSpecialQuestion)));
+    }
+
+    private static void addMutateGainLuckAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainLuckAnswer = new DialogAnswerNode("Gain Luck.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainLuckAnswer, 6);
+        gainLuckAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updateLuck(fc, 1);
+        }));
+    }
+
+    private static void addMutateGainAgilityAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainAgilityAnswer = new DialogAnswerNode("Gain Agility.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainAgilityAnswer, 5);
+        gainAgilityAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updateAgility(fc, 1);
+        }));
+    }
+
+    private static void addMutateGainIntelligenceAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainIntellectAnswer = new DialogAnswerNode("Gain Intellect.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainIntellectAnswer, 4);
+        gainIntellectAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updateIntellect(fc, 1);
+        }));
+    }
+
+    private static void addMutateGainCharismaAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainCharismaAnswer = new DialogAnswerNode("Gain Charisma.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainCharismaAnswer, 3);
+        gainCharismaAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updateCharisma(fc, 1);
+        }));
+    }
+
+    private static void addMutateGainEnduranceAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainEnduranceAnswer = new DialogAnswerNode("Gain Endurance.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainEnduranceAnswer, 2);
+        gainEnduranceAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updateEndurance(fc, 1);
+        }));
+    }
+
+    private static void addMutateGainPerceptionAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainPerceptionAnswer = new DialogAnswerNode("Gain Perception.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainPerceptionAnswer, 1);
+        gainPerceptionAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updatePerception(fc, 1);
+        }));
+    }
+
+    private static void updateLooseSpecial(FoCharacter fc) {
+        switch (specialMutateLooseIndex) {
+            case 0: FoCharacterRuleset.updateStrength(fc, -1);
+            case 1: FoCharacterRuleset.updatePerception(fc, -1);
+            case 2: FoCharacterRuleset.updateEndurance(fc, -1);
+            case 3: FoCharacterRuleset.updateCharisma(fc, -1);
+            case 4: FoCharacterRuleset.updateIntellect(fc, -1);
+            case 5: FoCharacterRuleset.updateAgility(fc, -1);
+            case 6: FoCharacterRuleset.updateLuck(fc, -1);
+        }
+    }
+
+    private static void addMutateGainStrengthAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode gainStrengthAnswer = new DialogAnswerNode("Gain Strength.", mutateQuestion, foCharacter);
+        addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainStrengthAnswer, 0);
+        gainStrengthAnswer.addResult(new DialogResultNode(fc -> {
+            updateLooseSpecial(fc);
+            FoCharacterRuleset.updateStrength(fc, 1);
+        }));
+    }
+
+    private static void addMutateLooseStrengthAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Strength.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 0);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_STRENGTH))
+                || fc.getStrength() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_STRENGTH));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.ADRENALINE_RUSH))
+                || fc.getStrength() > 5,
+                "Error: Perk limiting mutation - " + PerkFactory.ADRENALINE_RUSH));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.STONEWALL))
+                || fc.getStrength() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.STONEWALL));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.IRON_LIMBS))
+                || fc.getStrength() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.IRON_LIMBS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.BRUISER)
+                || fc.getStrength() > 5,
+                "Error: Perk limiting mutation - " + TraitFactory.BRUISER));
+    }
+
+    private static void addMutateLoosePerceptionAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Perception.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 1);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_PERCEPTION))
+                || fc.getPerception() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_PERCEPTION));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.CAUTIOUS_NATURE))
+                || fc.getPerception() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.CAUTIOUS_NATURE));
+    }
+
+    private static void addMutateLooseEnduranceAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Endurance.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 2);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_ENDURANCE))
+                || fc.getEndurance() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_ENDURANCE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.TOUGHNESS))
+                || fc.getEndurance() > 4,
+                "Error: Perk limiting mutation - " + PerkFactory.TOUGHNESS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.EVEN_TOUGHER))
+                || fc.getEndurance() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.EVEN_TOUGHER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.IRON_LIMBS))
+                || fc.getEndurance() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.IRON_LIMBS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SNAKE_EATER))
+                || fc.getEndurance() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.SNAKE_EATER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.STRONG_BACK))
+                || fc.getEndurance() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.STRONG_BACK));
+    }
+
+    private static void addMutateLooseCharismaAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Charisma.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 3);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_CHARISMA))
+                || fc.getCharisma() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_CHARISMA));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.HARMLESS))
+                || fc.getCharisma() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.HARMLESS));
+    }
+
+    private static void addMutateLooseIntelligenceAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Intellect.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 4);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_INTELLIGENCE))
+                || fc.getIntellect() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_INTELLIGENCE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
+                || fc.getIntellect() > 3,
+                "Error: Perk limiting mutation - " + PerkFactory.SHARPSHOOTER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.SWIFT_LEARNER))
+                || fc.getIntellect() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.SWIFT_LEARNER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.RAD_RESISTANCE))
+                || fc.getIntellect() > 7,
+                "Error: Perk limiting mutation - " + PerkFactory.RAD_RESISTANCE));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.EDUCATED))
+                || fc.getIntellect() > 8,
+                "Error: Perk limiting mutation - " + PerkFactory.EDUCATED));
+    }
+
+    private static void addMutateLooseAgilityAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Agility.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 5);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_AGILITY))
+                || fc.getAgility() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_AGILITY));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.QUICK_POCKETS))
+                || fc.getAgility() > 5,
+                "Error: Perk limiting mutation - " + PerkFactory.QUICK_POCKETS));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.QUICK_RECOVERY))
+                || fc.getAgility() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.QUICK_RECOVERY));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.ACTIONBOY))
+                || fc.getAgility() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.ACTIONBOY));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.ACTIONBOY2))
+                || fc.getAgility() > 6,
+                "Error: Perk limiting mutation - " + PerkFactory.ACTIONBOY2));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.DODGER))
+                || fc.getAgility() > 8,
+                "Error: Perk limiting mutation - " + PerkFactory.DODGER));
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.DODGER2))
+                || fc.getAgility() > 10,
+                "Error: Perk limiting mutation - " + PerkFactory.DODGER2));
+    }
+
+    private static void addMutateLooseLuckAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
+        DialogAnswerNode answer = new DialogAnswerNode("Loose Luck.", mutateSpecialQuestion, foCharacter);
+        addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 6);
+        answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_LUCK))
+                || fc.getLuck() > 2,
+                "Error: Perk limiting mutation - " + PerkFactory.GAIN_LUCK));
     }
 
     private static void addLooseSpecialsDemandsAndResults(DialogQuestionNode mutateSpecialQuestion, DialogAnswerNode looseSpecialAnswer, int specialIndex) {
@@ -141,6 +923,220 @@ public class DialogFactory {
             fc.setSpecialValue(specialIndex, fc.getSpecial(specialIndex).getValue() + 1);
         }));
         mutateSpecialQuestion.addAnswer(gainSpecialAnswer);
+    }
+
+    private static void mutateTraits(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+        DialogQuestionNode mutateTraitsQuestion = new DialogQuestionNode(3, "Your traits are mutating... \n[Select trait to free up]");
+
+        refreshMutateTraits(foCharacter, mutateQuestion, mutateTraitsQuestion);
+
+        DialogAnswerNode mutateTraitsAnswer = new DialogAnswerNode("Mutate traits.", mutateTraitsQuestion, foCharacter);
+        mutateQuestion.addAnswer(mutateTraitsAnswer);
+    }
+
+    private static void refreshMutateTraits(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateTraitsQuestion) {
+        mutateTraitsQuestion.clear();
+
+        addMutateLooseTraits(foCharacter, mutateTraitsQuestion);
+        addMutateGainTraits(foCharacter, mutateTraitsQuestion);
+
+        mutateTraitsQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+
+        DialogAnswerNode backToMutateQuestion = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
+        mutateTraitsQuestion.addAnswer(backToMutateQuestion);
+
+        mutateTraitsQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateTraits(foCharacter, mutateQuestion, mutateTraitsQuestion)));
+    }
+
+    private static void addMutateGainTraits(FoCharacter foCharacter, DialogQuestionNode mutateTraitsQuestion) {
+        DialogAnswerNode fastMetabolismAnswer = new DialogAnswerNode("Gain Fast Metabolism.", mutateTraitsQuestion, foCharacter);
+        fastMetabolismAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.FAST_METABOLISM), "Error: You already have the perk - Fast Metabolism"));
+        fastMetabolismAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Fast Metabolism"));
+        fastMetabolismAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(0)));
+        mutateTraitsQuestion.addAnswer(fastMetabolismAnswer);
+
+        DialogAnswerNode bruiserAnswer = new DialogAnswerNode("Gain Bruiser.", mutateTraitsQuestion, foCharacter);
+        bruiserAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.BRUISER), "Error: You already have the perk - Bruiser"));
+        bruiserAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Bruiser"));
+        bruiserAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(1)));
+        mutateTraitsQuestion.addAnswer(bruiserAnswer);
+
+        DialogAnswerNode oneHanderAnswer = new DialogAnswerNode("Gain One Hander.", mutateTraitsQuestion, foCharacter);
+        oneHanderAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.ONE_HANDER), "Error: You already have the perk - One Hander"));
+        oneHanderAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - One Hander"));
+        oneHanderAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(2)));
+        mutateTraitsQuestion.addAnswer(oneHanderAnswer);
+
+        DialogAnswerNode finesseAnswer = new DialogAnswerNode("Gain Finesse.", mutateTraitsQuestion, foCharacter);
+        finesseAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.FINESSE), "Error: You already have the perk - Finesse"));
+        finesseAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Finesse"));
+        finesseAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(3)));
+        mutateTraitsQuestion.addAnswer(finesseAnswer);
+
+        DialogAnswerNode kamikazeAnswer = new DialogAnswerNode("Gain Kamikaze.", mutateTraitsQuestion, foCharacter);
+        kamikazeAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.KAMIKAZE), "Error: You already have the perk - Kamikaze"));
+        kamikazeAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Kamikaze"));
+        kamikazeAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(4)));
+        mutateTraitsQuestion.addAnswer(kamikazeAnswer);
+
+        DialogAnswerNode heavyHandedAnswer = new DialogAnswerNode("Gain Heavy Handed.", mutateTraitsQuestion, foCharacter);
+        heavyHandedAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.HEAVY_HANDED), "Error: You already have the perk - Heavy Handed"));
+        heavyHandedAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Heavy Handed"));
+        heavyHandedAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(5)));
+        mutateTraitsQuestion.addAnswer(heavyHandedAnswer);
+
+        DialogAnswerNode fastShotAnswer = new DialogAnswerNode("Gain Fast Shot.", mutateTraitsQuestion, foCharacter);
+        fastShotAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.FAST_SHOT), "Error: You already have the perk - Fast Shot"));
+        fastShotAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Fast Shot"));
+        fastShotAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(6)));
+        mutateTraitsQuestion.addAnswer(fastShotAnswer);
+
+        DialogAnswerNode bloodyMessAnswer = new DialogAnswerNode("Gain Bloody Mess.", mutateTraitsQuestion, foCharacter);
+        bloodyMessAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.BLOODY_MESS), "Error: You already have the perk - Bloody Mess"));
+        bloodyMessAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Bloody Mess"));
+        bloodyMessAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(8)));
+        mutateTraitsQuestion.addAnswer(bloodyMessAnswer);
+
+        DialogAnswerNode jinxedAnswer = new DialogAnswerNode("Gain Jinxed.", mutateTraitsQuestion, foCharacter);
+        jinxedAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.JINXED), "Error: You already have the perk - Jinxed"));
+        jinxedAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Jinxed"));
+        jinxedAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(9)));
+        mutateTraitsQuestion.addAnswer(jinxedAnswer);
+
+        DialogAnswerNode goodNaturedAnswer = new DialogAnswerNode("Gain Good Natured.", mutateTraitsQuestion, foCharacter);
+        goodNaturedAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.GOOD_NATURED), "Error: You already have the perk - Good Natured"));
+        goodNaturedAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Good Natured"));
+        goodNaturedAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(10)));
+        mutateTraitsQuestion.addAnswer(goodNaturedAnswer);
+
+        DialogAnswerNode chemReliantAnswer = new DialogAnswerNode("Gain Chem Reliant.", mutateTraitsQuestion, foCharacter);
+        chemReliantAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.CHEM_RELIANT), "Error: You already have the perk - Chem Reliant"));
+        chemReliantAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Chem Reliant"));
+        chemReliantAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(11)));
+        mutateTraitsQuestion.addAnswer(chemReliantAnswer);
+
+        DialogAnswerNode boneheadAnswer = new DialogAnswerNode("Gain Bonehead.", mutateTraitsQuestion, foCharacter);
+        boneheadAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.BONEHEAD), "Error: You already have the perk - Bonehead"));
+        boneheadAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Bonehead"));
+        boneheadAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(12)));
+        mutateTraitsQuestion.addAnswer(boneheadAnswer);
+
+        DialogAnswerNode skilledAnswer = new DialogAnswerNode("Gain Skilled.", mutateTraitsQuestion, foCharacter);
+        skilledAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.SKILLED), "Error: You already have the perk - Skilled"));
+        skilledAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Skilled"));
+        skilledAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(13)));
+        mutateTraitsQuestion.addAnswer(skilledAnswer);
+
+        DialogAnswerNode lonerAnswer = new DialogAnswerNode("Gain Loner.", mutateTraitsQuestion, foCharacter);
+        lonerAnswer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.LONER), "Error: You already have the perk - Loner"));
+        lonerAnswer.addDemand(new DialogDemandNode(FoCharacter::canTagTrait, "Error: You do not any trait points left for - Loner"));
+        lonerAnswer.addResult(new DialogResultNode(fc -> fc.tagTrait(14)));
+        mutateTraitsQuestion.addAnswer(lonerAnswer);
+    }
+
+    private static void addMutateLooseTraits(FoCharacter foCharacter, DialogQuestionNode mutateTraitsQuestion) {
+        DialogAnswerNode fastMetabolismAnswer = new DialogAnswerNode("Loose Fast Metabolism.", mutateTraitsQuestion, foCharacter);
+        fastMetabolismAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.FAST_METABOLISM), "Error: You do not have the perk - Fast Metabolism"));
+        fastMetabolismAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(0)));
+        mutateTraitsQuestion.addAnswer(fastMetabolismAnswer);
+
+        DialogAnswerNode bruiserAnswer = new DialogAnswerNode("Loose Bruiser.", mutateTraitsQuestion, foCharacter);
+        bruiserAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.BRUISER), "Error: You do not have the perk - Bruiser"));
+        bruiserAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(1)));
+        mutateTraitsQuestion.addAnswer(bruiserAnswer);
+
+        DialogAnswerNode oneHanderAnswer = new DialogAnswerNode("Loose One Hander.", mutateTraitsQuestion, foCharacter);
+        oneHanderAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.ONE_HANDER), "Error: You do not have the perk - One Hander"));
+        oneHanderAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(2)));
+        mutateTraitsQuestion.addAnswer(oneHanderAnswer);
+
+        DialogAnswerNode finesseAnswer = new DialogAnswerNode("Loose Finesse.", mutateTraitsQuestion, foCharacter);
+        finesseAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.FINESSE), "Error: You do not have the perk - Finesse"));
+        finesseAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(3)));
+        mutateTraitsQuestion.addAnswer(finesseAnswer);
+
+        DialogAnswerNode kamikazeAnswer = new DialogAnswerNode("Loose Kamikaze.", mutateTraitsQuestion, foCharacter);
+        kamikazeAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.KAMIKAZE), "Error: You do not have the perk - Kamikaze"));
+        kamikazeAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(4)));
+        mutateTraitsQuestion.addAnswer(kamikazeAnswer);
+
+        DialogAnswerNode heavyHandedAnswer = new DialogAnswerNode("Loose Heavy Handed.", mutateTraitsQuestion, foCharacter);
+        heavyHandedAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.HEAVY_HANDED), "Error: You do not have the perk - Heavy Handed"));
+        heavyHandedAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(5)));
+        mutateTraitsQuestion.addAnswer(heavyHandedAnswer);
+
+        DialogAnswerNode fastShotAnswer = new DialogAnswerNode("Loose Fast Shot.", mutateTraitsQuestion, foCharacter);
+        fastShotAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.FAST_SHOT), "Error: You do not have the perk - Fast Shot"));
+        fastShotAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(6)));
+        mutateTraitsQuestion.addAnswer(fastShotAnswer);
+
+        DialogAnswerNode bloodyMessAnswer = new DialogAnswerNode("Loose Bloody Mess.", mutateTraitsQuestion, foCharacter);
+        bloodyMessAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.BLOODY_MESS), "Error: You do not have the perk - Bloody Mess"));
+        bloodyMessAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(8)));
+        mutateTraitsQuestion.addAnswer(bloodyMessAnswer);
+
+        DialogAnswerNode jinxedAnswer = new DialogAnswerNode("Loose Jinxed.", mutateTraitsQuestion, foCharacter);
+        jinxedAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.JINXED), "Error: You do not have the perk - Jinxed"));
+        jinxedAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(9)));
+        mutateTraitsQuestion.addAnswer(jinxedAnswer);
+
+        DialogAnswerNode goodNaturedAnswer = new DialogAnswerNode("Loose Good Natured.", mutateTraitsQuestion, foCharacter);
+        goodNaturedAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.GOOD_NATURED), "Error: You do not have the perk - Good Natured"));
+        goodNaturedAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(10)));
+        mutateTraitsQuestion.addAnswer(goodNaturedAnswer);
+
+        DialogAnswerNode chemReliantAnswer = new DialogAnswerNode("Loose Chem Reliant.", mutateTraitsQuestion, foCharacter);
+        chemReliantAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.CHEM_RELIANT), "Error: You do not have the perk - Chem Reliant"));
+        chemReliantAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(11)));
+        mutateTraitsQuestion.addAnswer(chemReliantAnswer);
+
+        DialogAnswerNode boneheadAnswer = new DialogAnswerNode("Loose Bonehead.", mutateTraitsQuestion, foCharacter);
+        boneheadAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.BONEHEAD), "Error: You do not have the perk - Bonehead"));
+        boneheadAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(12)));
+        mutateTraitsQuestion.addAnswer(boneheadAnswer);
+
+        DialogAnswerNode skilledAnswer = new DialogAnswerNode("Loose Skilled.", mutateTraitsQuestion, foCharacter);
+        skilledAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.SKILLED), "Error: You do not have the perk - Skilled"));
+        skilledAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(13)));
+        mutateTraitsQuestion.addAnswer(skilledAnswer);
+
+        DialogAnswerNode lonerAnswer = new DialogAnswerNode("Loose Loner.", mutateTraitsQuestion, foCharacter);
+        lonerAnswer.addDemand(new DialogDemandNode(fc -> fc.hasTrait(TraitFactory.LONER), "Error: You do not have the perk - Loner"));
+        lonerAnswer.addResult(new DialogResultNode(fc -> fc.untagTrait(14)));
+        mutateTraitsQuestion.addAnswer(lonerAnswer);
+    }
+
+    private static void mutateSupportPerks(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+        DialogQuestionNode mutateSupportPerksQuestion = new DialogQuestionNode(4, "Your Support Perks are mutating... \n[Select Support Perk to forget]");
+
+        refreshMutateSupportPerks(foCharacter, mutateQuestion, mutateSupportPerksQuestion);
+
+        DialogAnswerNode mutateSupportPerksAnswer = new DialogAnswerNode("Mutate Support Perks.", mutateSupportPerksQuestion, foCharacter);
+        mutateSupportPerksAnswer.addResult(new DialogResultNode(fc -> DialogFactory.refreshMutateSupportPerks(foCharacter, mutateQuestion, mutateSupportPerksQuestion)));
+        mutateQuestion.addAnswer(mutateSupportPerksAnswer);
+    }
+
+    private static void refreshMutateSupportPerks(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSupportPerksQuestion) {
+        mutateSupportPerksQuestion.clear();
+
+        addMutateDropSupportPerks(foCharacter, mutateSupportPerksQuestion);
+
+        mutateSupportPerksQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+
+        DialogAnswerNode backToMutateQuestion = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
+        mutateSupportPerksQuestion.addAnswer(backToMutateQuestion);
+
+        mutateSupportPerksQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateSupportPerks(foCharacter, mutateQuestion, mutateSupportPerksQuestion)));
+    }
+
+    private static void addMutateDropSupportPerks(FoCharacter foCharacter, DialogQuestionNode mutateSupportPerksQuestion) {
+        PerkFactory.getSupportPerks().forEach(sp -> {
+            DialogAnswerNode answer = new DialogAnswerNode("Forget " + sp.getName(), mutateSupportPerksQuestion, foCharacter);
+            answer.addDemand(new DialogDemandNode(fc -> fc.hasSupportPerk(sp), "Error: Does not have Support Perk - " + sp.getName()));
+            answer.addResult(new DialogResultNode(fc -> fc.removeSupportPerk(sp)));
+            answer.addResult(new DialogResultNode(fc -> System.out.println("Removed support perk: " + sp.getName())));
+            mutateSupportPerksQuestion.addAnswer(answer);
+        });
     }
 
     private static void addSupportPerkAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode supportPerkQuestion) {

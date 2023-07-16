@@ -82,7 +82,7 @@ public class FoCharacterFactory {
         result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.SNEAK), 5 + 3 * result.getAgility(), false));
         result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.LOCKPICK), 10 + result.getAgility() + result.getPerception(), false));
         result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.STEAL), 3 * result.getAgility(), false));
-        result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.TRAPS), 3 * result.getAgility(), false));
+        result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.TRAPS), 10 + result.getAgility() + result.getPerception(), false));
         result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.SCIENCE), 4 * result.getIntellect(), false));
         result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.REPAIR), 3 * result.getIntellect(), false));
         result.getSkills().add(new Skill(SkillFactory.getSkillProto(SkillFactory.SPEECH), 5 * result.getCharisma(), false));

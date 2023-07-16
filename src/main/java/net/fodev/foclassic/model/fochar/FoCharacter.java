@@ -71,9 +71,13 @@ public class FoCharacter {
 
     public void tagTrait(int index) {
         if (index >= 0 && index < traits.size()) {
-            if (!traits.get(index).isTagged() && canTagTrait()) {
-                traits.get(index).setTagged(true);
-                unusedTraitPoints--;
+            if (!traits.get(index).isTagged()) {
+                if (canTagTrait()) {
+                    traits.get(index).setTagged(true);
+                    unusedTraitPoints--;
+                } else {
+                    System.out.println("Warning: Trying to tag trait without trait points left.");
+                }
             } else {
                 System.out.println("Warning: Trying to tag trait that is already tagged.");
             }
@@ -102,6 +106,14 @@ public class FoCharacter {
     public boolean isTaggedSkill(int index) {
         if (index >= 0 && index < skills.size()) {
             return skills.get(index).isTagged();
+        } else {
+            return false;
+        }
+    }
+
+    public boolean isTaggedSkill(String name) {
+        if (getSkillByName(name) != null) {
+            return getSkillByName(name).isTagged();
         } else {
             return false;
         }
@@ -145,7 +157,7 @@ public class FoCharacter {
     public Skill getSkillByName(String name) {
         return skills.stream()
                 .filter(s -> name.equals(s.getName()))
-                .findFirst().get();
+                .findFirst().orElse(null);
     }
 
     public String getSkillName(int index) {
@@ -347,6 +359,10 @@ public class FoCharacter {
         supportPerks.add(supportPerk);
     }
 
+    public void removeSupportPerk(SupportPerk supportPerk) {
+        supportPerks.removeIf(sp -> sp.getName().equals(supportPerk.getName()));
+    }
+
     public boolean hasMissingPerk() {
         int actual = combatPerks.size();
         int possible = hasTrait(TraitFactory.SKILLED) ? (level > 24 ? 6 : level / 4) : (level > 24 ? 8 : level / 3);
@@ -361,6 +377,10 @@ public class FoCharacter {
         combatPerks.add(combatPerk);
     }
 
+    public void removeCombatPerk(CombatPerk combatPerk) {
+        combatPerks.removeIf(sp -> sp.getName().equals(combatPerk.getName()));
+    }
+
     public void raiseSkill(int selectedSkillIndex) {
         Skill skill = getSkill(selectedSkillIndex);
         if (skill != null && skill.getSkillRaiseCost() <= unusedSkillPoints) {
@@ -373,6 +393,15 @@ public class FoCharacter {
 
     public void unraiseSkill(int selectedSkillIndex, int minimum) {
         Skill skill = getSkill(selectedSkillIndex);
+        unraiseSkill(skill, minimum);
+    }
+
+    public void unraiseSkill(String skillName, int minimum) {
+        Skill skill = getSkillByName(skillName);
+        unraiseSkill(skill, minimum);
+    }
+
+    private void unraiseSkill(Skill skill, int minimum) {
         if (skill != null && skill.getValue() > minimum) {
             unusedSkillPoints += skill.getSkillUnraiseGain();
             skill.unraiseSkillValue();
