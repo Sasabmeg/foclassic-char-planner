@@ -792,7 +792,7 @@ public class DialogFactory {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Strength.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 0);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_STRENGTH))
-                || fc.getStrength() > 2,
+                || fc.getStrength() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_STRENGTH));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.ADRENALINE_RUSH))
                 || fc.getStrength() > 5,
@@ -805,14 +805,14 @@ public class DialogFactory {
                 "Error: Perk limiting mutation - " + PerkFactory.IRON_LIMBS));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasTrait(TraitFactory.BRUISER)
                 || fc.getStrength() > 5,
-                "Error: Perk limiting mutation - " + TraitFactory.BRUISER));
+                "Error: Trait limiting mutation - " + TraitFactory.BRUISER));
     }
 
     private static void addMutateLoosePerceptionAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Perception.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 1);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_PERCEPTION))
-                || fc.getPerception() > 2,
+                || fc.getPerception() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_PERCEPTION));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.CAUTIOUS_NATURE))
                 || fc.getPerception() > 6,
@@ -823,7 +823,7 @@ public class DialogFactory {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Endurance.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 2);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_ENDURANCE))
-                || fc.getEndurance() > 2,
+                || fc.getEndurance() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_ENDURANCE));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.TOUGHNESS))
                 || fc.getEndurance() > 4,
@@ -846,7 +846,7 @@ public class DialogFactory {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Charisma.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 3);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_CHARISMA))
-                || fc.getCharisma() > 2,
+                || fc.getCharisma() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_CHARISMA));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.HARMLESS))
                 || fc.getCharisma() > 6,
@@ -857,7 +857,7 @@ public class DialogFactory {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Intellect.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 4);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_INTELLIGENCE))
-                || fc.getIntellect() > 2,
+                || fc.getIntellect() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_INTELLIGENCE));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.SHARPSHOOTER))
                 || fc.getIntellect() > 3,
@@ -877,7 +877,7 @@ public class DialogFactory {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Agility.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 5);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_AGILITY))
-                || fc.getAgility() > 2,
+                || fc.getAgility() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_AGILITY));
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.QUICK_POCKETS))
                 || fc.getAgility() > 5,
@@ -903,7 +903,7 @@ public class DialogFactory {
         DialogAnswerNode answer = new DialogAnswerNode("Loose Luck.", mutateSpecialQuestion, foCharacter);
         addLooseSpecialsDemandsAndResults(mutateSpecialQuestion, answer, 6);
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.getCombatPerk(PerkFactory.GAIN_LUCK))
-                || fc.getLuck() > 2,
+                || fc.getLuck() > 3,
                 "Error: Perk limiting mutation - " + PerkFactory.GAIN_LUCK));
     }
 
@@ -1120,7 +1120,7 @@ public class DialogFactory {
     private static void refreshMutateCombatPerks(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateCombatPerksQuestion) {
         mutateCombatPerksQuestion.clear();
 
-        addMutateDropCombattPerks(foCharacter, mutateCombatPerksQuestion);
+        addMutateDropCombatPerks(foCharacter, mutateCombatPerksQuestion);
 
         mutateCombatPerksQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
 
@@ -1130,14 +1130,39 @@ public class DialogFactory {
         mutateCombatPerksQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateCombatPerks(foCharacter, mutateQuestion, mutateCombatPerksQuestion)));
     }
 
-    private static void addMutateDropCombattPerks(FoCharacter foCharacter, DialogQuestionNode mutateCombatPerksQuestion) {
+    private static void addMutateDropCombatPerks(FoCharacter foCharacter, DialogQuestionNode mutateCombatPerksQuestion) {
         PerkFactory.getCombatPerks().forEach(cp -> {
             DialogAnswerNode answer = new DialogAnswerNode("Forget " + cp.getName(), mutateCombatPerksQuestion, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> fc.hasCombatPerk(cp), "Error: Does not have Combat Perk - " + cp.getName()));
             answer.addResult(new DialogResultNode(fc -> fc.removeCombatPerk(cp)));
             answer.addResult(new DialogResultNode(fc -> System.out.println("Removed combat perk: " + cp.getName())));
             mutateCombatPerksQuestion.addAnswer(answer);
+
+            //  add case specific specific dependencies
+            if (cp.getName().equals(PerkFactory.DODGER)) {
+                answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.DODGER2),
+                        "Error: Blocking perk - " + PerkFactory.DODGER2));
+            }
+            if (cp.getName().equals(PerkFactory.LIFEGIVER2)) {
+                answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.LIFEGIVER3),
+                        "Error: Blocking perk - " + PerkFactory.LIFEGIVER3));
+            }
+            if (cp.getName().equals(PerkFactory.LIFEGIVER)) {
+                answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.LIFEGIVER2),
+                        "Error: Blocking perk - " + PerkFactory.LIFEGIVER2));
+                answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.LIFEGIVER3),
+                        "Error: Blocking perk - " + PerkFactory.LIFEGIVER3));
+            }
+            if (cp.getName().equals(PerkFactory.ACTIONBOY)) {
+                answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.ACTIONBOY2),
+                        "Error: Blocking perk - " + PerkFactory.ACTIONBOY2));
+            }
+            if (cp.getName().equals(PerkFactory.MEDIC)) {
+                answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(PerkFactory.FIELD_MEDIC),
+                        "Error: Blocking perk - " + PerkFactory.FIELD_MEDIC));
+            }
         });
+
     }
 
     private static void mutateSupportPerks(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {

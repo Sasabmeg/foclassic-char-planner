@@ -373,6 +373,10 @@ public class FoCharacter {
         return combatPerks.stream().anyMatch(c -> c.equals(combatPerk));
     }
 
+    public boolean hasCombatPerk(String combatPerkName) {
+        return combatPerks.stream().anyMatch(c -> c.getName().equals(combatPerkName));
+    }
+
     public void addCombatPerk(CombatPerk combatPerk) {
         combatPerks.add(combatPerk);
     }
