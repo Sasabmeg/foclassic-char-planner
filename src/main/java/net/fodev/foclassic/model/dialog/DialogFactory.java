@@ -706,6 +706,7 @@ public class DialogFactory {
         addMutateGainLuckAnswer(foCharacter, mutateQuestion, mutateSpecialQuestion);
 
         DialogAnswerNode backToMutateSpecials = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
+        backToMutateSpecials.addResult(new DialogResultNode(fc -> specialMutateLooseIndex = -1));
         mutateSpecialQuestion.addAnswer(backToMutateSpecials);
 
         mutateSpecialQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
@@ -734,9 +735,12 @@ public class DialogFactory {
     private static void addMutateGainIntelligenceAnswer(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSpecialQuestion) {
         DialogAnswerNode gainIntellectAnswer = new DialogAnswerNode("Gain Intellect.", mutateQuestion, foCharacter);
         addGainSpecialsDemandsAndResults(mutateSpecialQuestion, gainIntellectAnswer, 4);
+        gainIntellectAnswer.addDemand(new DialogDemandNode(fc -> 99 - fc.getUnusedSkillPoints() >= 2 * (fc.getLevel() - 1),
+                "Error: Too many unused skill point to gain Intelligence by mutation."));
         gainIntellectAnswer.addResult(new DialogResultNode(fc -> {
             updateLooseSpecial(fc);
             FoCharacterRuleset.updateIntellect(fc, 1);
+            fc.setUnusedSkillPoints(fc.getUnusedSkillPoints() + 2 * (fc.getLevel() - 1));
         }));
     }
 
@@ -770,12 +774,25 @@ public class DialogFactory {
     private static void updateLooseSpecial(FoCharacter fc) {
         switch (specialMutateLooseIndex) {
             case 0: FoCharacterRuleset.updateStrength(fc, -1);
+                break;
             case 1: FoCharacterRuleset.updatePerception(fc, -1);
+                break;
             case 2: FoCharacterRuleset.updateEndurance(fc, -1);
+                break;
             case 3: FoCharacterRuleset.updateCharisma(fc, -1);
-            case 4: FoCharacterRuleset.updateIntellect(fc, -1);
+                break;
+            case 4:
+                FoCharacterRuleset.updateIntellect(fc, -1);
+                if (fc.getUnusedSkillPoints() - 2 >= (fc.getLevel() - 1)) {
+                    fc.setUnusedSkillPoints(fc.getUnusedSkillPoints() - 2 * (fc.getLevel() - 1));
+                } else {
+                    System.out.println("Warning: Not enough unused skill points to mutate Intelligence that way.");
+                }
+                break;
             case 5: FoCharacterRuleset.updateAgility(fc, -1);
+                break;
             case 6: FoCharacterRuleset.updateLuck(fc, -1);
+                break;
         }
     }
 
@@ -871,6 +888,10 @@ public class DialogFactory {
         answer.addDemand(new DialogDemandNode(fc -> !fc.hasSupportPerk(PerkFactory.getSupportPerk(PerkFactory.EDUCATED))
                 || fc.getIntellect() > 8,
                 "Error: Perk limiting mutation - " + PerkFactory.EDUCATED));
+        answer.addDemand(new DialogDemandNode(fc -> fc.getLevel() <= 45,
+                "Error: Characters above level 45 cannot mutate Intelligence."));
+        answer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSkillPoints() >= 2 * (fc.getLevel() -1),
+                "Error: Not enough unused skill points to loose 1 Intelligence point."));
     }
 
     private static void addMutateLooseAgilityAnswer(FoCharacter foCharacter, DialogQuestionNode mutateSpecialQuestion) {
@@ -908,20 +929,19 @@ public class DialogFactory {
     }
 
     private static void addLooseSpecialsDemandsAndResults(DialogQuestionNode mutateSpecialQuestion, DialogAnswerNode looseSpecialAnswer, int specialIndex) {
-        looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSpecialPoints() == 0, "Error: Must spend unused special points first."));
+        looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> specialMutateLooseIndex == -1, "Error: Must complete mutation by selecting special to gain first."));
         looseSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getSpecial(specialIndex).getValue() > 1, "Error: Special attribute must be higher than 1 to remove points in it."));
-        looseSpecialAnswer.addResult(new DialogResultNode(fc -> fc.setUnusedSpecialPoints(fc.getUnusedSpecialPoints() + 1)));
         looseSpecialAnswer.addResult(new DialogResultNode(fc -> specialMutateLooseIndex = specialIndex));
         mutateSpecialQuestion.addAnswer(looseSpecialAnswer);
     }
 
     private static void addGainSpecialsDemandsAndResults(DialogQuestionNode mutateSpecialQuestion, DialogAnswerNode gainSpecialAnswer, int specialIndex) {
-        gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getUnusedSpecialPoints() > 0, "Error: No unused special points left."));
+        gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> specialMutateLooseIndex >= 0 && specialMutateLooseIndex < 7, "Error: Must loose special first."));
         gainSpecialAnswer.addDemand(new DialogDemandNode(fc -> fc.getSpecial(specialIndex).getValue() <= 9, "Error: Cannot raise special attribute above maximum."));
-        gainSpecialAnswer.addResult(new DialogResultNode(fc -> fc.setUnusedSpecialPoints(fc.getUnusedSpecialPoints() - 1)));
         gainSpecialAnswer.addResult(new DialogResultNode(fc -> {
             fc.setSpecialValue(specialMutateLooseIndex, fc.getSpecial(specialMutateLooseIndex).getValue() - 1);
             fc.setSpecialValue(specialIndex, fc.getSpecial(specialIndex).getValue() + 1);
+            specialMutateLooseIndex = -1;
         }));
         mutateSpecialQuestion.addAnswer(gainSpecialAnswer);
     }
