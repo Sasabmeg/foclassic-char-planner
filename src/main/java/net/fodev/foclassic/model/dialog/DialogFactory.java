@@ -1215,6 +1215,10 @@ public class DialogFactory {
             answer.addResult(new DialogResultNode(fc -> fc.removeSupportPerk(sp)));
             answer.addResult(new DialogResultNode(fc -> System.out.println("Removed support perk: " + sp.getName())));
             mutateSupportPerksQuestion.addAnswer(answer);
+
+            if (sp.getName().equals(PerkFactory.EDUCATED)) {
+                answer.addDemand(new DialogDemandNode(fc -> false, "Error: Cannot drop Educated perk."));
+            }
         });
     }
 

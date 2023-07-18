@@ -38,6 +38,12 @@
     -fx-border-color: transparent;
 }
 
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: #000000;
+    -fx-border-color: #38FB00;
+}
+
 .labelInfoCaption {
     -fx-background-color: transparent;
     -fx-text-fill: #000000;
