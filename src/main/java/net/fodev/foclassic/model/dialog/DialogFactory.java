@@ -79,6 +79,7 @@ public class DialogFactory {
         mutateTraits(foCharacter, mutateQuestion);
         mutateCombatPerks(foCharacter, mutateQuestion);
         mutateSupportPerks(foCharacter, mutateQuestion);
+        mutateSkillTags(foCharacter, mutateQuestion);
 
         DialogAnswerNode backToRoot = new DialogAnswerNode("[Back]", root, foCharacter);
         mutateQuestion.addAnswer(backToRoot);
@@ -1221,6 +1222,62 @@ public class DialogFactory {
             }
         });
     }
+
+    private static void mutateSkillTags(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
+        DialogQuestionNode mutateSkillTagsQuestion = new DialogQuestionNode(6, "Your Skill Tags are mutation... \n[Select Tagged Skill to swap with an untagged one]");
+
+        refreshMutateSkillTags(foCharacter, mutateQuestion, mutateSkillTagsQuestion);
+
+        DialogAnswerNode mutateSkillTagsAnswer = new DialogAnswerNode("Mutate Skill Tags", mutateSkillTagsQuestion, foCharacter);
+        mutateSkillTagsAnswer.addResult(new DialogResultNode(fc -> DialogFactory.refreshMutateSkillTags(foCharacter, mutateQuestion, mutateSkillTagsQuestion)));
+        mutateQuestion.addAnswer(mutateSkillTagsAnswer);
+    }
+
+    private static String taggedSkilledToBeSwappedName = "";
+
+    private static void refreshMutateSkillTags(FoCharacter foCharacter, DialogQuestionNode mutateQuestion, DialogQuestionNode mutateSkillTagsQuestion) {
+        mutateSkillTagsQuestion.clear();
+
+        addMutateSwapSkillTags(foCharacter, mutateSkillTagsQuestion);
+
+        mutateSkillTagsQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+
+        DialogAnswerNode backToMutateQuestion = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
+        backToMutateQuestion.addResult(new DialogResultNode(fc -> taggedSkilledToBeSwappedName = ""));
+        mutateSkillTagsQuestion.addAnswer(backToMutateQuestion);
+
+        mutateSkillTagsQuestion.addResultToAllAnswers(new DialogResultNode(fc -> DialogFactory.refreshMutateSkillTags(foCharacter, mutateQuestion, mutateSkillTagsQuestion)));
+    }
+
+    private static void addMutateSwapSkillTags(FoCharacter foCharacter, DialogQuestionNode mutateSkillTagsQuestion) {
+        if (taggedSkilledToBeSwappedName.length() > 0) {
+            foCharacter.getSkills().stream().filter(sk -> !sk.isTagged()).forEachOrdered(sk -> {
+                DialogAnswerNode answer = new DialogAnswerNode("Gain tag and swap " + sk.getName(), mutateSkillTagsQuestion, foCharacter);
+                answer.addResult(new DialogResultNode(fc -> {
+                    int value = fc.getSkillValueByName(taggedSkilledToBeSwappedName);
+                    fc.setSkillValueByName(taggedSkilledToBeSwappedName, sk.getValue());
+                    fc.setSkillValueByName(sk.getName(), value);
+                    fc.getSkillByName(taggedSkilledToBeSwappedName).setTagged(false);
+                    fc.getSkillByName(sk.getName()).setTagged(true);
+                }));
+                answer.addResult(new DialogResultNode(fc -> System.out.println("Swapped tags and value of " + taggedSkilledToBeSwappedName + " with " + sk.getName())));
+                answer.addResult(new DialogResultNode(fc -> taggedSkilledToBeSwappedName = ""));
+                mutateSkillTagsQuestion.addAnswer(answer);
+            });
+        } else {
+            foCharacter.getSkills().stream().filter(sk -> sk.isTagged()).forEachOrdered(sk -> {
+                DialogAnswerNode answer = new DialogAnswerNode("Loose tag and swap " + sk.getName(), mutateSkillTagsQuestion, foCharacter);
+                answer.addResult(new DialogResultNode(fc -> taggedSkilledToBeSwappedName = sk.getName()));
+                answer.addResult(new DialogResultNode(fc -> System.out.println("Setting tagged skill to be swapped - " + sk.getName())));
+                mutateSkillTagsQuestion.addAnswer(answer);
+            });
+        }
+
+    }
+
+    /*
+
+     */
 
     private static void addSupportPerkAnswers(FoCharacter foCharacter, DialogQuestionNode root, DialogQuestionNode supportPerkQuestion) {
         PerkFactory.getSupportPerks().forEach(sp -> {
