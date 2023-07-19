@@ -7,8 +7,8 @@ public class CombatPerk extends Perk {
 
     @Getter @Setter private int stack;
 
-    public CombatPerk(String name, String description, String image) {
-        super(name, description, image);
+    public CombatPerk(String name, int level, String description, String image) {
+        super(name, level, description, image);
         this.stack = 1;
     }
 

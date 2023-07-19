@@ -319,6 +319,8 @@ public class LevelUpController extends CharacterController {
                         gainPerkStage.initModality(Modality.WINDOW_MODAL);
                         gainPerkStage.showAndWait();
                         updatePerkListView();
+                        DialogFactory.refreshMutateDropCombatPerks(foCharacter);
+                        updateDialogAnswerListView();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }

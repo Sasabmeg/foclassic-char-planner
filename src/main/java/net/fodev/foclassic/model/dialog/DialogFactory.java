@@ -14,7 +14,7 @@ public class DialogFactory {
         DialogQuestionNode supportPerkQuestion = new DialogQuestionNode(3, "Which support perk would you like to add?");
         DialogQuestionNode supportPerkShowAllQuestion = new DialogQuestionNode(4, "Which support perk would you like to add?");
         DialogQuestionNode readSkillBookQuestion = new DialogQuestionNode(5, "Which skill book would you like to read?");
-        DialogQuestionNode mutateQuestion = new DialogQuestionNode(6,
+        mutateQuestion = new DialogQuestionNode(6,
                 "The radiation of the wasteland has changed you! One of your traits, perks, specials, skill tags or skills might have mutated into something else...");
 
         //  main dialog
@@ -92,7 +92,7 @@ public class DialogFactory {
 
         refreshMutateSkills(foCharacter, mutateQuestion, mutateSkillsQuestion);
 
-        DialogAnswerNode mutateSkillsAnswer = new DialogAnswerNode("Mutate skills.", mutateSkillsQuestion, foCharacter);
+        DialogAnswerNode mutateSkillsAnswer = new DialogAnswerNode("Mutate Skills.", mutateSkillsQuestion, foCharacter);
         mutateQuestion.addAnswer(mutateSkillsAnswer);
     }
 
@@ -952,7 +952,7 @@ public class DialogFactory {
 
         refreshMutateTraits(foCharacter, mutateQuestion, mutateTraitsQuestion);
 
-        DialogAnswerNode mutateTraitsAnswer = new DialogAnswerNode("Mutate traits.", mutateTraitsQuestion, foCharacter);
+        DialogAnswerNode mutateTraitsAnswer = new DialogAnswerNode("Mutate Traits.", mutateTraitsQuestion, foCharacter);
         mutateQuestion.addAnswer(mutateTraitsAnswer);
     }
 
@@ -1128,8 +1128,16 @@ public class DialogFactory {
         mutateTraitsQuestion.addAnswer(lonerAnswer);
     }
 
+    private static DialogQuestionNode mutateCombatPerksQuestion;
+    private static DialogQuestionNode mutateQuestion;
+
+    //  atm this is not enough, dialog question object also needs to be refreshed, which is not, maybe better dialog tree solution is required.
+    public static void refreshMutateDropCombatPerks(FoCharacter foCharacter) {
+        refreshMutateCombatPerks(foCharacter, mutateQuestion, mutateCombatPerksQuestion);
+    }
+
     private static void mutateCombatPerks(FoCharacter foCharacter, DialogQuestionNode mutateQuestion) {
-        DialogQuestionNode mutateCombatPerksQuestion = new DialogQuestionNode(4, "Your Combat Perks are mutating... \n[Select Combat Perk to forget]");
+        mutateCombatPerksQuestion = new DialogQuestionNode(4, "Your Combat Perks are mutating... \n[Select Combat Perk to forget]");
 
         refreshMutateCombatPerks(foCharacter, mutateQuestion, mutateCombatPerksQuestion);
 
@@ -1143,7 +1151,7 @@ public class DialogFactory {
 
         addMutateDropCombatPerks(foCharacter, mutateCombatPerksQuestion);
 
-        mutateCombatPerksQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
+        //mutateCombatPerksQuestion.getAnswers().removeIf(a -> !a.areDemandsMet());
 
         DialogAnswerNode backToMutateQuestion = new DialogAnswerNode("[Back]", mutateQuestion, foCharacter);
         mutateCombatPerksQuestion.addAnswer(backToMutateQuestion);
@@ -1152,9 +1160,11 @@ public class DialogFactory {
     }
 
     private static void addMutateDropCombatPerks(FoCharacter foCharacter, DialogQuestionNode mutateCombatPerksQuestion) {
-        PerkFactory.getCombatPerks().forEach(cp -> {
+        PerkFactory.getCombatPerks().stream().filter(cp -> foCharacter.hasCombatPerk(cp)).forEach(cp -> {
             DialogAnswerNode answer = new DialogAnswerNode("Forget " + cp.getName(), mutateCombatPerksQuestion, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> fc.hasCombatPerk(cp), "Error: Does not have Combat Perk - " + cp.getName()));
+            answer.addDemand(new DialogDemandNode(fc -> FoCharacterRuleset.canFreePerk(fc, cp.getName()),
+                    "Error: Cannot free " + cp.getName() + " due to other higher level perks blocking. You need to remove highest level requirement perks first, or add same/lower level perk first as replacement."));
             answer.addResult(new DialogResultNode(fc -> fc.removeCombatPerk(cp)));
             answer.addResult(new DialogResultNode(fc -> System.out.println("Removed combat perk: " + cp.getName())));
             mutateCombatPerksQuestion.addAnswer(answer);
@@ -1435,6 +1445,7 @@ public class DialogFactory {
             DialogAnswerNode answer = new DialogAnswerNode(cp.getName(), root, foCharacter);
             answer.addDemand(new DialogDemandNode(fc -> !fc.hasCombatPerk(cp), "Combat Perk already picked: " + cp.getName()));
             answer.addResult(new DialogResultNode(fc -> fc.addCombatPerk(cp)));
+            answer.addResult(new DialogResultNode(fc -> refreshMutateCombatPerks(fc, mutateQuestion, mutateCombatPerksQuestion)));
             root.addAnswer(answer);
         });
 

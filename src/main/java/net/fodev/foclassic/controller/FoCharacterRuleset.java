@@ -1,9 +1,6 @@
 package net.fodev.foclassic.controller;
 
-import net.fodev.foclassic.model.fochar.FoCharacter;
-import net.fodev.foclassic.model.fochar.SkillBookFactory;
-import net.fodev.foclassic.model.fochar.SkillFactory;
-import net.fodev.foclassic.model.fochar.TraitFactory;
+import net.fodev.foclassic.model.fochar.*;
 
 public class FoCharacterRuleset {
     public static void updateSpecial(FoCharacter foCharacter, int index, int increment) {
@@ -138,40 +135,36 @@ public class FoCharacterRuleset {
 
     public static int getMinimumSkillValueWithoutPointsSpentByName(FoCharacter foCharacter, String name) {
         switch (name) {
+            case SkillFactory.BIG_GUNS, SkillFactory.ENERGY_WEAPONS, SkillFactory.CLOSE_COMBAT, SkillFactory.THROWING,
+                    SkillFactory.DOCTOR, SkillFactory.SNEAK, SkillFactory.LOCKPICK, SkillFactory.STEAL, SkillFactory.TRAPS,
+                    SkillFactory.SPEECH, SkillFactory.GAMBLING:
+                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
             case SkillFactory.SMALL_GUNS:
                 return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0) + 6 * foCharacter.getSkillBookRead(SkillBookFactory.SMALL_GUNS);
-            case SkillFactory.BIG_GUNS:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.ENERGY_WEAPONS:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.CLOSE_COMBAT:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.THROWING:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
             case SkillFactory.FIRST_AID:
                 return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0) + 6 * foCharacter.getSkillBookRead(SkillBookFactory.FIRST_AID);
-            case SkillFactory.DOCTOR:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.SNEAK:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.LOCKPICK:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.STEAL:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
-            case SkillFactory.TRAPS:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
             case SkillFactory.SCIENCE:
                 return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0) + 6 * foCharacter.getSkillBookRead(SkillBookFactory.SCIENCE);
             case SkillFactory.REPAIR:
                 return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0) + 6 * foCharacter.getSkillBookRead(SkillBookFactory.REPAIR);
-            case SkillFactory.SPEECH:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
             case SkillFactory.BARTER:
                 return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0) + 6 * foCharacter.getSkillBookRead(SkillBookFactory.BARTER);
-            case SkillFactory.GAMBLING:
-                return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0);
             case SkillFactory.OUTDOORSMAN:
                 return getBaseSkillValueByName(foCharacter, name) + (foCharacter.isTaggedSkill(name) ? 20 : 0) + 6 * foCharacter.getSkillBookRead(SkillBookFactory.OUTDOORSMAN);
         }
-        return 0;    }
+        return 0;
+    }
+
+    public static boolean canFreePerk(FoCharacter foCharacter, String perkName) {
+        boolean hasHigherPerk = foCharacter.getCombatPerks().stream().anyMatch(cp -> cp.getMinLevel() > PerkFactory.getCombatPerk(perkName).getMinLevel());
+        if (hasHigherPerk) {
+            long lowerOrEqualPerksCount = foCharacter.getCombatPerks().stream().filter(cp ->
+                    cp.getMinLevel() <= PerkFactory.getCombatPerk(perkName).getMinLevel()
+                            && !cp.getName().equals(perkName)).count();
+            //System.out.printf("LowerOrEqualPerkCount for %s = %d, needed = %d\n",perkName, lowerOrEqualPerksCount, PerkFactory.getCombatPerk(perkName).getMinLevel() / 3);
+            return lowerOrEqualPerksCount >= PerkFactory.getCombatPerk(perkName).getMinLevel() / 3;
+        } else {
+            return true;
+        }
+    }
 }

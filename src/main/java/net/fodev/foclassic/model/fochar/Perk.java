@@ -7,9 +7,11 @@ public class Perk {
     @Getter @Setter protected String name;
     @Getter @Setter protected String image;
     @Getter @Setter protected String description;
+    @Getter @Setter protected int minLevel;
 
-    public Perk(String name, String image, String description) {
+    public Perk(String name, int level, String image, String description) {
         this.name = name;
+        this.minLevel = level;
         this.description = description;
         this.image = image;
     }

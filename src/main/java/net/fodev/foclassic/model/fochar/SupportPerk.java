@@ -2,8 +2,8 @@ package net.fodev.foclassic.model.fochar;
 
 public class SupportPerk extends Perk {
 
-    public SupportPerk(String name, String description, String image) {
-        super(name, description, image);
+    public SupportPerk(String name, int level, String description, String image) {
+        super(name, level, description, image);
     }
 
     @Override
