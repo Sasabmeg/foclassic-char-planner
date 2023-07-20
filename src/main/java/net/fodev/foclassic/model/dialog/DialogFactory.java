@@ -20,13 +20,21 @@ public class DialogFactory {
         //  main dialog
         DialogAnswerNode gainOneLevel = new DialogAnswerNode("Gain one level.", root, foCharacter);
         gainOneLevel.addDemand(new DialogDemandNode(fc -> fc.getUnusedSkillPoints() + fc.getSkillPointsPerLevel() <= 99, "Gaining one level would overflow unspent skill point above 99."));
+        gainOneLevel.addDemand(new DialogDemandNode(fc -> (fc.getLevel() + 1) % 3 != 0 || !fc.hasMissingPerk(), "Error: Gaining one level would overflow unspent perk points. Click on '--- PERKS ---' to add any available perks."));
         gainOneLevel.addResult(new DialogResultNode(fc -> fc.gainExperience(fc.getLevel() * 1000)));
+        gainOneLevel.addResult(new DialogResultNode(fc -> {
+            if ((fc.getLevel() + 1) % 3 != 0 || fc.hasMissingPerk()) {
+                fc.setAllowMissingPerkNotify(true);
+            }
+        }));
         gainOneLevel.addResult(new DialogResultNode(fc -> FoCharacterFactory.copyTo(oldCharacter, fc)));
         gainOneLevel.addResult(new DialogResultNode(fc -> System.out.println("Gained one level. Character saved.")));
 
         DialogAnswerNode gainThreeLevels = new DialogAnswerNode("Gain three levels.", root, foCharacter);
         gainThreeLevels.addDemand(new DialogDemandNode(fc -> fc.getUnusedSkillPoints() + fc.getSkillPointsPerLevel() * 3 <= 99, "Gaining three levels would overflow unspent skill point above 99."));
+        gainThreeLevels.addDemand(new DialogDemandNode(fc -> !fc.hasMissingPerk(), "Error: Gaining three levels would overflow unspent perk points. Click on '--- PERKS ---' to add any available perks."));
         gainThreeLevels.addResult(new DialogResultNode(fc -> fc.gainExperience((fc.getLevel() * 3 + 1 + 2) * 1000)));
+        gainThreeLevels.addResult(new DialogResultNode(fc -> fc.setAllowMissingPerkNotify(true)));
         gainThreeLevels.addResult(new DialogResultNode(fc -> FoCharacterFactory.copyTo(oldCharacter, fc)));
         gainThreeLevels.addResult(new DialogResultNode(fc -> System.out.println("Gained three level. Character saved.")));
 

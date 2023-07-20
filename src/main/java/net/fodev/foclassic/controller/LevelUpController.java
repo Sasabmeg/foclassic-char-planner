@@ -229,12 +229,14 @@ public class LevelUpController extends CharacterController {
                     updatePerkListView();
                     updateSKillLabelValues();
                     updateSpecialPointsValues();
+                    if (foCharacter.hasMissingPerk() && foCharacter.isAllowMissingPerkNotify()) {
+                        foCharacter.setAllowMissingPerkNotify(false);
+                        popupGainPerkWindow();
+                    }
                 } else {
                     updateDescriptionTextFromDialog(selectedItem);
                     if (selectedItem.getDemandErrors().length() > 2) {
                         System.out.println(selectedItem.getDemandErrors());
-                    } else {
-                        System.out.println("Demands for '" + selectedItem + "' not met!");
                     }
                     listViewDialogAnswer.getSelectionModel().clearSelection();
                 }
@@ -297,36 +299,40 @@ public class LevelUpController extends CharacterController {
                 if (((String) listViewPerks.getSelectionModel().getSelectedItem()).contains("PERKS")
                         && !((String) listViewPerks.getSelectionModel().getSelectedItem()).contains("SUPPORT")
                         && foCharacter.hasMissingPerk()) {
-                    try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/gainPerk.fxml"));
-                        GainPerkController gainPerkController = new GainPerkController();
-                        gainPerkController.setFoCharacter(foCharacter);
-                        fxmlLoader.setController(gainPerkController);
-                        Parent parent = fxmlLoader.load();
-                        Stage gainPerkStage = new Stage();
-                        Scene gainPerkScene = new Scene(parent, 573, 230);
-                        Scene parentScene = listViewPerks.getScene();
-                        double pX = parentScene.getWindow().getX();
-                        double pY = parentScene.getWindow().getY();
-                        double pW = parentScene.getWindow().getWidth();
-                        double pH = parentScene.getWindow().getHeight();
-                        gainPerkStage.setX(pX + pW / 2 - gainPerkScene.getWidth() / 2);
-                        gainPerkStage.setY(pY + pH / 4 - gainPerkScene.getHeight() / 2);
-                        gainPerkStage.setScene(gainPerkScene);
-                        gainPerkStage.setResizable(false);
-                        gainPerkStage.initStyle(StageStyle.UNDECORATED);
-                        gainPerkStage.initOwner(listViewPerks.getScene().getWindow());
-                        gainPerkStage.initModality(Modality.WINDOW_MODAL);
-                        gainPerkStage.showAndWait();
-                        updatePerkListView();
-                        DialogFactory.refreshMutateDropCombatPerks(foCharacter);
-                        updateDialogAnswerListView();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+                    popupGainPerkWindow();
                 }
             }
         });
+    }
+
+    private void popupGainPerkWindow() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(CharPlannerApp.class.getResource("fxml/gainPerk.fxml"));
+            GainPerkController gainPerkController = new GainPerkController();
+            gainPerkController.setFoCharacter(foCharacter);
+            fxmlLoader.setController(gainPerkController);
+            Parent parent = fxmlLoader.load();
+            Stage gainPerkStage = new Stage();
+            Scene gainPerkScene = new Scene(parent, 573, 230);
+            Scene parentScene = listViewPerks.getScene();
+            double pX = parentScene.getWindow().getX();
+            double pY = parentScene.getWindow().getY();
+            double pW = parentScene.getWindow().getWidth();
+            double pH = parentScene.getWindow().getHeight();
+            gainPerkStage.setX(pX + pW / 2 - gainPerkScene.getWidth() / 2);
+            gainPerkStage.setY(pY + pH / 4 - gainPerkScene.getHeight() / 2);
+            gainPerkStage.setScene(gainPerkScene);
+            gainPerkStage.setResizable(false);
+            gainPerkStage.initStyle(StageStyle.UNDECORATED);
+            gainPerkStage.initOwner(listViewPerks.getScene().getWindow());
+            gainPerkStage.initModality(Modality.WINDOW_MODAL);
+            gainPerkStage.showAndWait();
+            updatePerkListView();
+            DialogFactory.refreshMutateDropCombatPerks(foCharacter);
+            updateDialogAnswerListView();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void updatePerkListView() {

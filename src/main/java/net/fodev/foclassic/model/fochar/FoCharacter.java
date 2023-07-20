@@ -41,6 +41,7 @@ public class FoCharacter {
     @Getter @Setter private List<SupportPerk> supportPerks;
     @Getter @Setter private int unusedPerkPoints;
     @Getter @Setter private List<SkillBook> skillBooks;
+    @Getter @Setter private boolean allowMissingPerkNotify;
 
     public FoCharacter(String name, int age, String sex) {
         this.name = name;
@@ -55,6 +56,7 @@ public class FoCharacter {
         unusedTraitPoints = 2;
         experience = 0;
         level = 1;
+        allowMissingPerkNotify = false;
     }
 
     public boolean canTagTrait() {
