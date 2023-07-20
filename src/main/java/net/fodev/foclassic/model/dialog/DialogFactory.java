@@ -1270,7 +1270,28 @@ public class DialogFactory {
     private static void addMutateSwapSkillTags(FoCharacter foCharacter, DialogQuestionNode mutateSkillTagsQuestion) {
         if (taggedSkilledToBeSwappedName.length() > 0) {
             foCharacter.getSkills().stream().filter(sk -> !sk.isTagged()).forEachOrdered(sk -> {
-                DialogAnswerNode answer = new DialogAnswerNode("Gain tag and swap " + sk.getName(), mutateSkillTagsQuestion, foCharacter);
+                DialogAnswerNode answer = new DialogAnswerNode("Gain tag (and swap) " + sk.getName(), mutateSkillTagsQuestion, foCharacter);
+                answer.addDemand(new DialogDemandNode(fc -> {
+                    if ((sk.getName().equals(SkillFactory.SMALL_GUNS) || sk.getName().equals(SkillFactory.BIG_GUNS)
+                            || sk.getName().equals(SkillFactory.ENERGY_WEAPONS) ||sk.getName().equals(SkillFactory.THROWING))
+                            &&
+                       (taggedSkilledToBeSwappedName.equals(SkillFactory.SMALL_GUNS) || taggedSkilledToBeSwappedName.equals(SkillFactory.BIG_GUNS)
+                            || taggedSkilledToBeSwappedName.equals(SkillFactory.ENERGY_WEAPONS) || taggedSkilledToBeSwappedName.equals(SkillFactory.THROWING))
+                    ) {
+                        return true;
+                    } else {
+                        if ((sk.getName().equals(SkillFactory.FIRST_AID) || sk.getName().equals(SkillFactory.DOCTOR))
+                            && (taggedSkilledToBeSwappedName.equals(SkillFactory.FIRST_AID) || taggedSkilledToBeSwappedName.equals(SkillFactory.DOCTOR))) {
+                            return true;
+                        } else {
+                            if (sk.getValue() == fc.getSkillValueByName(taggedSkilledToBeSwappedName)) {
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    }
+                }, "Error: Can only switch tags on skills of same value or between SG/BG/EW/TH or FA/DR."));
                 answer.addResult(new DialogResultNode(fc -> {
                     int value = fc.getSkillValueByName(taggedSkilledToBeSwappedName);
                     fc.setSkillValueByName(taggedSkilledToBeSwappedName, sk.getValue());
@@ -1284,7 +1305,7 @@ public class DialogFactory {
             });
         } else {
             foCharacter.getSkills().stream().filter(sk -> sk.isTagged()).forEachOrdered(sk -> {
-                DialogAnswerNode answer = new DialogAnswerNode("Loose tag and swap " + sk.getName(), mutateSkillTagsQuestion, foCharacter);
+                DialogAnswerNode answer = new DialogAnswerNode("Loose tag (and swap) " + sk.getName(), mutateSkillTagsQuestion, foCharacter);
                 answer.addResult(new DialogResultNode(fc -> taggedSkilledToBeSwappedName = sk.getName()));
                 answer.addResult(new DialogResultNode(fc -> System.out.println("Setting tagged skill to be swapped - " + sk.getName())));
                 mutateSkillTagsQuestion.addAnswer(answer);
